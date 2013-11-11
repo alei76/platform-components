@@ -12,7 +12,7 @@ public class ServerResourceBundleProvider extends ResourceBundleProviderAdaptor 
 	@Override
 	public String[] getResourceLocations() {
 		return new String[]{
-			AdqStringUtils.getPath(ServerResourceBundleProvider.class, "server")
+			AdqStringUtils.getPath(ServerResourceBundleProvider.class, "gui")
 		};
 	}
 	
