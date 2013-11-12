@@ -1,5 +1,7 @@
 package com.jyz.component.core.exception;
 
+import java.util.Locale;
+
 import junit.framework.TestCase;
 
 public class JyzExceptionTest extends TestCase{
@@ -12,7 +14,7 @@ public class JyzExceptionTest extends TestCase{
 		try {
 			exception();
 		} catch (JyzException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getErrorMessage(Locale.US));
 			assertEquals(e.getMessage(), "jyz不存在jDD");
 		}
 	}

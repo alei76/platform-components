@@ -10,8 +10,8 @@ public class ResourceLoaderTest extends TestCase {
 		System.out.println(ResourcesLoader.getInstance().getString("gui1"));
 		System.out.println(ResourcesLoader.getInstance().getString("gui2"));
 		
-		System.out.println(ResourcesLoader.getInstance().getString("gui1", Locale.US));
-		System.out.println(ResourcesLoader.getInstance().getString("gui2", Locale.US));
+		System.out.println(ResourcesLoader.getInstance().getString(Locale.US, "gui1"));
+		System.out.println(ResourcesLoader.getInstance().getString(Locale.US, "gui2"));
 		
 		System.out.println(ResourcesLoader.getInstance().getString("gui1", "1","2"));
 		System.out.println(ResourcesLoader.getInstance().getString("gui2", "1","2","3"));

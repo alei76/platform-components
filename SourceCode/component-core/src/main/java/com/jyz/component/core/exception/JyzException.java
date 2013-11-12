@@ -1,5 +1,7 @@
 package com.jyz.component.core.exception;
 
+import java.util.Locale;
+
 import com.jyz.component.core.i18n.ResourcesLoader;
 
 /**
@@ -8,6 +10,7 @@ import com.jyz.component.core.i18n.ResourcesLoader;
  *
  */
 public class JyzException extends JyzBaseException {
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String errorCode;
@@ -32,5 +35,10 @@ public class JyzException extends JyzBaseException {
 	public String getMessage(){
 		return ResourcesLoader.getInstance().getString(errorCode, arguments);
 	}
+	
+	public String getErrorMessage(Locale locale) {
+        return ResourcesLoader.getInstance().getString(locale, errorCode, arguments);
+    }
+	
 	
 }

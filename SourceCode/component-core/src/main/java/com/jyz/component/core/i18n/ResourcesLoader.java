@@ -57,10 +57,10 @@ public class ResourcesLoader {
 	}
 	
 	public synchronized String getString(String key, Object...arguments){
-		return getString(key, defaultLocale, arguments);
+		return getString(defaultLocale, key, arguments);
 	}
 	
-	public synchronized String getString(String key, Locale locale, Object...arguments){
+	public synchronized String getString(Locale locale, String key, Object...arguments){
 		for (String bundleName : this.bundleNames) {
 			CacheBundle cacheBundle = new CacheBundle(bundleName, locale);
 			ResourceBundle resource = loadedBundles.get(cacheBundle);
