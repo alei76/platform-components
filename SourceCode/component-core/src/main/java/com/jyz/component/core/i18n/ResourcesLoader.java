@@ -65,7 +65,7 @@ public class ResourcesLoader {
 			CacheBundle cacheBundle = new CacheBundle(bundleName, locale);
 			ResourceBundle resource = loadedBundles.get(cacheBundle);
 			if(resource == null){
-				resource = ResourceBundle.getBundle(bundleName, locale);
+				resource = ResourceBundle.getBundle(bundleName, locale == null ? defaultLocale : locale);
 				loadedBundles.put(cacheBundle, resource);
 			}
 			if(resource.containsKey(key)){

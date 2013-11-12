@@ -33,7 +33,7 @@ public class JyzException extends JyzBaseException {
 	
 	@Override
 	public String getMessage(){
-		return ResourcesLoader.getInstance().getString(errorCode, arguments);
+		return getErrorMessage(null);
 	}
 	
 	public String getErrorMessage(Locale locale) {
