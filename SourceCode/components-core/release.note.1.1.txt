@@ -1,0 +1,3 @@
+1、修复了MessageResource查找locale的准确性
+1.1.2 修复String getMessage(String bundleName, String key, Locale locale, Object... params)只能加载指定locale的问题
+1.1.2 增加了绑定线程locale的方法
