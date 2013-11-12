@@ -1,8 +1,11 @@
 package com.jyz.component.core.i18n;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 
@@ -17,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 public class ResourcesLoader {
 	
 	private List<String> bundleNames = new ArrayList<String>();
-	private List<CacheKey> loadedKeys = new ArrayList<CacheKey>();
+	private Map<CacheBundle, ResourceBundle> loadedBundles = new HashMap<CacheBundle, ResourceBundle>();
 	private static final Locale defaultLocale = Locale.getDefault();
 	
 	private static class Singleton {
@@ -53,25 +56,33 @@ public class ResourcesLoader {
 		}
 	}
 	
-	public synchronized String getValue(String key, Locale locale){
+	public synchronized String getString(String key, Object...arguments){
+		return getString(key, defaultLocale, arguments);
+	}
+	
+	public synchronized String getString(String key, Locale locale, Object...arguments){
 		for (String bundleName : this.bundleNames) {
-			if(loadedKeys.contains(new CacheKey(bundleName, locale))){
-				continue;
+			CacheBundle cacheBundle = new CacheBundle(bundleName, locale);
+			ResourceBundle resource = loadedBundles.get(cacheBundle);
+			if(resource == null){
+				resource = ResourceBundle.getBundle(bundleName, locale);
+				loadedBundles.put(cacheBundle, resource);
 			}
-			ResourceBundle bundle = ResourceBundle.getBundle(bundleName);
-			if(bundle != null){
-				this.loadedKeys.add(new CacheKey(bundleName, locale));
+			if(resource.containsKey(key)){
+				if(arguments == null){
+					return resource.getString(key);
+				}
+				return MessageFormat.format(resource.getString(key), arguments);
 			}
-			return bundle.getString(key);
 		}
 		return null;
 	}
 	
-	private static final class CacheKey{
+	private static final class CacheBundle{
 		private final String bundleName;
 		private final Locale locale;
 		
-		public CacheKey(String bundleName, Locale locale) {
+		public CacheBundle(String bundleName, Locale locale) {
             this.bundleName = bundleName;
             this.locale = locale;
         }
@@ -83,10 +94,10 @@ public class ResourcesLoader {
 		
 		@Override
 		public boolean equals(Object object){
-			if(!(object instanceof CacheKey)){
+			if(!(object instanceof CacheBundle)){
 				return false;
 			}
-			CacheKey key = (CacheKey)object;
+			CacheBundle key = (CacheBundle)object;
 			return key.bundleName == null ? this.bundleName == null : key.bundleName.equals(this.bundleName) &&
 					key.locale == null ? this.locale == null : key.locale.equals(this.locale);
 		}

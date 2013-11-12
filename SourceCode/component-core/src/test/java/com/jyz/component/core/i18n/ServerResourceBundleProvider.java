@@ -1,13 +1,14 @@
 package com.jyz.component.core.i18n;
 
-import com.audaque.lib.core.utils.AdqStringUtils;
+import com.jyz.component.core.utils.JyzStringUtils;
+
 
 public class ServerResourceBundleProvider implements ResourceBundleProvider{
 
 
 	@Override
 	public String[] getResourceLocations() {
-		return new String[]{AdqStringUtils.getPath(ServerResourceBundleProvider.class, "server")};
+		return new String[]{JyzStringUtils.getPath(ServerResourceBundleProvider.class, "server")};
 	}
 
 }
