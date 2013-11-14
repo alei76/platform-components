@@ -14,7 +14,8 @@ public class JyzExceptionTest extends TestCase{
 		try {
 			exception();
 		} catch (JyzException e) {
-			System.out.println(e.getErrorMessage(Locale.CHINA));
+			e.printStackTrace();
+			System.out.println(e.getLocalizedMessage(Locale.CHINA));
 			assertEquals(e.getMessage(), "jyz不存在jDD");
 		}
 	}

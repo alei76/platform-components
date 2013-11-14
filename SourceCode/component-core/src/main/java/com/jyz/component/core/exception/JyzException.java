@@ -5,7 +5,7 @@ import java.util.Locale;
 import com.jyz.component.core.i18n.ResourcesLoader;
 
 /**
- *  
+ *  封装errorCode
  *	@author JoyoungZhang@gmail.com
  *
  */
@@ -38,10 +38,10 @@ public class JyzException extends JyzBaseException {
 	
 	@Override
 	public String getLocalizedMessage() {
-        return getLocalizedMessage(null, errorCode, arguments);
+        return getLocalizedMessage(null);
     }
 	
-	public String getLocalizedMessage(Locale locale, String errorCode, Object...objects) {
+	public String getLocalizedMessage(Locale locale) {
         return ResourcesLoader.getInstance().getString(locale, errorCode, arguments);
     }
 	
