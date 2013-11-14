@@ -1,16 +1,48 @@
 package com.jyz.study.jdk.exception;
 
-import junit.framework.TestCase;
+import java.io.FileNotFoundException;
+
+
 
 /**
  * 
  * @author JoyoungZhang@gmail.com
  *
  */
-public class ExceptionTest extends TestCase{
+public class ExceptionTest{
 
-    public void test(){
-	System.out.println(123);
-    }
+	public static void main(String[] args) {
+		try{
+			test3();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+	}
+	
+	private static void test1(){
+		NullPointerException npt = new  NullPointerException("str is null");
+		throw npt;
+	}
+	
+	private static void test2() throws FileNotFoundException{
+		try{
+			test1();
+		}catch(Exception ex){
+			FileNotFoundException fnx = new FileNotFoundException("file not found ");
+			fnx.initCause(ex);
+			throw fnx;
+		}
+	}
+	
+	private static void test3() throws ClassCastException{
+		try{
+			test2();
+		}catch(Exception ex){
+			ClassCastException cce = new ClassCastException("class cast exception");
+			cce.initCause(ex);
+			throw cce;
+		}
+	}
     
 }
