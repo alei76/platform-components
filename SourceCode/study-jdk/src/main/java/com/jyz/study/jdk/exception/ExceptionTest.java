@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 
 
 /**
- * 
+ * Throwable学习
+ * http://zy19982004.iteye.com/blog/1974796
  * @author JoyoungZhang@gmail.com
  *
  */
