@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author JoyoungZhang@gmail.com
  *
  */
-public class ExceptionTest{
+public class ExceptionCauseStack{
 
 	public static void main(String[] args) throws IOException {
 		try{
