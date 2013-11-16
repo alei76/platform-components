@@ -1,7 +1,6 @@
 package com.jyz.study.jdk.exception;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 
@@ -13,12 +12,13 @@ import java.io.IOException;
  */
 public class ExceptionTest{
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		try{
 			test3();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
 	}
 	
 	private static void test1(){
