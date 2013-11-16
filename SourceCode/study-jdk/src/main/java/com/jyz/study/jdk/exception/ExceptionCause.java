@@ -2,13 +2,11 @@ package com.jyz.study.jdk.exception;
 
 
 /**
- * 栈轨迹
- * fillInStackTrace
+ * 异常链
  * @author JoyoungZhang@gmail.com
  *
  */
-public class FillInStackTrace {
-    
+public class ExceptionCause {
     public static void main(String[] args) throws Exception {
 	test1();
     }
@@ -17,8 +15,11 @@ public class FillInStackTrace {
 	try{
 	    test2();
 	}catch(NullPointerException ex){
-//	    throw (Exception)ex.fillInStackTrace();
-	    throw new Exception();
+//1	    Exception bussinessEx = new Exception("packag exception");
+//	    bussinessEx.initCause(ex);
+//	    throw bussinessEx;
+//2	    throw new Exception("packag exception", ex);
+//3	    throw (Exception)ex.fillInStackTrace().initCause(ex);
 	}
     }
     
