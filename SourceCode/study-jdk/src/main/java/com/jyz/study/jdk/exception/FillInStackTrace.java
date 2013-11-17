@@ -17,8 +17,8 @@ public class FillInStackTrace {
 	try{
 	    test2();
 	}catch(NullPointerException ex){
-//	    throw (Exception)ex.fillInStackTrace();
-	    throw new Exception();
+	    throw (Exception)ex.fillInStackTrace();
+//	    throw new Exception();
 	}
     }
     
