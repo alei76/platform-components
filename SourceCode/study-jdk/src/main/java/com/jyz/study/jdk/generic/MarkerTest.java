@@ -13,11 +13,17 @@ public class MarkerTest<T> {
 
 	public static void main(String[] args) {
 		ArrayMarker<String> arrMarker = new ArrayMarker<String>(String.class);
+		System.out.println(arrMarker.create(10) instanceof String[]);
 		System.out.println(Arrays.toString(arrMarker.create(10)));
+		
 		System.out.println(Arrays.toString((String[])Array.newInstance(String.class, 10)));
+		System.out.println(Array.newInstance(String.class, 10) instanceof String[]);
 		
 		ListMarker<String> listMarker = new ListMarker<String>();
 		System.out.println(listMarker.create());
+		
+		FilledListMarker<String> filledMarker = new FilledListMarker<String>();
+		System.out.println(Arrays.toString(filledMarker.create("a", 10).toArray()));
 	}
 	
 }
@@ -40,6 +46,12 @@ class ListMarker<T>{
 	}
 }
 
-class FilledListMarker{
-	
+class FilledListMarker<T>{
+	List<T> create(T t, int n){
+		List<T> result = new ArrayList<T>();
+		for(int i=0; i<n; i++){
+			result.add(t);
+		}
+		return result;
+	}
 }
