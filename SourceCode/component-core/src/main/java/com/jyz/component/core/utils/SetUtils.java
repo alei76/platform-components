@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 
+ *  Set工具类
+ *  from Thinking in Java page 367
  *	@author JoyoungZhang@gmail.com
  *
  */
