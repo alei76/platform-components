@@ -34,6 +34,9 @@ public class ClassTypeParameters {
 		System.out.println(Arrays.toString(list2.getClass().getTypeParameters()));
 		System.out.println(Arrays.toString(map1.getClass().getTypeParameters()));
 		
+		System.out.println(list1.getClass().getSimpleName());
+		System.out.println(list2.getClass().getSimpleName());
+		
 		System.out.println(Arrays.toString(f1.getClass().getTypeParameters()));
 		System.out.println(Arrays.toString(f2.getClass().getTypeParameters()));
 		System.out.println(Arrays.toString(f3.getClass().getTypeParameters()));
