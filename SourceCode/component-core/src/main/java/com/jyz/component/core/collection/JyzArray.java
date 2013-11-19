@@ -63,7 +63,7 @@ public class JyzArray<T> {
 	public static void main(String[] args) {
 		JyzArray<Integer> jyzArray = new JyzArray<Integer>(Integer.class, 8);
 		for(int i=0; i<8; i++){
-			jyzArray.put(i-1, i);
+			jyzArray.put(i, i);
 		}
 		Integer[] array = jyzArray.rep();
 		System.out.println(Arrays.toString(array));
