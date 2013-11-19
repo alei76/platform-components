@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class ClassTypeParameters {
 	
-	static class Frob{}
-	static class FrobF<F>{}
+	static class Frob<T>{}
+	static class FrobF<T extends Number>{}
 	static class FrobPM<P,M>{}
 	
 	private static List list1 = new ArrayList();
@@ -38,5 +38,5 @@ public class ClassTypeParameters {
 		System.out.println(Arrays.toString(f2.getClass().getTypeParameters()));
 		System.out.println(Arrays.toString(f3.getClass().getTypeParameters()));
 	}
-		
+	
 }
