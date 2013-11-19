@@ -1,6 +1,7 @@
 package com.jyz.study.jdk.generic;
 
 /**
+ * 擦除继承
  * @author JoyoungZhang@gmail.com
  *
  */
