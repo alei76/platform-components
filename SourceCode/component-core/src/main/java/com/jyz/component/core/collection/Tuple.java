@@ -48,7 +48,7 @@ public class Tuple<T1, T2>  implements Serializable {
 		if(!(object instanceof Tuple)){
 			return false;
 		}
-		Tuple<T1, T2> tuple = (Tuple<T1, T2>)object;
+		Tuple<?, ?> tuple = (Tuple<?, ?>)object;
 		return 	tuple.t1 == null ? this.t1 == null : tuple.t1.equals(this.t1) &&
 				tuple.t2 == null ? this.t2 == null : tuple.t2.equals(this.t2);
 	}

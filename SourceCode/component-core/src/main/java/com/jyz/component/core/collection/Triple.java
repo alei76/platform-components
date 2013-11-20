@@ -26,7 +26,7 @@ public class Triple<T1, T2, T3> extends Tuple<T1, T2> {
 		if(!(object instanceof Triple)){
 			return false;
 		}
-		Triple<T1, T2, T3> triple = (Triple<T1, T2, T3>)object;
+		Triple<?, ?, ?> triple = (Triple<?, ?, ?>)object;
 		return 	triple.getT1() == null ? super.getT1() == null : triple.getT1().equals(super.getT1()) &&
 				triple.getT2()== null ? super.getT2()== null : triple.getT2().equals(super.getT2()) &&
 				triple.t3 == null ? this.t3 == null : triple.t3.equals(this.t3);
