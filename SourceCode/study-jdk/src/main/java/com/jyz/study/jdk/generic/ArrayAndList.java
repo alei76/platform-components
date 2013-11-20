@@ -24,14 +24,14 @@ public class ArrayAndList<T> {
     //如创建 泛型数组，参数化类型的数组，类型参数的数组都是非法的
     void illegal(Object object){
 	//可以按编译器喜欢的方式定义一个泛型数组的引用
-	List<String>[] justAReference;
-	//but 永远是一个引用，不能被实例化
-	justAReference = new ArrayList<String>()[];
-	new ArrayList<T>()[];
-	new T[10];
-	//以下也不能工作
-	obj instanceof T
-	new T();
+//	List<String>[] justAReference;
+//	//but 永远是一个引用，不能被实例化
+//	justAReference = new ArrayList<String>()[];
+//	new ArrayList<T>()[];
+//	new T[10];
+//	//以下也不能工作
+//	obj instanceof T
+//	new T();
     }
     
     public static void main(String[] args) {
