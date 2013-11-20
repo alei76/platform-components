@@ -1,7 +1,5 @@
 package com.jyz.study.jdk.generic;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Java泛型里,static方法是无法访问泛型类的类型参数(T)的.需要自己定义 
@@ -39,6 +37,9 @@ public class StaticMethodGeneric<T> {
 		//使用泛型类时，必须在创建对象的时候指定类型参数的值；
 		System.out.println(new StaticMethodGeneric<String>().test2("sa"));
 		System.out.println(new StaticMethodGeneric<Integer>().test2(1));
+		
+		Object[] objs = new Long[1];
+		objs[0] = "a";
 	}
 	
 }

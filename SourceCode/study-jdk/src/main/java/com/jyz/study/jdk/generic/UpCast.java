@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 向上转型
+ * 向下转型
  * @author JoyoungZhang@gmail.com
  *
  */

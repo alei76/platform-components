@@ -3,7 +3,7 @@ package com.jyz.study.jdk.generic;
 /**
  * 通配符
  * @author JoyoungZhang@gmail.com
- *
+ * http://zy19982004.iteye.com/blog/1978028
  */
 public class Wildcards {
 
@@ -16,12 +16,13 @@ public class Wildcards {
 	
 	//无界通配符
 	static void unboundedArg(Holder<?> holder, Object arg){
-		holder.get();
+		Object object = holder.get();
+		T t = holder.get();//compile error, don't hava any T
 		holder.set(arg);//compile error
 		holder.set(null);
 	}
 	
-	//子类通配符
+	//子类型通配符
 	static <T> T wildSubtype(Holder<? extends T> holder, T arg){
 		holder.set(arg);//compile error
 		holder.set(null);
@@ -61,7 +62,7 @@ public class Wildcards {
 			if(!(obj instanceof Holder)){
 				return false;
 			}
-			Holder holder = (Holder)obj;
+			Holder<?> holder = (Holder<?>)obj;
 			return element == null ? holder.element == null : element.equals(holder.element);
 		}
 	}
