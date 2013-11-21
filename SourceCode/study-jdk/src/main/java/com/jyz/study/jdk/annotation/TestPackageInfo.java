@@ -1,6 +1,7 @@
 package com.jyz.study.jdk.annotation;
 
 import java.io.IOException;
+import java.lang.annotation.Documented;
 
 /**
  * 测试package-info.java文件的作用

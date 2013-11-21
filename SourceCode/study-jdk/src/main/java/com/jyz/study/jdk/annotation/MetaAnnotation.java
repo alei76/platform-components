@@ -17,9 +17,9 @@ import java.lang.annotation.Target;
  * @author JoyoungZhang@gmail.com
  *
  */
+@JyzDocument
 @JyzTargetType
 @JyzRetentionRuntime
-@JyzDocument
 @JyzInherited
 public class MetaAnnotation {
 	@JyzTargetField
@@ -48,8 +48,8 @@ public class MetaAnnotation {
 @JyzTargetAnnotationType @interface JyzTargetAll{}													
 
 @Retention(RetentionPolicy.SOURCE) @interface JyzRetentionSource{}
-@Retention(RetentionPolicy.CLASS)@interface JyzRetentionClass{}
-@Retention(RetentionPolicy.RUNTIME)@interface JyzRetentionRuntime{}
+@Retention(RetentionPolicy.CLASS) @interface JyzRetentionClass{}
+@Retention(RetentionPolicy.RUNTIME) @interface JyzRetentionRuntime{}
 
 @Documented @interface JyzDocument{}
 
