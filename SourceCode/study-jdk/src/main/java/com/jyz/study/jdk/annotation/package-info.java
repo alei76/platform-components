@@ -1,2 +1,2 @@
-@JyzTargetPackage(24) 
+@JyzTargetPackage 
 package com.jyz.study.jdk.annotation;
