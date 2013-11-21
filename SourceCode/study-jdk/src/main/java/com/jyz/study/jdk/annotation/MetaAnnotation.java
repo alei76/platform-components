@@ -54,7 +54,7 @@ public class MetaAnnotation {
 @Target(ElementType.CONSTRUCTOR) @interface JyzTargetConstructor{}			//构造函数
 @Target(ElementType.LOCAL_VARIABLE) @interface JyzTargetLocalVariable{}		//局部变量
 @Target(ElementType.ANNOTATION_TYPE) @interface JyzTargetAnnotationType{}	//注解
-@Target(ElementType.PACKAGE) @interface JyzTargetPackage{public int value() default 10;}					//包 
+@Target(ElementType.PACKAGE) @Retention(RetentionPolicy.RUNTIME) @interface JyzTargetPackage{public int value() default 10;}					//包 
 @JyzTargetAnnotationType @interface JyzTargetAll{}													
 
 @Retention(RetentionPolicy.SOURCE) @interface JyzRetentionSource{}
