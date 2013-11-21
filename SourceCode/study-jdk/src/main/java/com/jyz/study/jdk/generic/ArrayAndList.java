@@ -1,7 +1,6 @@
 package com.jyz.study.jdk.generic;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 数组是协变的covarant, Super[]是Sub[]的父类型
@@ -12,12 +11,12 @@ import java.util.List;
 public class ArrayAndList<T> {
 
     void test1(){
-	Number[] objectArray = new Long[1];
-	objectArray[0] = 10.10;//运行时java.lang.ArrayStoreException: java.lang.Double
+    	Number[] objectArray = new Long[1];
+    	objectArray[0] = 10.10;//运行时java.lang.ArrayStoreException: java.lang.Double
     }
     
-    void test2(){
-//	List<Number> list = new ArrayList<Long>();//comiple error
+    void test2(T t){
+//		List<Number> list = new ArrayList<Long>();//comiple error
     }
     
     //数组和泛型不能很好的混用
@@ -35,8 +34,8 @@ public class ArrayAndList<T> {
     }
     
     public static void main(String[] args) {
-	System.out.println(new ArrayList<Number>().getClass());
-	System.out.println(new ArrayList<Integer>().getClass());
+    	System.out.println(new ArrayList<Number>().getClass());
+    	System.out.println(new ArrayList<Integer>().getClass());
     }
     
 }

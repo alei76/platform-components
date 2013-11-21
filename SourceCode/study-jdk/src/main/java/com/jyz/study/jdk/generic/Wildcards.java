@@ -6,7 +6,6 @@ package com.jyz.study.jdk.generic;
  * http://zy19982004.iteye.com/blog/1978028
  */
 public class Wildcards {
-
 	//原生类型
 	static void rawArgs(Holder holder, Object arg){
 		holder.get();
