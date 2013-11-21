@@ -1,8 +1,5 @@
 package com.jyz.study.jdk.annotation;
 
-import org.junit.Test;
-
-
 /**
  * @author JoyoungZhang@gmail.com
  *
@@ -10,7 +7,7 @@ import org.junit.Test;
 public class Testable {
 
 	@Test
-	void testExecute(){
+	public void testExecute(){
 		exeucte();
 	}
 	
@@ -19,3 +16,5 @@ public class Testable {
 	}
 	
 }
+
+
