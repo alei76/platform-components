@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
  * @Retention
  * @Document
  * @Inherited
- * 2.main方法测试package-info.java文件的作用
  * 
  * @author JoyoungZhang@gmail.com
  *
