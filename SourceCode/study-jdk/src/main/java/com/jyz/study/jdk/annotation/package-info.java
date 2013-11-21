@@ -14,7 +14,7 @@ class PackageInfo{
 	}
 }
 
-class PackageInfoGeneric<T>{
+class PackageInfoGeneric<T extends Throwable>{
 	private T obj;
 	public void set(T obj){
 		this.obj = obj;
