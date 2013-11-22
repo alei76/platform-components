@@ -25,10 +25,24 @@ public class TestPackageInfo {
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.common();
 		
+		//泛型也能很好的工作，在pakcage-info.java里定义的类和普通类没什么区别
 		PackageInfoGeneric<Exception> packageInfoGeneric = new PackageInfoGeneric<Exception>();
 		packageInfoGeneric.set(new IOException("device io"));
 		packageInfoGeneric.common();
 		
+		
+		Sub sub = new Sub();
+		sub.test();
+		
 		System.out.println(PackageConstants.ERROE_CODE);
 	}
+}
+
+class Sub implements packageInfoInteger{
+	
+	@Override
+	public void test() {
+		System.out.println("sub");
+	}
+	
 }
