@@ -6,6 +6,11 @@ import java.security.AccessController;
 import sun.misc.Launcher;
 import sun.security.action.GetPropertyAction;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class ClassLoaderTest {
 
     public static void main(String[] args) {
