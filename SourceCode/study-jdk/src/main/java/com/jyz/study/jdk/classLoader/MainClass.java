@@ -28,6 +28,10 @@ class InnerThread1 extends Thread{
 			urls[0] = new URL("jar:file:/E:/GoogleCode/platform-components/trunk/SourceCode/component-core/target/component-core-1.0.jar!/");
 			URLClassLoader urlClassLoader = new URLClassLoader(urls);
 			Class clazz = urlClassLoader.loadClass("com.jyz.component.core.collection.Tuple");
+			Object tuple = clazz.newInstance();
+			System.out.println(tuple);
+			
+			
 			System.out.println("InnerThread1 getClassLoader: " + clazz.getClassLoader());
 			System.out.println("InnerThread1 getContextClassLoader: " + Thread.currentThread().getContextClassLoader());
 			
@@ -38,6 +42,10 @@ class InnerThread1 extends Thread{
 		}catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
