@@ -10,7 +10,7 @@ import java.net.URLClassLoader;
  *  
  */
 public class MainClass {
-	
+    
 	public static void main(String[] args) throws MalformedURLException, ClassNotFoundException {
 		System.out.println("MainClass getClassLoader: " + MainClass.class.getClassLoader());
 		System.out.println("MainClass getContextClassLoader: " + Thread.currentThread().getContextClassLoader());
@@ -25,7 +25,7 @@ class InnerThread1 extends Thread{
 	public void run() {
 		try {
 			URL[] urls = new URL[1];
-			urls[0] = new URL("jar:file:/E:/GoogleCode/platform-components/trunk/SourceCode/component-core/target/component-core-1.0.jar!/");
+			urls[0] = new URL("jar:file:/D:/GoogleCode/platform-components/trunk/SourceCode/component-core/target/component-core-1.0.jar!/");
 			URLClassLoader urlClassLoader = new URLClassLoader(urls);
 			Class clazz = urlClassLoader.loadClass("com.jyz.component.core.collection.Tuple");
 			Object tuple = clazz.newInstance();
