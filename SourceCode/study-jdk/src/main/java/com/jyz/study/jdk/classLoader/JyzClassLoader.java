@@ -64,11 +64,12 @@ public class JyzClassLoader extends ClassLoader {
 	try {
 	    JyzClassLoader classLoader = new JyzClassLoader(
 		    "D:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
-	    Class c = classLoader
+	    Class c1 = classLoader
 		    .loadClass("com.jyz.component.core.collection.Tuple");
-	    c = classLoader
+	    Class c2 = classLoader
 		    .loadClass("com.jyz.component.core.collection.Tuple");
-	    Object tuple = c.newInstance();
+	    System.out.println("c1 == c2 is " + (c1 == c2));
+	    Object tuple = c1.newInstance();
 	    System.out.println(tuple);
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
