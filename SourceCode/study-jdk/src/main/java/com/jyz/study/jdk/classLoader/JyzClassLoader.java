@@ -16,10 +16,10 @@ import java.nio.channels.WritableByteChannel;
  */
 public class JyzClassLoader extends ClassLoader {
 
-    private String fileName;
+    private String classPath;
 
-    public JyzClassLoader(String fileName) {
-	this.fileName = fileName;
+    public JyzClassLoader(String classPath) {
+	this.classPath = classPath;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class JyzClassLoader extends ClassLoader {
     }
 
     private String getClassFile(String name) {
-	StringBuffer sb = new StringBuffer(fileName);
+	StringBuffer sb = new StringBuffer(classPath);
 	name = name.replace('.', File.separatorChar) + ".class";
 	sb.append(File.separator + name);
 	return sb.toString();
