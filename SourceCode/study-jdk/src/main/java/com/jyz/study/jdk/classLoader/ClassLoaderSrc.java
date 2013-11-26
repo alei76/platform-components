@@ -61,7 +61,7 @@ public abstract class ClassLoaderSrc {
 				}
 			} catch (ClassNotFoundException e) {
 			}
-			// 如果没有找到class，自定义findCalss去加载
+			// 如果没有找到class，自己去加载试试
 			if (c == null) {
 				c = findClass(name);
 			}

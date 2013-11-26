@@ -25,12 +25,10 @@ class InnerThread1 extends Thread{
 	public void run() {
 		try {
 			URL[] urls = new URL[1];
-			urls[0] = new URL("jar:file:/D:/GoogleCode/platform-components/trunk/SourceCode/component-core/target/component-core-1.0.jar!/");
+			urls[0] = new URL("jar:file:/E:/GoogleCode/platform-components/trunk/SourceCode/component-core/target/component-core-1.0.jar!/");
 			URLClassLoader urlClassLoader = new URLClassLoader(urls);
-			Class clazz = urlClassLoader.loadClass("com.jyz.component.core.collection.Tuple");
-			Object tuple = clazz.newInstance();
-			System.out.println(tuple);
-			
+			Class<?> clazz = urlClassLoader.loadClass("com.jyz.component.core.collection.Tuple");
+			System.out.println(clazz.newInstance());
 			
 			System.out.println("InnerThread1 getClassLoader: " + clazz.getClassLoader());
 			System.out.println("InnerThread1 getContextClassLoader: " + Thread.currentThread().getContextClassLoader());
