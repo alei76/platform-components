@@ -1,30 +1,5 @@
 package com.jyz.study.jdk.classLoader;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.security.AccessController;
-import java.security.CodeSource;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.security.ProtectionDomain;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-import java.util.Vector;
-
-import sun.jkernel.DownloadManager;
-import sun.misc.CompoundEnumeration;
-import sun.misc.Resource;
-import sun.misc.URLClassPath;
-import sun.misc.VM;
-import sun.reflect.Reflection;
-import sun.security.util.SecurityConstants;
-
 /**
  * ClassLoader源码
  * 
