@@ -9,10 +9,10 @@ import java.net.URLClassLoader;
  *  @author JoyoungZhang@gmail.com
  *  
  */
-public class MainClass {
+public class ContextClassLoaderTest {
     
 	public static void main(String[] args) throws MalformedURLException, ClassNotFoundException {
-		System.out.println("MainClass getClassLoader: " + MainClass.class.getClassLoader());
+		System.out.println("MainClass getClassLoader: " + ContextClassLoaderTest.class.getClassLoader());
 		System.out.println("MainClass getContextClassLoader: " + Thread.currentThread().getContextClassLoader());
 		Thread innerThread1 = new InnerThread1();
 		innerThread1.start();
