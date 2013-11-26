@@ -3,7 +3,7 @@ package com.jyz.study.jdk.classLoader;
 /**
  * 测试ClassLoader的缓存机制
  * ClassLoader findLoadedClass
- * 缓存JVM已经加载过的class
+ * 缓存JVM某个ClassLoader已经加载过的class
  * @author JoyoungZhang@gmail.com
  *
  */
