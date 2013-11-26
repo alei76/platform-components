@@ -106,6 +106,7 @@ public abstract class ClassLoaderSrc {
 	}
 
 	// 将byte数组转换成一个Class对象，最终有native方法实现
+	// 同一个byte数组，被不同的classloader加载，产生两个不同的Class对象
 	protected final Class<?> defineClass(String name, byte[] b, int off, int len)
 			throws ClassFormatError {
 		return defineClass(name, b, off, len, null);
