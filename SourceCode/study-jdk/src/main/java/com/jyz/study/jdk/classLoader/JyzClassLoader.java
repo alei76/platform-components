@@ -75,6 +75,13 @@ public class JyzClassLoader extends ClassLoader {
 		try {
 			JyzClassLoader classLoader = new JyzClassLoader("E:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
 			Class clazz = classLoader.loadClass("com.jyz.component.core.collection.Tuple");
+			
+			JyzClassLoader classLoader2 = new JyzClassLoader("E:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
+			Class clazz2 = classLoader2.loadClass("com.jyz.component.core.collection.Tuple");
+			
+			System.out.println(clazz == clazz2);//return false
+			System.out.println(clazz.equals(clazz2));//return false
+			
 			System.out.println("c1.getSigners is " + Arrays.toString(clazz.getSigners()));
 			System.out.println(clazz.newInstance());
 			System.out.println(Arrays.toString(classLoader.getPackages()));
