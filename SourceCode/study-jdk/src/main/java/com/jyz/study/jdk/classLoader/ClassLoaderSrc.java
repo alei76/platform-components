@@ -1,5 +1,9 @@
 package com.jyz.study.jdk.classLoader;
 
+import java.util.HashMap;
+
+import sun.security.util.SecurityConstants;
+
 /**
  * ClassLoader源码
  * 
@@ -12,6 +16,10 @@ public abstract class ClassLoaderSrc {
 
 	// 被此classLoader加载过的Class对象
 	private Vector classes = new Vector();
+	
+	// The packages defined in this class loader.  Each package name is mapped
+    // to its corresponding Package object.
+    private HashMap packages = new HashMap();
 
 	// 由虚拟机调用
 	void addClass(Class c) {
@@ -127,5 +135,11 @@ public abstract class ClassLoaderSrc {
 	protected final void resolveClass(Class<?> c) {
 		resolveClass0(c);
 	}
+	
+	//获得appClassLoader，实际调用Launcher完成
+	public static ClassLoader getSystemClassLoader() {
+		sun.misc.Launcher l = sun.misc.Launcher.getLauncher();
+		return l.getClassLoader();
+    }
 
 }

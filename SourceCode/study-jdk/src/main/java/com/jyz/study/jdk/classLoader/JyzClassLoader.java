@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 /**
  * 自定义ClassLoader
- * 
  * @author JoyoungZhang@gmail.com
  * 
  */
@@ -28,11 +27,16 @@ public class JyzClassLoader extends ClassLoader {
 	protected Class<?> findClass(String className)
 			throws ClassNotFoundException {
 		byte[] bytes = loadClassData(className);
-		Class clazz = defineClass(className, bytes, 0, bytes.length);
-		Object[] singers = new Object[1];
-		singers[0] = "gogogo";
-		this.setSigners(clazz, singers);
+		Class<?> clazz = defineClass(className, bytes, 0, bytes.length);
+		fillSigners(clazz);
 		return clazz;
+	}
+	
+	//测试ClassLoader setSigners的用法
+	private void fillSigners(Class<?> clazz){
+		Object[] singers = new Object[1];
+		singers[0] = "JoyoungZhang@gmail.com";
+		this.setSigners(clazz, singers);
 	}
 
 	private byte[] loadClassData(String className)
@@ -62,8 +66,7 @@ public class JyzClassLoader extends ClassLoader {
 
 	private String getClassFile(String name) {
 		StringBuffer sb = new StringBuffer(classPath);
-		name = name.replace('.', File.separatorChar) + ".class";
-		sb.append(File.separator + name);
+		sb.append(File.separator).append(name.replace('.', File.separatorChar)).append(".class");
 		return sb.toString();
 	}
 
@@ -71,11 +74,10 @@ public class JyzClassLoader extends ClassLoader {
 	public static void main(String[] args) {
 		try {
 			JyzClassLoader classLoader = new JyzClassLoader("E:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
-			Class c1 = classLoader.loadClass("com.jyz.component.core.collection.Tuple");
-			Class c2 = classLoader.loadClass("com.jyz.component.core.collection.Triple");
-			System.out.println("c1.getSigners is " + Arrays.toString(c1.getSigners()));
-			Object tuple = c1.newInstance();
-			System.out.println(tuple);
+			Class clazz = classLoader.loadClass("com.jyz.component.core.collection.Tuple");
+			System.out.println("c1.getSigners is " + Arrays.toString(clazz.getSigners()));
+			System.out.println(clazz.newInstance());
+			System.out.println(Arrays.toString(classLoader.getPackages()));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

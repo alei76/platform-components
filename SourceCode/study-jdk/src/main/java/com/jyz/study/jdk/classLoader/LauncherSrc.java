@@ -15,6 +15,11 @@ public class LauncherSrc {
     }
 
     private ClassLoader loader;
+    
+    //ClassLoader.getSystemClassLoader会调用此方法
+    public ClassLoader getClassLoader() {
+    	return loader;
+    }
 
     public Launcher() {
         // 1. 创建ExtClassLoader 
@@ -79,6 +84,24 @@ public class LauncherSrc {
 
         AppClassLoader(URL[] urls, ClassLoader parent) {
             super(urls, parent, factory);
+        }
+        
+        /**
+         * Override loadClass so we can checkPackageAccess.
+         * 这个方法似乎没什么必要，因为super.loadClass(name, resolve)时也会checkPackageAccess
+         */
+        public synchronized Class loadClass(String name, boolean resolve)
+            throws ClassNotFoundException
+        {
+            int i = name.lastIndexOf('.');
+            if (i != -1) {
+                SecurityManager sm = System.getSecurityManager();
+                if (sm != null) {
+                	//
+                    sm.checkPackageAccess(name.substring(0, i));
+                }
+            }
+            return (super.loadClass(name, resolve));
         }
 
     }
