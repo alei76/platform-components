@@ -133,7 +133,7 @@ public class ZipDecrypt {
 	
 	public static void main(String args[]) throws Exception {
 		long begin = System.currentTimeMillis();
-		ZipDecrypt.decryptUnzip("F:\\手机号码加密.zip", "F:\\test", "F:\\手机号码.key");
+		ZipDecrypt.decryptUnzip("D:\\Crypto\\component-core-1.0.zip", "D:\\", "D:\\Crypto\\component-core-1.0.key");
 		System.out.println("解密解压缩时间：" + (System.currentTimeMillis() - begin));
 	}
 

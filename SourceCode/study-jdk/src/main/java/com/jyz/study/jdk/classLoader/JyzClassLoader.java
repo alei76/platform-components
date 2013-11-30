@@ -72,10 +72,10 @@ public class JyzClassLoader extends ClassLoader {
 
 	public static void main(String[] args) {
 		try {
-			JyzClassLoader classLoader = new JyzClassLoader("E:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
+			JyzClassLoader classLoader = new JyzClassLoader("D:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
 			Class<?> clazz = classLoader.loadClass("com.jyz.component.core.collection.Tuple");
 			
-			JyzClassLoader classLoader2 = new JyzClassLoader("E:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
+			JyzClassLoader classLoader2 = new JyzClassLoader("D:\\GoogleCode\\platform-components\\trunk\\SourceCode\\component-core\\target\\classes");
 			Class<?> clazz2 = classLoader2.loadClass("com.jyz.component.core.collection.Tuple");
 			
 			System.out.println(clazz == clazz2);//return false

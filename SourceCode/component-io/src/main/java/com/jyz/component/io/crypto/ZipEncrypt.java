@@ -135,7 +135,7 @@ public class ZipEncrypt {
 	
 	public static void main(String args[]) throws Exception {
 		long begin = System.currentTimeMillis();
-		ZipEncrypt.encryptZip("F:\\手机号码.jar", "F:\\手机号码加密.zip", "F:\\手机号码.key");
+		ZipEncrypt.encryptZip("D:\\Crypto\\component-core-1.0.jar", "D:\\Crypto\\component-core-1.0.zip", "D:\\Crypto\\component-core-1.0.key");
 		System.out.println("压缩加密时间：" + (System.currentTimeMillis() - begin));
 	}
 
