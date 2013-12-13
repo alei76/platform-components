@@ -33,7 +33,7 @@ class InnerThread1 extends Thread{
 			System.out.println("InnerThread1 getClassLoader: " + clazz.getClassLoader());
 			System.out.println("InnerThread1 getContextClassLoader: " + Thread.currentThread().getContextClassLoader());
 			
-			this.setContextClassLoader(urlClassLoader);
+//			this.setContextClassLoader(urlClassLoader);
 			
 			Thread innerThread2 = new InnerThread2();
 			innerThread2.start();
