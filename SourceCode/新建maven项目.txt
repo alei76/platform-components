@@ -1,0 +1,10 @@
+1.	svn仅仅提交etc src pom.xml
+2.	.project在项目被ide引用时产生
+	.classpath是项目的环境配置，和本地有关
+	.settings是项目配置，和本地有关
+	target maven编译项目时产生
+
+	使用TortoiseSVN-Setting-Global ignore pattern中添加
+	.project .classpath .settings target 
+	即可
+	
