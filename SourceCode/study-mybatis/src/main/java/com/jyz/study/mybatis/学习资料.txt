@@ -1,0 +1,1 @@
+MyBatis github 中文参考文档	http://mybatis.github.io/mybatis-3/zh/index.html
