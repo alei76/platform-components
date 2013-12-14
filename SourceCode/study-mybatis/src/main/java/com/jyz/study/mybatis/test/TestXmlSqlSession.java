@@ -18,7 +18,7 @@ public class TestXmlSqlSession extends TestCase{
     public void testInsert() { 
         SqlSession session = SqlSessionFactory.getSqlSessionFactory().openSession();  
         Blog blog = new Blog();  
-        blog.setTitle("xxx");  
+        blog.setTitle("xx顶顶顶x");  
         blog.setContent("ssc");  
         blog.setOwner("e山水f");  
         session.insert("com.jyz.study.mybatis.mapper.BlogMapper.insert", blog);  
