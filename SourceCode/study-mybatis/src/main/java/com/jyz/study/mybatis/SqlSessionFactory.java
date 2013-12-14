@@ -12,7 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  */
 public class SqlSessionFactory {
 
-	static final String CONFIG = "com/jyz/study/mybatis/mybatis-config.xml";
+	static final String CONFIG = "com/jyz/study/mybatis/mybatis_config.xml";
 	
 	private static org.apache.ibatis.session.SqlSessionFactory sqlSessionFactory = null;
 

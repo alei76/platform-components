@@ -1,0 +1,2 @@
+MyBatis github ���Ĳο��ĵ�		http://mybatis.github.io/mybatis-3/zh/index.html
+基于MyBatis3.0.6的基本操作介绍		http://haohaoxuexi.iteye.com/blog/1333271

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jyz.study.mybatis.mapper.BlogMapper">
+  	<insert id="insert" parameterType="Blog">
+  		insert into t_blog(title,content,owner) values(#{title},#{content},#{owner})
+  	</insert>
+	<select id="select" parameterType="int" resultType="Blog">
+		select * from t_blog where id = #{id}
+  	</select>
+</mapper>
