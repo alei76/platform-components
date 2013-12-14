@@ -10,6 +10,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
+    <repositories>
+		<repository>
+			<id>public</id>
+			<name>public</name>
+			<url>http://192.168.1.182:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
     <build>
         <defaultGoal>install</defaultGoal>
     </build>
@@ -18,6 +33,11 @@
 	  		<groupId>org.mybatis</groupId>
 	 	 	<artifactId>mybatis</artifactId>
 	  		<version>3.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.23</version>
 		</dependency>
     	<dependency>
             <groupId>junit</groupId>
