@@ -34,14 +34,10 @@ public class LoggerEquals {
          log.info("aaa"); 
          log2.info("bbb"); 
          log2.fine("fine");
-         tt();
+         tt(log2);
 	 } 
 	 
-	 static void tt() throws SecurityException, IOException{
-		 FileHandler fileHandler = new FileHandler("test.log"); 
-         fileHandler.setLevel(Level.INFO); 
-		 Logger log = Logger.getLogger("la.blog"); 
-		 log.addHandler(fileHandler); 
+	 static void tt(Logger log) throws SecurityException, IOException{
 		 log.info("ccc"); 
 	 }
 	 
