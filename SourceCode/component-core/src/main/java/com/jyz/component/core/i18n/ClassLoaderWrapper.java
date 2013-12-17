@@ -2,6 +2,8 @@ package com.jyz.component.core.i18n;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * 
@@ -23,7 +25,7 @@ import java.net.URL;
  * 
  */
 public class ClassLoaderWrapper {
-
+	
 	ClassLoader defaultClassLoader;
 	ClassLoader systemClassLoader;
 
@@ -171,6 +173,26 @@ public class ClassLoaderWrapper {
 			}
 		}
 		throw new ClassNotFoundException("Cannot find class: " + name);
+	}
+	
+	ResourceBundle getResourceBundle(String name, Locale locale){
+		return getResourceBundle(name, locale, getClassLoaders(null));
+	}
+	
+	ResourceBundle getResourceBundle(String name, Locale locale, ClassLoader classLoader){
+		return getResourceBundle(name, locale, getClassLoaders(classLoader));
+	}
+	
+	ResourceBundle getResourceBundle(String name, Locale locale, ClassLoader[] classLoader){
+		for (ClassLoader cl : classLoader) {
+			if (null != cl) {
+				ResourceBundle resourceBundle = ResourceBundle.getBundle(name, locale, cl);
+				if (null != resourceBundle){
+					return resourceBundle;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

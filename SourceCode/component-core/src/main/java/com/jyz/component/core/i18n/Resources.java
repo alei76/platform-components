@@ -8,7 +8,9 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 
 /**
@@ -27,6 +29,7 @@ public class Resources {
 	 * system default.
 	 */
 	private static Charset charset;
+	private static Locale defaultLocale = Locale.getDefault();
 
 	Resources() {
 	}
@@ -241,6 +244,18 @@ public class Resources {
 	 */
 	public static Class<?> classForName(String className, ClassLoader loader) throws ClassNotFoundException {
 		return classLoaderWrapper.classForName(className, loader);
+	}
+	
+	public static ResourceBundle getResourceBundle(String name){
+		return getResourceBundle(name, defaultLocale);
+	}
+	
+	public static ResourceBundle getResourceBundle(String name, Locale locale){
+		return classLoaderWrapper.getResourceBundle(name, locale);
+	}
+	
+	public static ResourceBundle getResourceBundle(String name, Locale locale, ClassLoader classLoader){
+		return classLoaderWrapper.getResourceBundle(name, locale, classLoader);
 	}
 
 	public static Charset getCharset() {
