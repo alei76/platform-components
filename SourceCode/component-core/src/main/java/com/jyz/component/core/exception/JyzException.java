@@ -42,7 +42,7 @@ public class JyzException extends JyzBaseException {
     }
 	
 	public String getLocalizedMessage(Locale locale) {
-        return ResourcesLoader.getInstance().getString(locale, errorCode, arguments);
+        return ResourcesLoader.getInstance().getString(errorCode, locale, arguments);
     }
 	
 }

@@ -2,14 +2,17 @@ package com.jyz.component.core.i18n;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.jyz.component.core.resources.ResourceNotFoundException;
+import com.jyz.component.core.resources.Resources;
+
+
 
 
 /**
@@ -18,10 +21,10 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class ResourcesLoader {
+    
+    	private static Locale defaultLocale = Locale.getDefault();
 	
 	private List<String> bundleNames = new ArrayList<String>();
-	private Map<CacheBundle, ResourceBundle> loadedBundles = new HashMap<CacheBundle, ResourceBundle>();
-	private static final Locale defaultLocale = Locale.getDefault();
 	
 	private static class Singleton {
 		private static final ResourcesLoader INSTANCE = new ResourcesLoader();
@@ -56,17 +59,20 @@ public class ResourcesLoader {
 		}
 	}
 	
-	public synchronized String getString(String key, Object...arguments){
-		return getString(defaultLocale, key, arguments);
+	public synchronized String getString(String key){
+	    return getString(key, defaultLocale);
 	}
 	
-	public synchronized String getString(Locale locale, String key, Object...arguments){
+	public synchronized String getString(String key, Locale locale, Object...arguments){
 		for (String bundleName : this.bundleNames) {
-			CacheBundle cacheBundle = new CacheBundle(bundleName, locale);
-			ResourceBundle resource = loadedBundles.get(cacheBundle);
+			ResourceBundle resource = null;
+			try {
+			    resource = Resources.getResourceBundle(bundleName, locale);
+			} catch (ResourceNotFoundException e) {
+			    //ignore
+			}
 			if(resource == null){
-				resource = ResourceBundle.getBundle(bundleName, locale == null ? defaultLocale : locale);
-				loadedBundles.put(cacheBundle, resource);
+			    return null;
 			}
 			if(resource.containsKey(key)){
 				if(arguments == null){
@@ -78,39 +84,42 @@ public class ResourcesLoader {
 		return null;
 	}
 	
-	private static final class CacheBundle{
-		private final String bundleName;
-		private final Locale locale;
-		
-		public CacheBundle(String bundleName, Locale locale) {
-            this.bundleName = bundleName;
-            this.locale = locale;
-        }
-		
-		@Override
-		public String toString(){
-			return "CacheKey[bundleName="+bundleName+", locale="+locale+"]";
-		}
-		
-		@Override
-		public boolean equals(Object object){
-			if(!(object instanceof CacheBundle)){
-				return false;
-			}
-			CacheBundle key = (CacheBundle)object;
-			return key.bundleName == null ? this.bundleName == null : key.bundleName.equals(this.bundleName) &&
-					key.locale == null ? this.locale == null : key.locale.equals(this.locale);
-		}
-		
-		@Override
-		public int hashCode(){
-			final int prime = 37;
-			int result = 17;
-			result = result * prime + (bundleName == null ? 0 : bundleName.hashCode());
-			result = result * prime + (locale == null ? 0 : locale.hashCode());
-			return result;
-		}
+	/**
+	 * 从指定bundle文件里获取属性值
+	 * @param bundle
+	 * @param key
+	 * @param arguments
+	 * @return
+	 */
+	public synchronized String getString(String bundle, String key){
+	    return getString(bundle, key, defaultLocale);
 	}
 	
+	/**
+	 * 
+	 * @param bundle
+	 * @param key
+	 * @param locale
+	 * @param arguments
+	 * @return
+	 */
+	public synchronized String getString(String bundle, String key, Locale locale, Object...arguments){
+	    	ResourceBundle resource = null;
+		try {
+		    resource = Resources.getResourceBundle(bundle, locale);
+		} catch (ResourceNotFoundException e) {
+		    //ignore
+		}
+		if(resource == null){
+		    return null;
+		}
+		if(resource.containsKey(key)){
+			if(arguments == null){
+				return resource.getString(key);
+			}
+			return MessageFormat.format(resource.getString(key), arguments);
+		}
+		return null;
+	}
 	
 }
