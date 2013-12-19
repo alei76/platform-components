@@ -3,6 +3,7 @@ package com.jyz.study.jdk.logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+
 /**
  *  http://lavasoft.blog.51cto.com/62575/184492
  *	@author JoyoungZhang@gmail.com
@@ -22,7 +23,6 @@ public class LogFactoryTest {
 		System.out.println("org.apache.commons.logging.LogFactory is " + System.getProperty("org.apache.commons.logging.LogFactory"));
 		
 		System.out.println(log1);
-		log1.info("sli4j log");
 	}
 
 }
