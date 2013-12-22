@@ -15,7 +15,7 @@
 		<repository>
 			<id>public</id>
 			<name>public</name>
-			<url>http://192.168.1.182:8081/nexus/content/groups/public/</url>
+			<url>http://localhost:8081/nexus/content/groups/public/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -35,7 +35,12 @@
 	  		<version>3.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mysql</groupId>
+	  		<groupId>commons-io</groupId>
+	 	 	<artifactId>commons-io</artifactId>
+	  		<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.23</version>
 		</dependency>
@@ -45,10 +50,10 @@
             <version>3.8.1</version>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>nexus-releases</id>
-            <url>http://localhost:8081/nexus/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>nexus-releases</id>-->
+<!--            <url>http://localhost:8081/nexus/content/repositories/releases/</url>-->
+<!--        </repository>-->
+<!--    </distributionManagement>-->
 </project>

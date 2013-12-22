@@ -11,6 +11,7 @@ public class Log4jTest {
 	static Logger logger = Logger.getLogger(Log4jTest.class);
 			
 	public static void main(String[] args) {
+	    	System.out.println(logger);
 		logger.info(new User("z", 10));
 	}
 	
