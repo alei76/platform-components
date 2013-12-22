@@ -2,6 +2,11 @@ package com.jyz.component.core.logging.stdout;
 
 import com.jyz.component.core.logging.Log;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class StdOutImpl implements Log {
 
   public StdOutImpl(String clazz) {

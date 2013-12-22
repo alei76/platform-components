@@ -2,7 +2,11 @@ package com.jyz.component.core.logging.nologging;
 
 import com.jyz.component.core.logging.Log;
 
-
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class NoLoggingImpl implements Log {
 
   public NoLoggingImpl(String clazz) {

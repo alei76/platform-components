@@ -4,6 +4,11 @@ import org.slf4j.Logger;
 
 import com.jyz.component.core.logging.Log;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 class Slf4jLoggerImpl implements Log {
 
   private Logger log;

@@ -7,6 +7,11 @@ import org.slf4j.spi.LocationAwareLogger;
 import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.logging.LogFactory;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 class Slf4jLocationAwareLoggerImpl implements Log {
   
   private static Marker MARKER = MarkerFactory.getMarker(LogFactory.MARKER);

@@ -7,6 +7,11 @@ import org.slf4j.spi.LocationAwareLogger;
 
 import com.jyz.component.core.logging.Log;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class Slf4jImpl implements Log {
 
   private Log log;

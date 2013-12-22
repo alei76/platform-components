@@ -13,8 +13,10 @@ import java.util.Set;
 import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.utils.ExceptionUtil;
 
-/*
- * ResultSet proxy to add logging
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public final class ResultSetLogger extends BaseJdbcLogger implements InvocationHandler {
 

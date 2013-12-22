@@ -11,8 +11,10 @@ import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.utils.ExceptionUtil;
 
 
-/*
- * Connection proxy to add logging
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public final class ConnectionLogger extends BaseJdbcLogger implements InvocationHandler {
 

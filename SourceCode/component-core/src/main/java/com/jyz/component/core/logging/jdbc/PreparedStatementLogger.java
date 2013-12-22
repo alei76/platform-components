@@ -10,8 +10,10 @@ import java.sql.ResultSet;
 import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.utils.ExceptionUtil;
 
-/*
- * PreparedStatement proxy to add logging
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public final class PreparedStatementLogger extends BaseJdbcLogger implements InvocationHandler {
 

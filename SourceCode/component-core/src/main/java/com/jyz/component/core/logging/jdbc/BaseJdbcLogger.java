@@ -11,8 +11,10 @@ import java.util.StringTokenizer;
 import com.jyz.component.core.logging.Log;
 
 
-/*
- * Base class for proxies to do logging
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public abstract class BaseJdbcLogger {
 

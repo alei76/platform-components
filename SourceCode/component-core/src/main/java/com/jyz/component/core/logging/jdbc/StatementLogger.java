@@ -10,8 +10,10 @@ import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.utils.ExceptionUtil;
 
 
-/*
- * Statement proxy to add logging
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public final class StatementLogger extends BaseJdbcLogger implements InvocationHandler {
 

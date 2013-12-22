@@ -3,6 +3,11 @@ package com.jyz.component.core.logging.commons;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class JakartaCommonsLoggingImpl implements com.jyz.component.core.logging.Log {
 
   private Log log;

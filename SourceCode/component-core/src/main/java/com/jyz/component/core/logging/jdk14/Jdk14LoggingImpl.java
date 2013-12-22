@@ -1,10 +1,15 @@
 package com.jyz.component.core.logging.jdk14;
 
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import com.jyz.component.core.logging.Log;
-
+/**
+ * 
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class Jdk14LoggingImpl implements Log {
 
   private Logger log;
