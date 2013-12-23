@@ -4,9 +4,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jyz.study.mybatis.mapper.BlogMapper">
+
+	<resultMap type="com.jyz.study.mybatis.po.Blog" id="Blog">
+		<id column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="owner" property="owner"/>
+		<result column="content" property="content" typeHandler="org.apache.ibatis.type.ByteTypeHandler" />
+	</resultMap>
+
   	<insert id="insert" parameterType="Blog">
-  		insert into blog(title,content,owner) values(#{title},#{content},#{owner})
+  		insert into blog(title,content,owner) values(#{title},#{content, typeHandler=org.apache.ibatis.type.ByteTypeHandler},#{owner})
   	</insert>
+  	
 	<select id="select" parameterType="int" resultType="Blog">
 		select * from blog where id = #{id}
   	</select>

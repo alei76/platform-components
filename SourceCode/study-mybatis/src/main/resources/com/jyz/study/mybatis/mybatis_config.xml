@@ -5,6 +5,9 @@
 	<typeAliases>
 		<typeAlias alias="Blog" type="com.jyz.study.mybatis.po.Blog"/>
 	</typeAliases>
+	<typeHandlers> 
+        <typeHandler javaType="com.jyz.study.mybatis.po.Content"    handler="com.jyz.study.mybatis.handler.JSONHandler"/> 
+	</typeHandlers> 
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />

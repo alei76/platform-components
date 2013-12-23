@@ -1,14 +1,26 @@
 package com.jyz.study.mybatis.po;
 
-public class Blog {
+import java.io.Serializable;
+
+public class Blog implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 
 	private String title;
-
-	private String content;
+	
+	private Content content;
 
 	private String owner;
+
+	public Content getContent() {
+		return content;
+	}
+
+	public void setContent(Content content) {
+		this.content = content;
+	}
 
 	public int getId() {
 		return id;
@@ -26,13 +38,6 @@ public class Blog {
 		this.title = title;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 	public String getOwner() {
 		return owner;

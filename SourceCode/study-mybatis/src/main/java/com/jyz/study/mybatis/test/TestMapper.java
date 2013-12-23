@@ -46,7 +46,7 @@ public class TestMapper extends TestCase{
         SqlSession session = SqlSessionFactory.getSqlSessionFactory().openSession();  
         Blog blog = new Blog();  
         blog.setTitle("xx顶顶sdafsd顶ddx");  
-        blog.setContent("ss打的c");  
+//        blog.setContent("ss打的c");  
         blog.setOwner("e山水f是谁");  
         BlogMapper blogMapper = session.getMapper(BlogMapper.class);   
         blogMapper.insert2(blog);
