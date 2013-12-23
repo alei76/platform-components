@@ -1,0 +1,3 @@
+Java:对象的强、软、弱和虚引用
+http://zhangjunhd.blog.51cto.com/113473/53092
+http://www.cnblogs.com/blogoflee/archive/2012/03/22/2411124.html
