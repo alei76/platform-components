@@ -33,7 +33,7 @@ public class SerializeHandlerTest extends TestCase {
     public void testSelect() {  
         SqlSession session = SqlSessionFactory.getSqlSessionFactory().openSession();  
         BlogMapper blogMapper = session.getMapper(BlogMapper.class);
-        Blog blog = blogMapper.select2(11);  
+        Blog blog = blogMapper.select2(12);  
         System.out.println(blog);  
         session.close();  
     }  
