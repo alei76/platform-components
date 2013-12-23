@@ -9,11 +9,11 @@
 		<id column="id" property="id"/>
 		<result column="title" property="title"/>
 		<result column="owner" property="owner"/>
-		<result column="content" property="content" typeHandler="org.apache.ibatis.type.ByteTypeHandler" />
+		<result column="content" property="content" typeHandler="com.jyz.study.mybatis.handler.SerializeHandler" />
 	</resultMap>
 
   	<insert id="insert" parameterType="Blog">
-  		insert into blog(title,content,owner) values(#{title},#{content, typeHandler=org.apache.ibatis.type.ByteTypeHandler},#{owner})
+  		insert into blog(title,content,owner) values(#{title},#{content, typeHandler=com.jyz.study.mybatis.handler.SerializeHandler},#{owner})
   	</insert>
   	
 	<select id="select" parameterType="int" resultType="Blog">

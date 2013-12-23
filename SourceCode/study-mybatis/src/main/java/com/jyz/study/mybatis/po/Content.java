@@ -1,17 +1,17 @@
 package com.jyz.study.mybatis.po;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public class Content implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-	
+    private static final long serialVersionUID = 1L;
+    
 	private String cn;
 	private String us;
 	private int size;
-	
-	private Map<String, String> blogs;
+	private Map<String, List<Money>> moneys;
 	
 	public Content(String cn, String us, int size) {
 		this.cn = cn;
@@ -41,12 +41,12 @@ public class Content implements Serializable{
 		this.size = size;
 	}
 
-	public Map<String, String> getBlogs() {
-		return blogs;
+	public Map<String, List<Money>> getMoneys() {
+	    return moneys;
 	}
 
-	public void setBlogs(Map<String, String> blogs) {
-		this.blogs = blogs;
+	public void setMoneys(Map<String, List<Money>> moneys) {
+	    this.moneys = moneys;
 	}
 
 	@Override

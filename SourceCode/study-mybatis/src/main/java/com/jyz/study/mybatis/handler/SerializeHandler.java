@@ -1,5 +1,6 @@
 package com.jyz.study.mybatis.handler;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,13 +22,23 @@ public class SerializeHandler implements TypeHandler<Object> {
 			ps.setString(i, null);
 			return;
 		}
-		ps.setString(i, JsonUtils.getJsonStringForTransport(parameter));
+		try {
+		    byte[] ss = SerializeUtils.serializeObject(parameter);
+		    ps.setBytes(i, ss);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 	}
 
-	public Object getResult(ResultSet rs, String columnName)
-			throws SQLException {
-		String json = rs.getString(columnName);
-		return jsonToObject(json);
+	public Object getResult(ResultSet rs, String columnName) throws SQLException {
+	    try {
+		return SerializeUtils.deserializeObject(rs.getBytes(columnName));
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+		e.printStackTrace();
+	    }
+	    return null;
 	}
 
 	public Object getResult(CallableStatement cs, int columnIndex)
