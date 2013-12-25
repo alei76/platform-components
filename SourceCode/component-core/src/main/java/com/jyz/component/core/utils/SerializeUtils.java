@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * 
@@ -19,7 +20,7 @@ public final class SerializeUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static <T> byte[] serializeObject(T object) throws IOException {
+	public static byte[] serializeObject(Serializable object) throws IOException {
 		byte[] buffer = null;
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
@@ -50,14 +51,14 @@ public final class SerializeUtils {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public static <T> T deserializeObject(byte[] buf) throws IOException, ClassNotFoundException {
-		T object = null;
+	public static Serializable deserializeObject(byte[] buf) throws IOException, ClassNotFoundException {
+	    	Serializable object = null;
 		ByteArrayInputStream bis = null; 
 		ObjectInputStream ois = null;
 		try{
 			bis = new ByteArrayInputStream(buf);
 			ois = new ObjectInputStream(bis);
-			object = (T) ois.readObject();
+			object = (Serializable) ois.readObject();
 		}catch(IOException ex){
 			throw ex;
 		}finally{
