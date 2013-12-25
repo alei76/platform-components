@@ -35,6 +35,7 @@ public class TOrQuestionMark<TT> {
 		list1 = new Holder<IOException>();
 		list2 = new Holder<Throwable>();//没办法Throwable已经没有超类了，用自己
 		Holder<? extends Throwable> listreturn1 = test1(new Holder<IOException>());
+		//Holder<RuntimeException> listreturnbak = test1(new Holder<IOException>()); can not return Holder<RuntimeException>
 		Holder<? super Throwable> listreturn2 = test2(new Holder<Throwable>());
 		
 		//以下依赖TT，先实例化tq
