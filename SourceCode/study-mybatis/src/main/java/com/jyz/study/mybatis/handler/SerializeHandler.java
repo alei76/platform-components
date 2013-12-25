@@ -9,14 +9,14 @@ import java.sql.SQLException;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
-import com.jyz.study.mybatis.po.Content;
-
+/**
+ *  扩展mybatis TypeHandler
+ *	@author zhaoyong.zhang
+ *	create time 2013-12-24
+ */
 public class SerializeHandler implements TypeHandler<Object> {
-	/**
-	 * json数据和类名的分隔符号
-	 * */
-	private static final char SPLIT = '/';
 
+	@Override
 	public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
 		if (parameter == null) {
 			ps.setString(i, null);
@@ -30,49 +30,45 @@ public class SerializeHandler implements TypeHandler<Object> {
 		}
 	}
 
+	@Override
 	public Object getResult(ResultSet rs, String columnName) throws SQLException {
+		Object object = null;
 	    try {
-		return SerializeUtils.deserializeObject(rs.getBytes(columnName));
+	    	object =  SerializeUtils.deserializeObject(rs.getBytes(columnName));
 	    } catch (IOException e) {
-		e.printStackTrace();
+	    	e.printStackTrace();
 	    } catch (ClassNotFoundException e) {
-		e.printStackTrace();
+	    	e.printStackTrace();
 	    }
-	    return null;
-	}
-
-	public Object getResult(CallableStatement cs, int columnIndex)
-			throws SQLException {
-		String json = cs.getString(columnIndex);
-		return jsonToObject(json);
-	}
-
-	/**
-	 * json 转换成对象
-	 * */
-	private Object jsonToObject(String json) {
-//		if (json == null) {
-//			return null;
-//		}
-//		int index = json.lastIndexOf(SPLIT);
-//		if (index < 0) {
-//			return null;
-//		}
-//		String key = json.substring(index + 1, json.length());
-//		json = json.substring(0, index);
-//		Class<?> cls = null;
-//		try {
-//			cls = Class.forName(key);
-//		} catch (ClassNotFoundException e) {
-//			throw new RuntimeException("序列化成json时找不到指定的类", e);
-//		}
-		return JsonUtils.getObject(json, Content.class);
+	    return object;
 	}
 
 	@Override
+	public Object getResult(CallableStatement cs, int columnIndex)
+			throws SQLException {
+		Object object = null;
+	    try {
+	    	object =  SerializeUtils.deserializeObject(cs.getBytes(columnIndex));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	    	e.printStackTrace();
+	    }
+	    return object;
+	}
+
+
+	@Override
 	public Object getResult(ResultSet rs, int columnIndex) throws SQLException {
-		String json = rs.getString(columnIndex);
-		return jsonToObject(json);
+		Object object = null;
+	    try {
+	    	object =  SerializeUtils.deserializeObject(rs.getBytes(columnIndex));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	    	e.printStackTrace();
+	    }
+	    return object;
 	}
 
 }
