@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  测试List移除元素时下标的变化
- *	@author zhaoyong.zhang
- *	create time 2013-12-12
+ * 测试List移除元素时下标的变化
+ * @author JoyoungZhang@gmail.com
+ *
  */
 public class TestListRemove {
 
