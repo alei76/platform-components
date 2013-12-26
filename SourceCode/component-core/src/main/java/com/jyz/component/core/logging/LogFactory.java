@@ -77,7 +77,7 @@ public final class LogFactory {
   }
 
   public static synchronized void useJdkLogging() {
-    setImplementation(com.jyz.component.core.logging.jdk14.Jdk14LoggingImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.Jdk14LoggingImpl.class);
   }
 
   public static synchronized void useStdOutLogging() {
