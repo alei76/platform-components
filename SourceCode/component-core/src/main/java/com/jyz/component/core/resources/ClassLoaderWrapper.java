@@ -5,6 +5,9 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.jyz.component.core.logging.Log;
+import com.jyz.component.core.logging.LogFactory;
+
 /**
  * 
  * 1.ClassLoader包装器，构造器里时传入defaultClassLoader
@@ -26,6 +29,8 @@ import java.util.ResourceBundle;
  * 
  */
 public class ClassLoaderWrapper {
+	
+	private static final Log log = LogFactory.getLog(ClassLoaderWrapper.class);
 	
 	private ClassLoader defaultClassLoader;
 	private ClassLoader systemClassLoader;
@@ -116,6 +121,7 @@ public class ClassLoaderWrapper {
 					returnValue = cl.getResourceAsStream("/" + resource);
 				}
 				if (null != returnValue){
+					log.debug("Find resource use classloader[" + cl + "].");
 					return returnValue;
 				}
 			}
@@ -145,6 +151,7 @@ public class ClassLoaderWrapper {
 				// ... because only an idiot would keep looking for it after
 				// finding it, so stop looking already.
 				if (null != url){
+					log.debug("Find resource use classloader[" + cl + "].");
 					return url;
 				}
 			}
@@ -165,6 +172,7 @@ public class ClassLoaderWrapper {
 				try {
 					Class<?> c = Class.forName(name, true, cl);
 					if (null != c){
+						log.debug("Find class use classloader[" + cl + "].");
 						return c;
 					}
 				} catch (ClassNotFoundException e) {
@@ -192,6 +200,7 @@ public class ClassLoaderWrapper {
 			if (null != cl) {
 				ResourceBundle resourceBundle = ResourceBundle.getBundle(name, locale, cl);
 				if (null != resourceBundle){
+					log.debug("Find resourceBundle use classloader[" + cl + "].");
 					return resourceBundle;
 				}
 			}

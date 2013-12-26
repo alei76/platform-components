@@ -17,6 +17,11 @@ public final class LogFactory {
   private static Constructor<? extends Log> logConstructor;
 
   static {
+	tryImplementation(new Runnable() {
+      public void run() {
+        useLog4JLogging();
+      }
+    });
     tryImplementation(new Runnable() {
       public void run() {
         useSlf4jLogging();
@@ -25,11 +30,6 @@ public final class LogFactory {
     tryImplementation(new Runnable() {
       public void run() {
         useCommonsLogging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      public void run() {
-        useLog4JLogging();
       }
     });
     tryImplementation(new Runnable() {

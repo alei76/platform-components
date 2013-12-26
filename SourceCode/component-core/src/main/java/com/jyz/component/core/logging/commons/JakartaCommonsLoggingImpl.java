@@ -31,6 +31,10 @@ public class JakartaCommonsLoggingImpl implements com.jyz.component.core.logging
   public void error(String s) {
     log.error(s);
   }
+  
+  public void info(String s) {
+	 log.info(s);
+  }
 
   public void debug(String s) {
     log.debug(s);

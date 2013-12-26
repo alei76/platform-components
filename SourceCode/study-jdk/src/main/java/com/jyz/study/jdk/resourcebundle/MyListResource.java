@@ -1,7 +1,6 @@
 package com.jyz.study.jdk.resourcebundle;
 
 import java.util.ListResourceBundle;
-import java.util.ResourceBundle;
 
 /**
  * ListResourceBundle的使用
