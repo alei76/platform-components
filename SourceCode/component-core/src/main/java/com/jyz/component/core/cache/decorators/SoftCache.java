@@ -9,7 +9,9 @@ import com.jyz.component.core.cache.Cache;
 
 /**
  * 
- * Soft Reference cache decorator Thanks to Dr. Heinz Kabutz for his guidance here.
+ * Soft Reference cache decorator.+
+ * 对象外部无引用 + hardLinksToAvoidGarbageCollection不引用(通过numberOfHardLinks控制)时
+ * 垃圾回收回可能收此对象，因为使用SoftReference引用对象
  * @author JoyoungZhang@gmail.com
  */
 public class SoftCache implements Cache {
@@ -19,6 +21,10 @@ public class SoftCache implements Cache {
 	private int numberOfHardLinks;
 
 	public SoftCache(Cache delegate) {
+		this(delegate, 256);
+	}
+	
+	public SoftCache(Cache delegate, int numberOfHardLinks) {
 		this.delegate = delegate;
 		this.numberOfHardLinks = 256;
 		this.hardLinksToAvoidGarbageCollection = new LinkedList<Object>();
@@ -40,16 +46,14 @@ public class SoftCache implements Cache {
 
 	public void putObject(Object key, Object value) {
 		removeGarbageCollectedItems();
-		delegate.putObject(key, new SoftEntry(key, value,
-				queueOfGarbageCollectedEntries));
+		delegate.putObject(key, new SoftEntry(key, value, queueOfGarbageCollectedEntries));
 	}
 
 	public Object getObject(Object key) {
 		Object result = null;
 		@SuppressWarnings("unchecked")
 		// assumed delegate cache is totally managed by this cache
-		SoftReference<Object> softReference = (SoftReference<Object>) delegate
-				.getObject(key);
+		SoftReference<Object> softReference = (SoftReference<Object>) delegate.getObject(key);
 		if (softReference != null) {
 			result = softReference.get();
 			if (result == null) {

@@ -1,6 +1,6 @@
 package com.jyz.component.core.logging;
 
-import com.jyz.component.core.logging.log4j.Log4jImpl;
+import com.jyz.component.core.logging.impl.Log4jImpl;
 
 import junit.framework.TestCase;
 

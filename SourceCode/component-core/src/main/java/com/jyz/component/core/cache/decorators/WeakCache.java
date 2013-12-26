@@ -8,7 +8,9 @@ import java.util.concurrent.locks.ReadWriteLock;
 import com.jyz.component.core.cache.Cache;
 
 /** 
- *  Weak Reference cache decorator. Thanks to Dr. Heinz Kabutz for his guidance here.
+ *  Weak Reference cache decorator.
+ *  对象外部无引用 + hardLinksToAvoidGarbageCollection不引用(通过numberOfHardLinks控制)时
+ *  垃圾回收回会收此对象，因为使用WeakReference引用对象
  *  @author JoyoungZhang@gmail.com
  */
 public class WeakCache implements Cache {
@@ -18,8 +20,12 @@ public class WeakCache implements Cache {
 	private int numberOfHardLinks;
 
 	public WeakCache(Cache delegate) {
+		this(delegate, 256);
+	}
+	
+	public WeakCache(Cache delegate, int numberOfHardLinks) {
 		this.delegate = delegate;
-		this.numberOfHardLinks = 256;
+		this.numberOfHardLinks = numberOfHardLinks;
 		this.hardLinksToAvoidGarbageCollection = new LinkedList<Object>();
 		this.queueOfGarbageCollectedEntries = new ReferenceQueue<Object>();
 	}
@@ -39,16 +45,14 @@ public class WeakCache implements Cache {
 
 	public void putObject(Object key, Object value) {
 		removeGarbageCollectedItems();
-		delegate.putObject(key, new WeakEntry(key, value,
-				queueOfGarbageCollectedEntries));
+		delegate.putObject(key, new WeakEntry(key, value, queueOfGarbageCollectedEntries));
 	}
 
 	public Object getObject(Object key) {
 		Object result = null;
 		@SuppressWarnings("unchecked")
 		// assumed delegate cache is totally managed by this cache
-		WeakReference<Object> weakReference = (WeakReference<Object>) delegate
-				.getObject(key);
+		WeakReference<Object> weakReference = (WeakReference<Object>) delegate.getObject(key);
 		if (weakReference != null) {
 			result = weakReference.get();
 			if (result == null) {
@@ -88,8 +92,7 @@ public class WeakCache implements Cache {
 	private static class WeakEntry extends WeakReference<Object> {
 		private final Object key;
 
-		private WeakEntry(Object key, Object value,
-				ReferenceQueue<Object> garbageCollectionQueue) {
+		private WeakEntry(Object key, Object value, ReferenceQueue<Object> garbageCollectionQueue) {
 			super(value, garbageCollectionQueue);
 			this.key = key;
 		}
