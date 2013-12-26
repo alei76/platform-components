@@ -6,6 +6,10 @@ import junit.framework.TestCase;
 
 import com.jyz.component.core.cache.impl.PerpetualCache;
 
+/**
+ * @author JoyoungZhang@gmail.com
+ * 
+ */
 public class SerializedCacheTest extends TestCase {
 
 	public void testGetObject() {

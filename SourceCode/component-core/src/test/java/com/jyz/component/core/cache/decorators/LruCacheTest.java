@@ -1,5 +1,9 @@
 package com.jyz.component.core.cache.decorators;
 
+/**
+ * @author JoyoungZhang@gmail.com
+ * 
+ */
 import com.jyz.component.core.cache.impl.PerpetualCache;
 
 import junit.framework.TestCase;

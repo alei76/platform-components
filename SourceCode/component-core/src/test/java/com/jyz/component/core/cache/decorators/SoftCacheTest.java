@@ -4,6 +4,10 @@ import junit.framework.TestCase;
 
 import com.jyz.component.core.cache.impl.PerpetualCache;
 
+/**
+ * @author JoyoungZhang@gmail.com
+ * 
+ */
 public class SoftCacheTest extends TestCase {
 
 	public void testGetObject() {
