@@ -3,9 +3,13 @@ package com.jyz.component.core.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
+
+import com.jyz.component.core.resources.Resources;
 
 /**
  * 
@@ -50,14 +54,13 @@ public final class SerializeUtils {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings({ "unchecked" })
 	public static Serializable deserializeObject(byte[] buf) throws IOException, ClassNotFoundException {
-	    	Serializable object = null;
+    	Serializable object = null;
 		ByteArrayInputStream bis = null; 
 		ObjectInputStream ois = null;
 		try{
 			bis = new ByteArrayInputStream(buf);
-			ois = new ObjectInputStream(bis);
+			ois = new CustomObjectInputStram(bis);
 			object = (Serializable) ois.readObject();
 		}catch(IOException ex){
 			throw ex;
@@ -70,6 +73,24 @@ public final class SerializeUtils {
 			}
 		}
 		return object;
+	}
+	
+	/**
+	 *  使用Resources resolveClass
+	 *	@author JoyoungZhang@gmail.com
+	 *
+	 */
+	private static class CustomObjectInputStram extends ObjectInputStream{
+
+		public CustomObjectInputStram(InputStream in) throws IOException {
+			super(in);
+		}
+		
+		@Override
+	    protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+	      return Resources.classForName(desc.getName());
+	    }
+		
 	}
 	
 

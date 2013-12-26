@@ -19,8 +19,7 @@ public class FIFOCache implements Cache {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return delegate.getId();
 	}
 
 	@Override
