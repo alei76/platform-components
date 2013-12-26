@@ -1,4 +1,4 @@
-package com.jyz.component.core.logging.slf4j;
+package com.jyz.component.core.logging.impl;
 
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;

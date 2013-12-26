@@ -1,4 +1,4 @@
-package com.jyz.component.core.logging.commons;
+package com.jyz.component.core.logging.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

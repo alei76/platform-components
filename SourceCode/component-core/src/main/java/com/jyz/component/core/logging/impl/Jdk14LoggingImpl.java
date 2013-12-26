@@ -1,6 +1,7 @@
-package com.jyz.component.core.logging.slf4j;
+package com.jyz.component.core.logging.impl;
 
-import org.slf4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.jyz.component.core.logging.Log;
 
@@ -9,28 +10,28 @@ import com.jyz.component.core.logging.Log;
  * @author JoyoungZhang@gmail.com
  * 
  */
-class Slf4jLoggerImpl implements Log {
+public class Jdk14LoggingImpl implements Log {
 
 	private Logger log;
 
-	public Slf4jLoggerImpl(Logger logger) {
-		log = logger;
+	public Jdk14LoggingImpl(String clazz) {
+		log = Logger.getLogger(clazz);
 	}
 
 	public boolean isDebugEnabled() {
-		return log.isDebugEnabled();
+		return log.isLoggable(Level.FINE);
 	}
 
 	public boolean isTraceEnabled() {
-		return log.isTraceEnabled();
+		return log.isLoggable(Level.FINER);
 	}
 
 	public void error(String s, Throwable e) {
-		log.error(s, e);
+		log.log(Level.SEVERE, s, e);
 	}
 
 	public void error(String s) {
-		log.error(s);
+		log.log(Level.SEVERE, s);
 	}
 
 	public void info(String s) {
@@ -38,15 +39,15 @@ class Slf4jLoggerImpl implements Log {
 	}
 
 	public void debug(String s) {
-		log.debug(s);
+		log.log(Level.FINE, s);
 	}
 
 	public void trace(String s) {
-		log.trace(s);
+		log.log(Level.FINER, s);
 	}
 
 	public void warn(String s) {
-		log.warn(s);
+		log.log(Level.WARNING, s);
 	}
 
 }

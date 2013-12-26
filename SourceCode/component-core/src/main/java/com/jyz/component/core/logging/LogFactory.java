@@ -65,15 +65,15 @@ public final class LogFactory {
   }
 
   public static synchronized void useSlf4jLogging() {
-    setImplementation(com.jyz.component.core.logging.slf4j.Slf4jImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.Slf4jImpl.class);
   }
 
   public static synchronized void useCommonsLogging() {
-    setImplementation(com.jyz.component.core.logging.commons.JakartaCommonsLoggingImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.JakartaCommonsLoggingImpl.class);
   }
 
   public static synchronized void useLog4JLogging() {
-    setImplementation(com.jyz.component.core.logging.log4j.Log4jImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.Log4jImpl.class);
   }
 
   public static synchronized void useJdkLogging() {
@@ -81,11 +81,11 @@ public final class LogFactory {
   }
 
   public static synchronized void useStdOutLogging() {
-    setImplementation(com.jyz.component.core.logging.stdout.StdOutImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.StdOutImpl.class);
   }
 
   public static synchronized void useNoLogging() {
-    setImplementation(com.jyz.component.core.logging.nologging.NoLoggingImpl.class);
+    setImplementation(com.jyz.component.core.logging.impl.NoLoggingImpl.class);
   }
 
   private static void tryImplementation(Runnable runnable) {

@@ -1,4 +1,4 @@
-package com.jyz.component.core.logging.nologging;
+package com.jyz.component.core.logging.impl;
 
 import com.jyz.component.core.logging.Log;
 
@@ -7,35 +7,41 @@ import com.jyz.component.core.logging.Log;
  * @author JoyoungZhang@gmail.com
  * 
  */
-public class NoLoggingImpl implements Log {
+public class StdOutImpl implements Log {
 
-	public NoLoggingImpl(String clazz) {
+	public StdOutImpl(String clazz) {
 	}
 
 	public boolean isDebugEnabled() {
-		return false;
+		return true;
 	}
 
 	public boolean isTraceEnabled() {
-		return false;
+		return true;
 	}
 
 	public void error(String s, Throwable e) {
+		System.err.println(s);
+		e.printStackTrace(System.err);
 	}
 
 	public void error(String s) {
+		System.err.println(s);
 	}
 
 	public void info(String s) {
+		System.out.println(s);
 	}
 
 	public void debug(String s) {
+		System.out.println(s);
 	}
 
 	public void trace(String s) {
+		System.out.println(s);
 	}
 
 	public void warn(String s) {
+		System.out.println(s);
 	}
-
 }

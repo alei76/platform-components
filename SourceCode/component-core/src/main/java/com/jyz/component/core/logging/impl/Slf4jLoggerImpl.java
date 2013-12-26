@@ -1,7 +1,6 @@
-package com.jyz.component.core.logging.log4j;
+package com.jyz.component.core.logging.impl;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import com.jyz.component.core.logging.Log;
 
@@ -10,14 +9,12 @@ import com.jyz.component.core.logging.Log;
  * @author JoyoungZhang@gmail.com
  * 
  */
-public class Log4jImpl implements Log {
-
-	private static final String FQCN = Log4jImpl.class.getName();
+class Slf4jLoggerImpl implements Log {
 
 	private Logger log;
 
-	public Log4jImpl(String clazz) {
-		log = Logger.getLogger(clazz);
+	public Slf4jLoggerImpl(Logger logger) {
+		log = logger;
 	}
 
 	public boolean isDebugEnabled() {
@@ -29,11 +26,11 @@ public class Log4jImpl implements Log {
 	}
 
 	public void error(String s, Throwable e) {
-		log.log(FQCN, Level.ERROR, s, e);
+		log.error(s, e);
 	}
 
 	public void error(String s) {
-		log.log(FQCN, Level.ERROR, s, null);
+		log.error(s);
 	}
 
 	public void info(String s) {
@@ -41,15 +38,15 @@ public class Log4jImpl implements Log {
 	}
 
 	public void debug(String s) {
-		log.log(FQCN, Level.DEBUG, s, null);
+		log.debug(s);
 	}
 
 	public void trace(String s) {
-		log.log(FQCN, Level.TRACE, s, null);
+		log.trace(s);
 	}
 
 	public void warn(String s) {
-		log.log(FQCN, Level.WARN, s, null);
+		log.warn(s);
 	}
 
 }

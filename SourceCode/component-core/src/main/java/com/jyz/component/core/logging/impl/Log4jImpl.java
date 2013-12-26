@@ -1,7 +1,7 @@
-package com.jyz.component.core.logging.jdk14;
+package com.jyz.component.core.logging.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import com.jyz.component.core.logging.Log;
 
@@ -10,28 +10,30 @@ import com.jyz.component.core.logging.Log;
  * @author JoyoungZhang@gmail.com
  * 
  */
-public class Jdk14LoggingImpl implements Log {
+public class Log4jImpl implements Log {
+
+	private static final String FQCN = Log4jImpl.class.getName();
 
 	private Logger log;
 
-	public Jdk14LoggingImpl(String clazz) {
+	public Log4jImpl(String clazz) {
 		log = Logger.getLogger(clazz);
 	}
 
 	public boolean isDebugEnabled() {
-		return log.isLoggable(Level.FINE);
+		return log.isDebugEnabled();
 	}
 
 	public boolean isTraceEnabled() {
-		return log.isLoggable(Level.FINER);
+		return log.isTraceEnabled();
 	}
 
 	public void error(String s, Throwable e) {
-		log.log(Level.SEVERE, s, e);
+		log.log(FQCN, Level.ERROR, s, e);
 	}
 
 	public void error(String s) {
-		log.log(Level.SEVERE, s);
+		log.log(FQCN, Level.ERROR, s, null);
 	}
 
 	public void info(String s) {
@@ -39,15 +41,15 @@ public class Jdk14LoggingImpl implements Log {
 	}
 
 	public void debug(String s) {
-		log.log(Level.FINE, s);
+		log.log(FQCN, Level.DEBUG, s, null);
 	}
 
 	public void trace(String s) {
-		log.log(Level.FINER, s);
+		log.log(FQCN, Level.TRACE, s, null);
 	}
 
 	public void warn(String s) {
-		log.log(Level.WARNING, s);
+		log.log(FQCN, Level.WARN, s, null);
 	}
 
 }
