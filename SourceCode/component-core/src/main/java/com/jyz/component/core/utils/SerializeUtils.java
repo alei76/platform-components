@@ -24,7 +24,7 @@ public final class SerializeUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static byte[] serializeObject(Serializable object) throws IOException {
+	public static byte[] serialize(Serializable object) throws IOException {
 		byte[] buffer = null;
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
@@ -54,7 +54,7 @@ public final class SerializeUtils {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public static Serializable deserializeObject(byte[] buf) throws IOException, ClassNotFoundException {
+	public static Serializable deserialize(byte[] buf) throws IOException, ClassNotFoundException {
     	Serializable object = null;
 		ByteArrayInputStream bis = null; 
 		ObjectInputStream ois = null;
