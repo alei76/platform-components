@@ -67,21 +67,22 @@ public class ResourcesLoader {
 	
 	public synchronized String getString(String key, Locale locale, Object...arguments){
 		for (String bundleName : this.bundleNames) {
-			ResourceBundle resource = null;
+			ResourceBundle resourceBundle = null;
 			try {
-			    resource = Resources.getResourceBundle(bundleName, locale);
+				resourceBundle = Resources.getResourceBundle(bundleName, locale);
 			} catch (ResourceNotFoundException e) {
 			    //ignore
 			}
-			if(resource == null){
-			    return null;
+			if(resourceBundle == null){
+				continue;
+//			    return null;
 			}
-			if(resource.containsKey(key)){
+			if(resourceBundle.containsKey(key)){
 				log.debug("Find resourceBundle[" + bundleName + "] contains key[" + key + "].");
 				if(arguments == null){
-					return resource.getString(key);
+					return resourceBundle.getString(key);
 				}
-				return MessageFormat.format(resource.getString(key), arguments);
+				return MessageFormat.format(resourceBundle.getString(key), arguments);
 			}
 		}
 		return null;
@@ -107,21 +108,21 @@ public class ResourcesLoader {
 	 * @return
 	 */
 	public synchronized String getString(String bundleName, String key, Locale locale, Object...arguments){
-	    	ResourceBundle resource = null;
+	    	ResourceBundle resourceBundle = null;
 		try {
-		    resource = Resources.getResourceBundle(bundleName, locale);
+			resourceBundle = Resources.getResourceBundle(bundleName, locale);
 		} catch (ResourceNotFoundException e) {
 		    //ignore
 		}
-		if(resource == null){
+		if(resourceBundle == null){
 		    return null;
 		}
-		if(resource.containsKey(key)){
+		if(resourceBundle.containsKey(key)){
 			log.debug("Find resourceBundle[" + bundleName + "] contains key[" + key + "].");
 			if(arguments == null){
-				return resource.getString(key);
+				return resourceBundle.getString(key);
 			}
-			return MessageFormat.format(resource.getString(key), arguments);
+			return MessageFormat.format(resourceBundle.getString(key), arguments);
 		}
 		return null;
 	}
