@@ -24,6 +24,7 @@ import com.jyz.component.core.logging.LogFactory;
  * getClass().getClassLoader()
  * systemClassLoader
  * 去加载
+ * 3.加载不到资源，返回null，不抛异常
  * 
  * @author JoyoungZhang@gmail.com
  * 
@@ -88,7 +89,7 @@ public class ClassLoaderWrapper {
 	 * @return - the class
 	 * @throws ClassNotFoundException Duh.
 	 */
-	public Class<?> classForName(String name) throws ClassNotFoundException {
+	public Class<?> classForName(String name) {
 		return classForName(name, getClassLoaders(null));
 	}
 

@@ -16,7 +16,8 @@ import java.util.ResourceBundle;
 /**
  * 
  * 资源加载类
- * 通过ClassLoaderWrapper加载资源
+ * 1.通过ClassLoaderWrapper加载资源
+ * 2.加载不到资源，抛异常
  * @author JoyoungZhang@gmail.com
  * 
  */
