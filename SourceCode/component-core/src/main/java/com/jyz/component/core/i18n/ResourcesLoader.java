@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jyz.component.core.logging.Log;
 import com.jyz.component.core.logging.LogFactory;
-import com.jyz.component.core.resources.ResourceNotFoundException;
 import com.jyz.component.core.resources.Resources;
 
 /**
@@ -70,12 +69,11 @@ public class ResourcesLoader {
 			ResourceBundle resourceBundle = null;
 			try {
 				resourceBundle = Resources.getResourceBundle(bundleName, locale);
-			} catch (ResourceNotFoundException e) {
+			} catch (Exception e) {
 			    //ignore
 			}
 			if(resourceBundle == null){
 				continue;
-//			    return null;
 			}
 			if(resourceBundle.containsKey(key)){
 				log.debug("Find resourceBundle[" + bundleName + "] contains key[" + key + "].");
@@ -108,10 +106,10 @@ public class ResourcesLoader {
 	 * @return
 	 */
 	public synchronized String getString(String bundleName, String key, Locale locale, Object...arguments){
-	    	ResourceBundle resourceBundle = null;
+	    ResourceBundle resourceBundle = null;
 		try {
 			resourceBundle = Resources.getResourceBundle(bundleName, locale);
-		} catch (ResourceNotFoundException e) {
+		} catch (Exception e) {
 		    //ignore
 		}
 		if(resourceBundle == null){
