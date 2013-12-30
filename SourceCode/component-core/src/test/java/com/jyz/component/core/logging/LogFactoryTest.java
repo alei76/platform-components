@@ -1,8 +1,8 @@
 package com.jyz.component.core.logging;
 
-import com.jyz.component.core.logging.impl.Log4jImpl;
-
 import junit.framework.TestCase;
+
+import com.jyz.component.core.logging.impl.Log4jImpl;
 
 public class LogFactoryTest extends TestCase {
 

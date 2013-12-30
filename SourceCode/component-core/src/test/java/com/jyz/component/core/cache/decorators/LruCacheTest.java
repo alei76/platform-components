@@ -1,8 +1,8 @@
 package com.jyz.component.core.cache.decorators;
 
-import com.jyz.component.core.cache.impl.PerpetualCache;
-
 import junit.framework.TestCase;
+
+import com.jyz.component.core.cache.impl.PerpetualCache;
 
 /**
  * @author JoyoungZhang@gmail.com
