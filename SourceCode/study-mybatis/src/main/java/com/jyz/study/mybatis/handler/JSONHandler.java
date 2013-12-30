@@ -14,8 +14,6 @@ public class JSONHandler implements TypeHandler<Object> {
 	/**
 	 * json数据和类名的分隔符号
 	 * */
-	private static final char SPLIT = '/';
-
 	public void setParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
 		if (parameter == null) {
 			ps.setString(i, null);
