@@ -5,10 +5,10 @@ package com.jyz.study.jdk.thread;
  *	@author zhaoyong.zhang
  *	create time 2014-1-8
  */
-public class ThreadInterrupt extends Thread {
+public class ThreadInterruptedReInterrupt extends Thread {
 	
 	public static void main(String[] args) throws InterruptedException {
-		ThreadInterrupt t = new ThreadInterrupt();
+		ThreadInterruptedReInterrupt t = new ThreadInterruptedReInterrupt();
 		t.start();
 		Thread.sleep(1000);
 		t.interrupt();

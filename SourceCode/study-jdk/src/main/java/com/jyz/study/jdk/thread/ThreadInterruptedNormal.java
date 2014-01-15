@@ -23,7 +23,7 @@ class ThreadTest implements Runnable {
 
 }
 
-public class ThreadInterrupted {
+public class ThreadInterruptedNormal {
 
 	public static void main(String[] args) throws InterruptedException {
 

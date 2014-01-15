@@ -53,6 +53,7 @@ public class InterruptedExceptionHandler implements Runnable {
 			Thread.currentThread().interrupt();//必须有！！！！！！！！！！！！！！！!!!!!!!!!!!!!!!!!!!!!!!!!!!!!没有run()方法不会终止
 			System.out.println("2 " + Thread.currentThread()+ " is " + Thread.currentThread().isInterrupted());
 			System.out.println("2 " + Thread.currentThread()+ " is " + Thread.interrupted());
+			System.out.println("2 " + Thread.currentThread()+ " is " + Thread.interrupted());
 			System.out.println("2 " + Thread.currentThread()+ " is " + Thread.currentThread().isInterrupted());
 			Thread.currentThread().interrupt();//必须有！！！！！！！！！！！！！！！!!!!!!!!!!!!!!!!!!!!!!!!!!!!!没有run()方法不会终止
 		}
