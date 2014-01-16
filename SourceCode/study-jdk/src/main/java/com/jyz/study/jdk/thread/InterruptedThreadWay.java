@@ -12,18 +12,22 @@ import java.net.Socket;
  *  http://www.linuxidc.com/Linux/2011-09/43560.htm
  *  	可中断的阻塞和不可中断的阻塞
  *  
+ *  http://www.ibm.com/developerworks/cn/java/j-jtp05236.html
+ *  如果那个线程在执行一个低级可中断阻塞方法，
+ *  	例如 Thread.sleep()、 Thread.join() 或 Object.wait()，那么它将取消阻塞并抛出 InterruptedException。并还原中断状态为false
+ *  否则， interrupt() 只是设置线程的中断状态为true
  *	@author zhaoyong.zhang
  *	create time 2014-1-15
  */
 public class InterruptedThreadWay {
 	public static void main(String[] args) throws InterruptedException, IOException {
-//		Thread thread = new Thread(new InterruptedThreadWay4());
-//		thread.start();
-//		Thread.sleep(100);
-//        System.out.println("****************************");
-//        System.out.println("Interrupted Thread!");
-//        System.out.println("****************************");
-//        thread.interrupt();
+		Thread thread = new Thread(new InterruptedThreadWay3());
+		thread.start();
+		Thread.sleep(100);
+        System.out.println("****************************");
+        System.out.println("Interrupted Thread!");
+        System.out.println("****************************");
+        thread.interrupt();
         
 //		InterruptedThreadWay5 runnable5 = new InterruptedThreadWay5();
 //        Thread thread5 = new Thread(runnable5);
@@ -34,16 +38,16 @@ public class InterruptedThreadWay {
 //        System.out.println("****************************");
 //        runnable5.stop=true;
 		
-        InterruptedThreadWay6 runnable6 = new InterruptedThreadWay6();
-        Thread thread6 = new Thread(runnable6);
-        thread6.start();
-        Thread.sleep(100);
-        System.out.println("****************************");
-        System.out.println("Interrupted Thread!");
-        System.out.println("****************************");
-//        thread6.interrupt();//由于socket.accept()阻塞不可中断，interrupt不产生任何作用
-        runnable6.stop = true;//首先停止标记
-        runnable6.socket.close();//其次通过关闭socket连接来中断socket.accept()的阻塞
+//        InterruptedThreadWay6 runnable6 = new InterruptedThreadWay6();
+//        Thread thread6 = new Thread(runnable6);
+//        thread6.start();
+//        Thread.sleep(100);
+//        System.out.println("****************************");
+//        System.out.println("Interrupted Thread!");
+//        System.out.println("****************************");
+////        thread6.interrupt();//由于socket.accept()阻塞不可中断，interrupt不产生任何作用
+//        runnable6.stop = true;//首先停止标记
+//        runnable6.socket.close();//其次通过关闭socket连接来中断socket.accept()的阻塞
 	}
 
 }
@@ -65,6 +69,7 @@ class InterruptedThreadWay1 implements Runnable{
 }
 
 //通过线程sleep时调用Interrupt引发异常，来结束线程.
+//但不怎么保险，因为不能保证中断时刻一定在sleep时
 class InterruptedThreadWay2 implements Runnable{
 	private double d = 0.0;
 	@Override
