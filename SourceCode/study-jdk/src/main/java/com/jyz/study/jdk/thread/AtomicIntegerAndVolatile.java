@@ -15,15 +15,15 @@ public class AtomicIntegerAndVolatile {
 	private static AtomicInteger num2 = new AtomicInteger(0);
 	
 	public static void main(String[] args) throws InterruptedException {
-//		for(int i=0;i<10000;i++){
-//			new Thread(){
-//				public void run() {
-//					num1 ++;
-//				};
-//			}.start();
-//		}
-//		Thread.sleep(10000); 
-//		System.out.println(num1);//may 9838
+		for(int i=0;i<10000;i++){
+			new Thread(){
+				public void run() {
+					num1 ++;
+				};
+			}.start();
+		}
+		Thread.sleep(10000); 
+		System.out.println(num1);//may 9838
 		
 		for(int i=0;i<10000;i++){
 			new Thread(){
