@@ -5,6 +5,6 @@
 	target maven编译项目时产生
 
 	使用TortoiseSVN-Setting-Global ignore pattern中添加
-	.project .classpath .settings target 
+	.project .classpath .settings target logs
 	即可
 	
