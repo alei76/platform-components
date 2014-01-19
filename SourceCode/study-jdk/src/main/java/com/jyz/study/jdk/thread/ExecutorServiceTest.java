@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  *  awaitTermination(long timeout, TimeUnit unit)
  *   	规定时间类任务完成，返回true，否则返回false
  *  
- *  shutdown：不接受新任务，等待已经接受的任务完成。如果任务永远完不成，如InterruptedThreadWay1，则永远无法终止，isTerminated返回false
+ *  shutdown：不接受新任务，等待已经接受的任务完成。如果任务永远完不成，如InterruptedThreadWay1 3，则永远无法终止，isTerminated返回false
  *  shutdownNow：调用Thread.interrupt()来中断任务，如果任务无法响应中断，如InterruptedThreadWay1，则永远无法终止,isTerminated返回false
  *	@author zhaoyong.zhang
  *	create time 2014-1-16
@@ -22,7 +22,7 @@ public class ExecutorServiceTest {
 	public static void main(String[] args) throws InterruptedException {
 		
 		ExecutorService service = Executors.newCachedThreadPool();
-		for(int i=0;i<100;i++){
+		for(int i=0;i<2;i++){
 			service.submit(new InterruptedThreadWay3());
 		}
 		System.out.println("service.isShutdown() is " + service.isShutdown());

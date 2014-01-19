@@ -47,7 +47,7 @@ public class InterruptedExceptionContinueHandler implements Runnable {
 		t.start();
 		
 		// 启动线程2ms后设置其中断标记为true
-		Thread.sleep(2);
+		Thread.sleep(20);
 		t.interrupt();
 	}
 }

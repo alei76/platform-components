@@ -59,7 +59,7 @@ class InterruptedThreadWay1 implements Runnable{
 	@Override
 	public void run() {
 		while(true){
-			System.out.println("i am running");
+//			System.out.println("i am running");
 			for (int i = 0; i < 900000; i++) {
 	            d = d + (Math.PI + Math.E) / d;
 	        }
@@ -96,7 +96,7 @@ class InterruptedThreadWay3 implements Runnable{
 	@Override
 	public void run() {
 		while(!Thread.interrupted()){
-			System.out.println("i am running");
+//			System.out.println("i am running");
 			for (int i = 0; i < 900000; i++) {
 				d = d + (Math.PI + Math.E) / d;
 			}
