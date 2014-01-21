@@ -5,6 +5,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 /**
+ *  Semaphore 信号量
+ * 	最多只有几个可用的许可
  *  http://www.cnblogs.com/whgw/archive/2011/09/29/2195555.html
  *	@author zhaoyong.zhang
  *	create time 2014-1-21
