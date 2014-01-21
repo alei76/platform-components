@@ -43,7 +43,7 @@ class Runner implements Runnable {
 	@Override
 	public void run() {
 		try {
-			Thread.sleep(1000 * (new Random()).nextInt(8));
+			Thread.sleep(1000 * (new Random()).nextInt(10));
 			System.out.println(name + " 准备好了...");
 			// barrier的await方法，在所有参与者都已经在此 barrier 上调用 await 方法之前，将一直等待。
 			barrier.await();

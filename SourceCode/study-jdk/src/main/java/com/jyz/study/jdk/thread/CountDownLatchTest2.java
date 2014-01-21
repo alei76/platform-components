@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *	@author zhaoyong.zhang
  *	create time 2014-1-15
  */
-public class CopyOfCountDownLatch2 {
+public class CountDownLatchTest2 {
 	
 	static final int count = 10000;
 	
