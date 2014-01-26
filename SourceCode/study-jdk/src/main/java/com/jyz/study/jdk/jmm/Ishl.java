@@ -5,6 +5,11 @@ package com.jyz.study.jdk.jmm;
  *	@author zhaoyong.zhang
  *	create time 2014-1-26
  */
+
+/**
+ *  const #25 = Asciz       Deprecated;
+ */
+@Deprecated
 public class Ishl {
 
 	public static void main(String[] args) {
