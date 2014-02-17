@@ -9,14 +9,15 @@ import java.util.List;
  */
 public class ConstantOutOfMemory {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
+    	int i = 0;
        try {
            List<String> strings = new ArrayList<String>();
-           int i = 0;
            while(true){
               strings.add(String.valueOf(i++).intern());
            }
-       } catch (Exception e) {
+       } catch (Error e) {
+    	   System.out.println(i);
            e.printStackTrace();
            throw e;
        }
