@@ -5,7 +5,7 @@ package com.jyz.study.jdk.thread;
  *	@author zhaoyong.zhang
  *	create time 2014-1-8
  */
-class ThreadTest implements Runnable {
+class ThreadTestt implements Runnable {
 
 	@Override
 	public void run() {
@@ -27,7 +27,7 @@ public class ThreadInterruptedNormal {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		Thread t = new Thread(new ThreadTest(), "thread-1");
+		Thread t = new Thread(new ThreadTestt(), "thread-1");
 		t.start();
 		Thread.sleep(2000);
 		t.interrupt();
