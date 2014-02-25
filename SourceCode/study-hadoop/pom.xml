@@ -22,15 +22,57 @@
 		<dependency>
 			<groupId>org.apache.hbase</groupId>
 			<artifactId>hbase</artifactId>
-			<version>0.94.6-cdh4.5.0</version>
+			<version>0.94.6-cdh4.3.0</version>
 		</dependency>
+		<dependency>
+  			<groupId>audaque.thirdlib</groupId>
+  			<artifactId>hadoop-common</artifactId>
+	  		<version>2.0.0-cdh4.1.1</version>
+	  		<type>jar</type>
+	 	</dependency>
     </dependencies>
     
-    <repositories>
+	
+	<repositories>
+<!-- 		<repository>  -->
+	<!-- 			<id>cloudera</id> -->
+	<!-- 			<url>https://repository.cloudera.com/content/groups/public</url> -->
+	<!-- 		</repository> -->
+<!-- 	</repository> -->
 		<repository>
-		<id>cloudera</id>
-		<url>https://repository.cloudera.com/content/groups/public</url>
+			<id>cloudera-repositories</id>
+			<name>Cloudera Repositories</name>
+			<url>http://192.168.1.182:8081/nexus/content/repositories/cloudera-repositories</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
+		<repository>
+			<id>Releases</id>
+			<name>Releases</name>
+			<url>http://192.168.1.182:8081/nexus/content/repositories/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>public</id>
+			<name>public</name>
+			<url>http://192.168.1.182:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
 	</repositories>
     
     
