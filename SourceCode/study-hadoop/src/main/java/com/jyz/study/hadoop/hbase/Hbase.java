@@ -22,7 +22,7 @@ public class Hbase {
     static Configuration conf = null;
     static {
         conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "localhost");
+        conf.set("hbase.zookeeper.quorum", "200master");
     }
 
     /*
@@ -310,7 +310,7 @@ public class Hbase {
         // 创建表
         String tableName = "blog2";
         String[] family = { "article", "author" };
-        // creatTable(tableName, family);
+        creatTable(tableName, family);
 
         // 为表添加数据
 
@@ -349,10 +349,10 @@ public class Hbase {
         deleteColumn("blog2", "rowkey1", "author", "nickname");
 
         // 删除所有列
-        deleteAllColumn("blog2", "rowkey1");
+//        deleteAllColumn("blog2", "rowkey1");
 
         // 删除表
-        deleteTable("blog2");
+//        deleteTable("blog2");
 
     }
 }
