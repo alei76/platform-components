@@ -17,7 +17,7 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
-public class Hbase {
+public class HbaseBsicTest1 {
     // 声明静态配置
     static Configuration conf = null;
     static {

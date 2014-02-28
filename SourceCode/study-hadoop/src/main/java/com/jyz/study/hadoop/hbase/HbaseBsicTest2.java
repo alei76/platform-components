@@ -11,7 +11,7 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 
-public class HbaseSimpleTest {
+public class HbaseBsicTest2 {
 
     public static void main(String[] args) throws Exception {
 	Configuration conf = HBaseConfiguration.create();
