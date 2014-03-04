@@ -23,13 +23,13 @@ public class PasswordStrengthFilter extends FilterBase {
 	}
 
 	public ReturnCode filterKeyValue(KeyValue v) {
-		if (Bytes.toString(v.getQualifier()).equals(Bytes.toString(UsersDAO.PASS_COL))) {//如果该列是密码列 ReturnCode.SKIP
+		if (Bytes.toString(v.getQualifier()).equals(Bytes.toString(UsersDAO.PASS_COL))) {//如果该列是密码列 ReturnCode.SKIP 表示下一步过滤可以跳过此KeyValue
 			if (v.getValueLength() >= len) {//如果密码长度大于等于4 被过滤掉 filterRow=true（不出现在发送结果集合里）
 				this.filterRow = true;
 			}
 			return ReturnCode.SKIP;
 		}
-		return ReturnCode.INCLUDE;
+		return ReturnCode.INCLUDE;//否则 下一步过滤应该包含此KeyValue
 	}
 
 	public boolean filterRow() {
