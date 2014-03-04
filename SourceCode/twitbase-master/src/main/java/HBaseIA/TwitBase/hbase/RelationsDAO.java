@@ -24,8 +24,8 @@ public class RelationsDAO {
   // md5(id_from)md5(id_to) -> 'f':id_to=name_to
   // md5(id_from)md5(id_to) -> 'f':'to'=id_to, 'f':'from'=id_from
 
-  public static final byte[] FOLLOWS_TABLE_NAME = Bytes.toBytes("follows");
-  public static final byte[] FOLLOWED_TABLE_NAME = Bytes.toBytes("followedBy");
+  public static final byte[] FOLLOWS_TABLE_NAME = Bytes.toBytes("followsstudy");	//关注
+  public static final byte[] FOLLOWED_TABLE_NAME = Bytes.toBytes("followedBystudy");//粉丝
   public static final byte[] RELATION_FAM = Bytes.toBytes("f");
   public static final byte[] FROM = Bytes.toBytes("from");
   public static final byte[] TO = Bytes.toBytes("to");

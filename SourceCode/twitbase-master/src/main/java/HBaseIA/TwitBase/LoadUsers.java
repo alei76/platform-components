@@ -3,9 +3,12 @@ package HBaseIA.TwitBase;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HTablePool;
 
 import utils.LoadUtils;
+import utils.ZookeeperLocation;
 
 import HBaseIA.TwitBase.hbase.UsersDAO;
 
@@ -35,8 +38,11 @@ public class LoadUsers {
       System.out.println(usage);
       System.exit(0);
     }
+    
+    Configuration conf = HBaseConfiguration.create();
+	conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
 
-    HTablePool pool = new HTablePool();
+    HTablePool pool = new HTablePool(conf, 10);
     UsersDAO dao = new UsersDAO(pool);
 
     int count = Integer.parseInt(args[0]);

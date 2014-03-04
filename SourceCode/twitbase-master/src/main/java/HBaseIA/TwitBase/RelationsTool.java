@@ -3,8 +3,12 @@ package HBaseIA.TwitBase;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.log4j.Logger;
+
+import utils.ZookeeperLocation;
 
 import HBaseIA.TwitBase.hbase.RelationsDAO;
 import HBaseIA.TwitBase.model.Relation;
@@ -28,7 +32,10 @@ public class RelationsTool {
       System.exit(0);
     }
 
-    HTablePool pool = new HTablePool();
+    Configuration conf = HBaseConfiguration.create();
+	conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
+
+    HTablePool pool = new HTablePool(conf, 10);
     RelationsDAO dao = new RelationsDAO(pool);
 
     if ("follows".equals(args[0])) {

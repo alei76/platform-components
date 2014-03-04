@@ -20,7 +20,7 @@ import utils.Md5Utils;
 
 public class TwitsDAO {
 
-  public static final byte[] TABLE_NAME = Bytes.toBytes("twits");
+  public static final byte[] TABLE_NAME = Bytes.toBytes("twitsstudy");
   public static final byte[] TWITS_FAM  = Bytes.toBytes("twits");
 
   public static final byte[] USER_COL   = Bytes.toBytes("user");
@@ -87,6 +87,10 @@ public class TwitsDAO {
     s.addColumn(TWITS_FAM, TWIT_COL);
     return s;
   }
+  
+  public static void main(String[] args) {
+	mkScan("zzy");
+}
 
   public void postTwit(String user, DateTime dt, String text) throws IOException {
 

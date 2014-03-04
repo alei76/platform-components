@@ -3,9 +3,13 @@ package HBaseIA.TwitBase;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+
+import utils.ZookeeperLocation;
 
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 import HBaseIA.TwitBase.hbase.UsersDAO;
@@ -27,7 +31,10 @@ public class TwitsTool {
       System.exit(0);
     }
 
-    HTablePool pool = new HTablePool();
+    Configuration conf = HBaseConfiguration.create();
+   	conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
+   	HTablePool pool = new HTablePool(conf, 10);
+   	
     TwitsDAO twitsDao = new TwitsDAO(pool);
     UsersDAO usersDao = new UsersDAO(pool);
 

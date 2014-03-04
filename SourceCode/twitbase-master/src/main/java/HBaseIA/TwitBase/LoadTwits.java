@@ -10,6 +10,7 @@ import org.apache.hadoop.hbase.client.HTablePool;
 import org.joda.time.DateTime;
 
 import utils.LoadUtils;
+import utils.ZookeeperLocation;
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 import HBaseIA.TwitBase.hbase.UsersDAO;
 import HBaseIA.TwitBase.model.User;
@@ -43,6 +44,8 @@ public class LoadTwits {
     }
 
     Configuration conf = HBaseConfiguration.create();
+	conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
+	
     HBaseAdmin admin = new HBaseAdmin(conf);
 
     if (!admin.tableExists(UsersDAO.TABLE_NAME) ||
@@ -65,7 +68,7 @@ public class LoadTwits {
       }
     }
 
-    pool.closeTablePool(UsersDAO.TABLE_NAME);
+    pool.closeTablePool(TwitsDAO.TABLE_NAME);
   }
 
 }

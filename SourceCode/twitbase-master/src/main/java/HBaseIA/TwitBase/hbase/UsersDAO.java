@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 public class UsersDAO {
 
-  public static final byte[] TABLE_NAME = Bytes.toBytes("users");
+  public static final byte[] TABLE_NAME = Bytes.toBytes("usersstudy");
   public static final byte[] INFO_FAM   = Bytes.toBytes("info");
 
   public static final byte[] USER_COL   = Bytes.toBytes("user");
