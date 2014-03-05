@@ -21,6 +21,7 @@ public class TablePreSplitter {
 
   public TablePreSplitter() {
     conf = HBaseConfiguration.create();
+    conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
   }
 
 
