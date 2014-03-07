@@ -94,7 +94,6 @@ public class UsersDAO {
   public HBaseIA.TwitBase.model.User getUser(String user)
     throws IOException {
     HTableInterface users = pool.getTable(TABLE_NAME);
-
     Get g = mkGet(user);
     Result result = users.get(g);
     if (result.isEmpty()) {
