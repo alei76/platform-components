@@ -207,7 +207,6 @@ public class ParseJsonMulti {
     /*...*/
     // ^^ ParseJsonMulti
     Configuration conf = ConfigurationUtils.getConfiguration();
-    conf.set("mapreduce.job.cache.files", "");
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs();
     CommandLine cmd = parseArgs(otherArgs);
