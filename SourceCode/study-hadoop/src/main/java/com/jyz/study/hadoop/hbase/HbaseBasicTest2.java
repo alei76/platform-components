@@ -11,13 +11,13 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 
-import com.jyz.study.hadoop.common.ZookeeperLocation;
+import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 public class HbaseBasicTest2 {
 
     public static void main(String[] args) throws Exception {
 	Configuration conf = HBaseConfiguration.create();
-	conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
+	conf.set("hbase.zookeeper.quorum", ConfigurationUtils.LOCATION);
 //	conf.set("hbase.zookeeper.property.clientPort", "2181");
 	
 	HBaseAdmin admin = new HBaseAdmin(conf);

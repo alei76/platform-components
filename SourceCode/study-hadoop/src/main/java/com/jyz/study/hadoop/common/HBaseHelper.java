@@ -1,4 +1,4 @@
-package util;
+package com.jyz.study.hadoop.common;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
