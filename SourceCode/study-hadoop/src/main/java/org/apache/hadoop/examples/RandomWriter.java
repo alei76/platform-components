@@ -52,23 +52,23 @@ import org.apache.hadoop.util.ToolRunner;
  * <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
  * <configuration>
  *   <property>
- *     <name>mapreduce.randomwriter.minkey</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomwriter.minkey</name>
  *     <value>10</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomwriter.maxkey</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomwriter.maxkey</name>
  *     <value>10</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomwriter.minvalue</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomwriter.minvalue</name>
  *     <value>90</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomwriter.maxvalue</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomwriter.maxvalue</name>
  *     <value>90</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomwriter.totalbytes</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomwriter.totalbytes</name>
  *     <value>1099511627776</value>
  *   </property>
  * </configuration></xmp>
@@ -77,15 +77,15 @@ import org.apache.hadoop.util.ToolRunner;
  * and ones supported by {@link GenericOptionsParser} via the command-line.
  */
 public class RandomWriter extends Configured implements Tool {
-  public static final String TOTAL_BYTES = "mapreduce.randomwriter.totalbytes";
+  public static final String TOTAL_BYTES = "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.totalbytes";
   public static final String BYTES_PER_MAP = 
-    "mapreduce.randomwriter.bytespermap";
+    "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.bytespermap";
   public static final String MAPS_PER_HOST = 
-    "mapreduce.randomwriter.mapsperhost";
-  public static final String MAX_VALUE = "mapreduce.randomwriter.maxvalue";
-  public static final String MIN_VALUE = "mapreduce.randomwriter.minvalue";
-  public static final String MIN_KEY = "mapreduce.randomwriter.minkey";
-  public static final String MAX_KEY = "mapreduce.randomwriter.maxkey";
+    "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.mapsperhost";
+  public static final String MAX_VALUE = "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.maxvalue";
+  public static final String MIN_VALUE = "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.minvalue";
+  public static final String MIN_KEY = "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.minkey";
+  public static final String MAX_KEY = "com.jyz.study.hadoop.hbase.mapreduce.randomwriter.maxkey";
   
   /**
    * User counters

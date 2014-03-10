@@ -19,21 +19,21 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
         </dependency>
-    	<dependency>
-            <groupId>com.jyz</groupId>
-    		<artifactId>component-io</artifactId>
-    		<version>1.0</version>
-    		<exclusions>
-     			<exclusion> 
- 	            		<groupId>log4j</groupId>  
- 	            		<artifactId>log4j</artifactId>  
-     			</exclusion> 
-    			<exclusion>
-	            		<groupId>commons-logging</groupId> 
-	            		<artifactId>commons-logging</artifactId> 
-    			</exclusion>
-    		</exclusions>
-        </dependency>
+<!--     	<dependency> -->
+<!--             <groupId>com.jyz</groupId> -->
+<!--     		<artifactId>component-io</artifactId> -->
+<!--     		<version>1.0</version> -->
+<!--     		<exclusions> -->
+<!--      			<exclusion>  -->
+<!--  	            		<groupId>log4j</groupId>   -->
+<!--  	            		<artifactId>log4j</artifactId>   -->
+<!--      			</exclusion>  -->
+<!--     			<exclusion> -->
+<!-- 	            		<groupId>commons-logging</groupId>  -->
+<!-- 	            		<artifactId>commons-logging</artifactId>  -->
+<!--     			</exclusion> -->
+<!--     		</exclusions> -->
+<!--         </dependency> -->
 <!--        <dependency>   -->
 <!--   			<groupId>commons-logging</groupId>    -->
 <!--   			<artifactId>commons-logging-api</artifactId>    -->

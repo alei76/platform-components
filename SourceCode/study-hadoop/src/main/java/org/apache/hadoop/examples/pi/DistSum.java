@@ -69,7 +69,7 @@ public final class DistSum extends Configured implements Tool {
   private static final Log LOG = LogFactory.getLog(DistSum.class);
 
   private static final String NAME = DistSum.class.getSimpleName();
-  private static final String N_PARTS = "mapreduce.pi." + NAME + ".nParts";
+  private static final String N_PARTS = "com.jyz.study.hadoop.hbase.mapreduce.pi." + NAME + ".nParts";
   /////////////////////////////////////////////////////////////////////////////
   /** DistSum job parameters */
   static class Parameters {
@@ -387,7 +387,7 @@ public final class DistSum extends Configured implements Tool {
     public synchronized void init(Job job) throws IOException {
       final Configuration conf = job.getConfiguration();
       if (cluster == null) {
-        String jobTrackerStr = conf.get("mapreduce.jobtracker.address", "localhost:8012");
+        String jobTrackerStr = conf.get("com.jyz.study.hadoop.hbase.mapreduce.jobtracker.address", "localhost:8012");
         cluster = new Cluster(NetUtils.createSocketAddr(jobTrackerStr), conf);
 
       }

@@ -47,23 +47,23 @@ import org.apache.hadoop.util.ToolRunner;
  * <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
  * <configuration>
  *   <property>
- *     <name>mapreduce.randomtextwriter.minwordskey</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.minwordskey</name>
  *     <value>5</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomtextwriter.maxwordskey</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.maxwordskey</name>
  *     <value>10</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomtextwriter.minwordsvalue</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.minwordsvalue</name>
  *     <value>20</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomtextwriter.maxwordsvalue</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.maxwordsvalue</name>
  *     <value>100</value>
  *   </property>
  *   <property>
- *     <name>mapreduce.randomtextwriter.totalbytes</name>
+ *     <name>com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.totalbytes</name>
  *     <value>1099511627776</value>
  *   </property>
  * </configuration></xmp>
@@ -76,15 +76,15 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class RandomTextWriter extends Configured implements Tool {
   public static final String TOTAL_BYTES = 
-    "mapreduce.randomtextwriter.totalbytes";
+    "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.totalbytes";
   public static final String BYTES_PER_MAP = 
-    "mapreduce.randomtextwriter.bytespermap";
+    "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.bytespermap";
   public static final String MAPS_PER_HOST = 
-    "mapreduce.randomtextwriter.mapsperhost";
-  public static final String MAX_VALUE = "mapreduce.randomtextwriter.maxwordsvalue";
-  public static final String MIN_VALUE = "mapreduce.randomtextwriter.minwordsvalue";
-  public static final String MIN_KEY = "mapreduce.randomtextwriter.minwordskey";
-  public static final String MAX_KEY = "mapreduce.randomtextwriter.maxwordskey";
+    "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.mapsperhost";
+  public static final String MAX_VALUE = "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.maxwordsvalue";
+  public static final String MIN_VALUE = "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.minwordsvalue";
+  public static final String MIN_KEY = "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.minwordskey";
+  public static final String MAX_KEY = "com.jyz.study.hadoop.hbase.mapreduce.randomtextwriter.maxwordskey";
   
   static int printUsage() {
     System.out.println("randomtextwriter " +

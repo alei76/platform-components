@@ -1,3 +1,4 @@
+package org.apache.hadoop.examples;
 ///**
 // * Licensed to the Apache Software Foundation (ASF) under one
 // * or more contributor license agreements.  See the NOTICE file
@@ -13,10 +14,7 @@
 // * distributed under the License is distributed on an "AS IS" BASIS,
 // * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // * See the License for the specific language governing permissions and
-// * limitations under the License.
-// */
-//
-//package org.apache.hadoop.examples;
+// * limitations unorg.apache.hadoop.examples.jyz.study.hadoop.mapreduce.examples;
 //
 //import java.io.DataInput;
 //import java.io.DataOutput;
@@ -69,12 +67,12 @@
 // * This program requires some additional configuration relating to HSQLDB.  
 // * The the hsqldb jar should be added to the classpath:
 // * <br>
-// * <code>export HADOOP_CLASSPATH=share/hadoop/mapreduce/lib-examples/hsqldb-2.0.0.jar</code>
+// * <code>export HADOOP_CLASSPATH=share/hadoop/com.jyz.study.hadoop.hbase.mapreduce/lib-examples/hsqldb-2.0.0.jar</code>
 // * <br>
 // * And the hsqldb jar should be included with the <code>-libjars</code> 
 // * argument when executing it with hadoop:
 // * <br>
-// * <code>-libjars share/hadoop/mapreduce/lib-examples/hsqldb-2.0.0.jar</code>
+// * <code>-libjars share/hadoop/com.jyz.study.hadoop.hbase.mapreduce/lib-examples/hsqldb-2.0.0.jar</code>
 // */
 //public class DBCountPageView extends Configured implements Tool {
 //

@@ -73,7 +73,7 @@ public class BaileyBorweinPlouffe extends Configured implements Tool {
   public static final String DESCRIPTION
       = "A map/reduce program that uses Bailey-Borwein-Plouffe to compute exact digits of Pi.";
 
-  private static final String NAME = "mapreduce." + 
+  private static final String NAME = "com.jyz.study.hadoop.hbase.mapreduce." + 
     BaileyBorweinPlouffe.class.getSimpleName();
 
   //custom job properties

@@ -17,12 +17,14 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
-public class HbaseBsicTest1 {
+import com.jyz.study.hadoop.common.ZookeeperLocation;
+
+public class HbaseBasicTest1 {
     // 声明静态配置
     static Configuration conf = null;
     static {
         conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "200master");
+        conf.set("hbase.zookeeper.quorum", ZookeeperLocation.LOCATION);
     }
 
     /*

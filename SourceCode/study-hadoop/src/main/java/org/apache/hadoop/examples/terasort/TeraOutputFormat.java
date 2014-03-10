@@ -37,7 +37,7 @@ import org.apache.hadoop.mapreduce.security.TokenCache;
  * An output format that writes the key and value appended together.
  */
 public class TeraOutputFormat extends FileOutputFormat<Text,Text> {
-  static final String FINAL_SYNC_ATTRIBUTE = "mapreduce.terasort.final.sync";
+  static final String FINAL_SYNC_ATTRIBUTE = "com.jyz.study.hadoop.hbase.mapreduce.terasort.final.sync";
   private OutputCommitter committer = null;
 
   /**

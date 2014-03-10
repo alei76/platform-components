@@ -70,7 +70,7 @@ public class TeraGen extends Configured implements Tool {
 
   public static enum Counters {CHECKSUM}
 
-  public static final String NUM_ROWS = "mapreduce.terasort.num-rows";
+  public static final String NUM_ROWS = "com.jyz.study.hadoop.hbase.mapreduce.terasort.num-rows";
   /**
    * An input format that assigns ranges of longs to each mapper.
    */

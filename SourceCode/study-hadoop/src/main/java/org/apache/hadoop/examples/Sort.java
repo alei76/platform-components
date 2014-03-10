@@ -56,7 +56,7 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class Sort<K,V> extends Configured implements Tool {
   public static final String REDUCES_PER_HOST = 
-    "mapreduce.sort.reducesperhost";
+    "com.jyz.study.hadoop.hbase.mapreduce.sort.reducesperhost";
   private Job job = null;
 
   static int printUsage() {

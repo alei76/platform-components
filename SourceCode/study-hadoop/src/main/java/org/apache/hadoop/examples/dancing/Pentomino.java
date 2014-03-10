@@ -21,10 +21,10 @@ package org.apache.hadoop.examples.dancing;
 import java.util.*;
 
 public class Pentomino {
-  public static final String DEPTH = "mapreduce.pentomino.depth";
-  public static final String WIDTH = "mapreduce.pentomino.width";
-  public static final String HEIGHT = "mapreduce.pentomino.height";
-  public static final String CLASS = "mapreduce.pentomino.class";
+  public static final String DEPTH = "com.jyz.study.hadoop.hbase.mapreduce.pentomino.depth";
+  public static final String WIDTH = "com.jyz.study.hadoop.hbase.mapreduce.pentomino.width";
+  public static final String HEIGHT = "com.jyz.study.hadoop.hbase.mapreduce.pentomino.height";
+  public static final String CLASS = "com.jyz.study.hadoop.hbase.mapreduce.pentomino.class";
 
   /**
    * This interface just is a marker for what types I expect to get back

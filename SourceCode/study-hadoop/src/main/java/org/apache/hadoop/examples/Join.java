@@ -59,7 +59,7 @@ import org.apache.hadoop.util.ToolRunner;
  *            [<i>in-dir</i>]* <i>in-dir</i> <i>out-dir</i> 
  */
 public class Join extends Configured implements Tool {
-  public static final String REDUCES_PER_HOST = "mapreduce.join.reduces_per_host";
+  public static final String REDUCES_PER_HOST = "com.jyz.study.hadoop.hbase.mapreduce.join.reduces_per_host";
   static int printUsage() {
     System.out.println("join [-r <reduces>] " +
                        "[-inFormat <input format class>] " +

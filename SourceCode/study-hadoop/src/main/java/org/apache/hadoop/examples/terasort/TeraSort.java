@@ -48,8 +48,8 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class TeraSort extends Configured implements Tool {
   private static final Log LOG = LogFactory.getLog(TeraSort.class);
-  static String SIMPLE_PARTITIONER = "mapreduce.terasort.simplepartitioner";
-  static String OUTPUT_REPLICATION = "mapreduce.terasort.output.replication";
+  static String SIMPLE_PARTITIONER = "com.jyz.study.hadoop.hbase.mapreduce.terasort.simplepartitioner";
+  static String OUTPUT_REPLICATION = "com.jyz.study.hadoop.hbase.mapreduce.terasort.output.replication";
 
   /**
    * A partitioner that splits text keys into roughly equal partitions

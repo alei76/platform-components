@@ -51,9 +51,9 @@ public class TeraInputFormat extends FileInputFormat<Text,Text> {
 
   static final String PARTITION_FILENAME = "_partition.lst";
   private static final String NUM_PARTITIONS = 
-    "mapreduce.terasort.num.partitions";
+    "com.jyz.study.hadoop.hbase.mapreduce.terasort.num.partitions";
   private static final String SAMPLE_SIZE = 
-    "mapreduce.terasort.partitions.sample";
+    "com.jyz.study.hadoop.hbase.mapreduce.terasort.partitions.sample";
   static final int KEY_LENGTH = 10;
   static final int VALUE_LENGTH = 90;
   static final int RECORD_LENGTH = KEY_LENGTH + VALUE_LENGTH;
