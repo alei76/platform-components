@@ -184,7 +184,7 @@ public class ParseJson {
   public static void main(String[] args) throws Exception {
     /*...*/
     // ^^ ParseJson
-    Configuration conf = ConfigurationUtils.getConfiguration();
+    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs();
     CommandLine cmd = parseArgs(otherArgs);

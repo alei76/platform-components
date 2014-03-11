@@ -214,7 +214,7 @@ public class AnalyzeData {
   public static void main(String[] args) throws Exception {
     /*...*/
     // ^^ AnalyzeData
-    Configuration conf = ConfigurationUtils.getConfiguration();
+    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
     String libjars = conf.get("tmpjars");
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs();

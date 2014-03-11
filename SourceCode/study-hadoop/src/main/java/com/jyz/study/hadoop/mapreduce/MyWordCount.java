@@ -14,6 +14,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import com.jyz.study.hadoop.common.ConfigurationUtils;
+
 public class MyWordCount {
     
     static {
@@ -55,11 +57,7 @@ public class MyWordCount {
   }
 
   public static void main(String[] args) throws Exception {
-    Configuration conf = new Configuration();
-    conf.set("fs.defaultFS", "hdfs://200master:9000");  
-    conf.set("hadoop.job.user", "root"); 
-    conf.set("hadoop.job.ugi", "root");
-    conf.set("mapred.job.tracker", "200master:9001");   
+    Configuration conf = ConfigurationUtils.getHadoopConfiguration();
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
     if (otherArgs.length != 2) {
       System.err.println("Usage: wordcount <in> <out>");

@@ -161,7 +161,7 @@ public class ImportFromFile {
    */
   // vv ImportFromFile
   public static void main(String[] args) throws Exception {
-    Configuration conf = ConfigurationUtils.getConfiguration();
+    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs(); // co ImportFromFile-7-Args Give the command line arguments to the generic parser first to handle "-Dxyz" properties.
     CommandLine cmd = parseArgs(otherArgs);

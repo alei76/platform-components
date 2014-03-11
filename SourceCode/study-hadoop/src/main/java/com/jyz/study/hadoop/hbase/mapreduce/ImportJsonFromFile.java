@@ -151,7 +151,7 @@ public class ImportJsonFromFile {
    * @throws Exception When running the job fails.
    */
   public static void main(String[] args) throws Exception {
-    Configuration conf = ConfigurationUtils.getConfiguration();
+    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
     CommandLine cmd = parseArgs(otherArgs);
     // check debug flag and other options
