@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class CleanMavenLastUpdatedUtil {
 
-    private static final String  REPO = "C:\\Users\\audaque\\.m2\\repository";
+    private static final String  REPO = "D:\\Maven\\repo";
     private static final String FILE_SUFFIX = "lastUpdated"; 
     
     private static Set<String> getAbandonPath(File file){

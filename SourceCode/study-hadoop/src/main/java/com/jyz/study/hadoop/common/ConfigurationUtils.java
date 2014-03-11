@@ -5,7 +5,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 
 public class ConfigurationUtils {
 
-	public static final String LOCATION = "172.16.1.102";
+	public static final String LOCATION = "192.168.1.200";
 	
 	
 	public static Configuration getConfiguration(){

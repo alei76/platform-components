@@ -55,32 +55,32 @@ public class MyWordCount {
   }
 
   public static void main(String[] args) throws Exception {
-//    Configuration conf = new Configuration();
-//    conf.set("fs.defaultFS", "hdfs://200master:9000");  
-//    conf.set("hadoop.job.user", "root"); 
-//    conf.set("hadoop.job.ugi", "root");
-//    conf.set("mapred.job.tracker", "200master:9001");   
-//    String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-//    if (otherArgs.length != 2) {
-//      System.err.println("Usage: wordcount <in> <out>");
-//      System.exit(2);
-//    }
-//    Job job = new Job(conf, "word count");
-//    job.setJarByClass(MyWordCount.class);
-//    job.setMapperClass(TokenizerMapper.class);
-//    job.setCombinerClass(IntSumReducer.class);
-//    job.setReducerClass(IntSumReducer.class);
-//    job.setOutputKeyClass(Text.class);
-//    job.setOutputValueClass(IntWritable.class);
-//    FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
-//    FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-//    System.exit(job.waitForCompletion(true) ? 0 : 1);
-	  System.out.println(System.getProperty("java.library.path")); 
-	  String arch = System.getProperty("sun.arch.data.model");
-	  System.out.println(arch);
-	  System.out.println(System.getProperty("os.arch"));
-	  
-	  System.loadLibrary("hadoop");
+    Configuration conf = new Configuration();
+    conf.set("fs.defaultFS", "hdfs://200master:9000");  
+    conf.set("hadoop.job.user", "root"); 
+    conf.set("hadoop.job.ugi", "root");
+    conf.set("mapred.job.tracker", "200master:9001");   
+    String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+    if (otherArgs.length != 2) {
+      System.err.println("Usage: wordcount <in> <out>");
+      System.exit(2);
+    }
+    Job job = new Job(conf, "word count");
+    job.setJarByClass(MyWordCount.class);
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+    FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
+    FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+//	  System.out.println(System.getProperty("java.library.path")); 
+//	  String arch = System.getProperty("sun.arch.data.model");
+//	  System.out.println(arch);
+//	  System.out.println(System.getProperty("os.arch"));
+//	  
+//	  System.loadLibrary("hadoop");
 	  
   }
 }
