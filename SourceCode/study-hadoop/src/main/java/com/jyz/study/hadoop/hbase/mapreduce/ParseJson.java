@@ -32,7 +32,9 @@ import org.json.simple.parser.JSONParser;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 /**
- * 解析Hbase
+ * 使用HBase作为数据源与数据流向  TableMapReduceUtil.initTableMapperJob TableMapReduceUtil.initTableReducerJob
+ * -i testtable -c data:json -o testtable 
+ * 将testtable data:json的数据划分为 testtable data:otherColumn
  * @author JoyoungZhang@gmail.com
  *
  */

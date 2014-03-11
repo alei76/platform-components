@@ -19,6 +19,11 @@ import org.apache.hadoop.mapreduce.Job;
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 import HBaseIA.TwitBase.hbase.UsersDAO;
 
+/**
+ *  使用HBase作为数据源与数据流向
+ *	@author zhaoyong.zhang
+ *	create time 2014-3-11
+ */
 public class HamletTagger {
 
   public static class Map

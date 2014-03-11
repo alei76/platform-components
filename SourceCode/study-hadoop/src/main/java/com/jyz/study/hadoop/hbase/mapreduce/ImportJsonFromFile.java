@@ -21,7 +21,6 @@ import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -34,6 +33,14 @@ import org.json.simple.parser.JSONParser;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 // vv ImportJsonFromFile
+/**
+ * 	使用HBase作为数据流向
+ *  读取hdfs文件存放到hbase中  
+ *  -t testtable -i test-data.txt
+ *  test-data.txt的数据被加载到testtable data:link中， rowkey为md5(link) value为link
+ *	@author zhaoyong.zhang
+ *	create time 2014-3-11
+ */
 public class ImportJsonFromFile {
   private static final Log LOG = LogFactory.getLog(ImportJsonFromFile.class);
 
@@ -159,7 +166,7 @@ public class ImportJsonFromFile {
     job.setOutputFormatClass(TableOutputFormat.class);
     job.getConfiguration().set(TableOutputFormat.OUTPUT_TABLE, table);
     job.setOutputKeyClass(ImmutableBytesWritable.class);
-    job.setOutputValueClass(Writable.class);
+    job.setOutputValueClass(Put.class);
     job.setNumReduceTasks(0);
     FileInputFormat.addInputPath(job, new Path(input));
     // run the job

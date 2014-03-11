@@ -17,6 +17,11 @@ import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 
+/**
+ *  使用HBase作为数据源
+ *	@author zhaoyong.zhang
+ *	create time 2014-3-11
+ */
 public class CountShakespeare {
 
   public static class Map

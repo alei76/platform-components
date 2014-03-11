@@ -22,7 +22,6 @@ import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -33,7 +32,10 @@ import org.apache.log4j.Logger;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 /**
- * 读取hdfs文件存放到habse中
+ * 使用HBase作为数据流向
+ * 读取hdfs文件存放到hbase中
+ * -t testtable -i test-data.txt -c data:json
+ * test-data.txt的数据被加载到testtable data:json中， rowkey为md5(line) value为line
  * @author JoyoungZhang@gmail.com
  *
  */
@@ -179,7 +181,7 @@ public class ImportFromFile {
     job.setOutputFormatClass(TableOutputFormat.class);
     job.getConfiguration().set(TableOutputFormat.OUTPUT_TABLE, table);
     job.setOutputKeyClass(ImmutableBytesWritable.class);
-    job.setOutputValueClass(Writable.class);
+    job.setOutputValueClass(Put.class);
     job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
     FileInputFormat.addInputPath(job, new Path(input));
 

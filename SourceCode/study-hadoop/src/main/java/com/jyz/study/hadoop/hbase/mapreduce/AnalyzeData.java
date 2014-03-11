@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
@@ -36,7 +35,13 @@ import org.json.simple.parser.JSONParser;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 /**
+ * 使用HBase作为数据源 TableMapReduceUtil.initTableMapperJob
+ * -t testtable -c data:json -o output1
  * 分析habse数据
+ * author1 : num1
+ * author2 : num2
+ * author3 : num3
+ * 。。。
  * @author JoyoungZhang@gmail.com
  *
  */
