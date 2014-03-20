@@ -14,6 +14,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
@@ -183,6 +184,8 @@ public class ImportFromFileWithBulkLoad {
     String column = cmd.getOptionValue("c");
     String tmpoutput = cmd.getOptionValue("o");
     conf.set("conf.column", column);
+    
+//    conf.set(CommonConfigurationKeys.IO_SERIALIZATIONS_KEY, Put.class.getName());
 
     Job job = new Job(conf, "Import from file " + input + " into table " + table); // co ImportFromFile-8-JobDef Define the job with the required classes.
     job.setJarByClass(ImportFromFileWithBulkLoad.class);
@@ -192,7 +195,7 @@ public class ImportFromFileWithBulkLoad {
     job.setOutputKeyClass(ImmutableBytesWritable.class);
     //ReducerClass 无需指定，框架会自行根据 MapOutputValueClass 来决定是使用 KeyValueSortReducer 还是 PutSortReducer
     job.setOutputValueClass(Put.class);
-//    job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
+    job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
     FileInputFormat.addInputPath(job, new Path(input));
     FileOutputFormat.setOutputPath(job, new Path(tmpoutput));
 
