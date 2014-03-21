@@ -195,15 +195,15 @@ public class ImportFromFileWithBulkLoad {
     job.setOutputKeyClass(ImmutableBytesWritable.class);
     //ReducerClass 无需指定，框架会自行根据 MapOutputValueClass 来决定是使用 KeyValueSortReducer 还是 PutSortReducer
     job.setOutputValueClass(Put.class);
-    job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
+//    job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
     FileInputFormat.addInputPath(job, new Path(input));
     FileOutputFormat.setOutputPath(job, new Path(tmpoutput));
-
-    boolean result = job.waitForCompletion(true);
     
     HTable htable =new HTable(conf, table); 
     HFileOutputFormat.configureIncrementalLoad(job, htable); 
 
+    boolean result = job.waitForCompletion(true);
+    
     LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf); 
     loader.doBulkLoad(new Path(tmpoutput), htable); 
 

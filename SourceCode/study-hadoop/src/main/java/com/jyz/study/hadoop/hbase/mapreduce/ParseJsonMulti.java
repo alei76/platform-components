@@ -34,7 +34,7 @@ import org.json.simple.parser.JSONParser;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 /**
- * 	使用HBase作为数据源与数据流向 但自定义处理 只使用TableMapReduceUtil.initTableReducerJob 因为map阶段就已经 infoTable.put(infoPut)
+ * 	使用HBase作为数据源与数据流向 但自定义处理 只使用TableMapReduceUtil.initTableMapperJob 因为map阶段就已经 infoTable.put(infoPut)
  *  MapReduce作业解析每行数据为若干列
  *  -i testtable -c data:json -o infotable -l linktable 
  *  将testtable data:json的数据划分为 infotable data:otherColumn和linktable data:link两个表
