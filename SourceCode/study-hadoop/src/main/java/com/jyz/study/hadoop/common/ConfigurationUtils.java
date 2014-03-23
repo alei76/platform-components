@@ -20,8 +20,9 @@ public class ConfigurationUtils {
 	    Configuration conf = new Configuration();
 	    conf.set("fs.defaultFS", "hdfs://" + LOCATION + ":9000");
 	    conf.set("mapred.job.tracker", "" + LOCATION + ":9001");  
-	    conf.set("mapreduce.framework.name", "yarn");
+	    conf.set("mapreduce.framework.name", "local");
 	    conf.set("yarn.resourcemanager.address", "192.168.1.200:8032");
+//	    conf.set("mapred.remote.os", "Linux");
 	    return conf;
 	}
 

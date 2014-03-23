@@ -99,7 +99,7 @@ public class ImportFromFileWithBulkLoad {
     throws IOException {
       try {
         String lineString = line.toString();
-        byte[] rowkey = DigestUtils.md5(lineString); // co ImportFromFile-4-RowKey The row key is the MD5 hash of the line to generate a random key.
+        byte[] rowkey = Bytes.toBytes(lineString.hashCode()); // co ImportFromFile-4-RowKey The row key is the MD5 hash of the line to generate a random key.
         Put put = new Put(rowkey);
         put.add(family, qualifier, Bytes.toBytes(lineString)); // co ImportFromFile-5-Put Store the original data in a column in the given table.
         context.write(new ImmutableBytesWritable(rowkey), put);
@@ -170,7 +170,7 @@ public class ImportFromFileWithBulkLoad {
    */
   // vv ImportFromFile
   public static void main(String[] args) throws Exception {
-    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
+    Configuration conf = ConfigurationUtils.getHadoopConfiguration();
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs(); // co ImportFromFile-7-Args Give the command line arguments to the generic parser first to handle "-Dxyz" properties.
     CommandLine cmd = parseArgs(otherArgs);
@@ -199,12 +199,12 @@ public class ImportFromFileWithBulkLoad {
     FileInputFormat.addInputPath(job, new Path(input));
     FileOutputFormat.setOutputPath(job, new Path(tmpoutput));
     
-    HTable htable =new HTable(conf, table); 
+    Configuration hbaseConf = ConfigurationUtils.getHbaseConfiguration();
+    HTable htable =new HTable(hbaseConf, table); 
     HFileOutputFormat.configureIncrementalLoad(job, htable); 
-
     boolean result = job.waitForCompletion(true);
     
-    LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf); 
+    LoadIncrementalHFiles loader = new LoadIncrementalHFiles(hbaseConf); 
     loader.doBulkLoad(new Path(tmpoutput), htable); 
 
     System.exit(result ? 0 : 1);

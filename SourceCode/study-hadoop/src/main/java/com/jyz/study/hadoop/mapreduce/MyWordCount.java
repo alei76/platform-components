@@ -77,7 +77,6 @@ public class MyWordCount {
 //	  String arch = System.getProperty("sun.arch.data.model");
 //	  System.out.println(arch);
 //	  System.out.println(System.getProperty("os.arch"));
-//	  
 //	  System.loadLibrary("hadoop");
 	  
   }
