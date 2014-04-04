@@ -240,7 +240,7 @@ public class AnalyzeData {
     Job job = new Job(conf, "Analyze data in " + table);
     job.setJarByClass(AnalyzeData.class);
     TableMapReduceUtil.initTableMapperJob(table, scan, AnalyzeMapper.class,
-      Text.class, IntWritable.class, job, false); // co AnalyzeData-6-Util Set up the table mapper phase using the supplied utility.
+      Text.class, IntWritable.class, job); // co AnalyzeData-6-Util Set up the table mapper phase using the supplied utility.
     job.setReducerClass(AnalyzeReducer.class);
     job.setOutputKeyClass(Text.class); // co AnalyzeData-7-Output Configure the reduce phase using the normal Hadoop syntax.
     job.setOutputValueClass(IntWritable.class);

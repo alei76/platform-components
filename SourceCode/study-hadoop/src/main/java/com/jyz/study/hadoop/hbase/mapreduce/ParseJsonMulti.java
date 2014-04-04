@@ -244,7 +244,7 @@ public class ParseJsonMulti {
     Job job = new Job(conf, "Parse data in " + input + ", into two tables");
     job.setJarByClass(ParseJsonMulti.class);
     TableMapReduceUtil.initTableMapperJob(input, scan, ParseMapper.class,
-      ImmutableBytesWritable.class, Put.class, job, false);
+      ImmutableBytesWritable.class, Put.class, job);
     job.setOutputFormatClass(NullOutputFormat.class); // co ParseJsonMulti-5-Null Set the output format to be ignored by the framework.
     job.setNumReduceTasks(0);
 

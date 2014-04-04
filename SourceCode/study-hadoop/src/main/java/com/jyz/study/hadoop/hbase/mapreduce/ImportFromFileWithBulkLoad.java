@@ -14,7 +14,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
@@ -49,7 +48,7 @@ public class ImportFromFileWithBulkLoad {
   private static final Log LOG = LogFactory.getLog(ImportFromFileWithBulkLoad.class);
 
   // vv ImportFromFile
-  public static final String NAME = "ImportFromFile"; // co ImportFromFile-1-Name Define a job name for later use.
+  public static final String NAME = "ImportFromFileWithBulkLoad"; // co ImportFromFile-1-Name Define a job name for later use.
   public enum Counters { LINES }
 
   // ^^ ImportFromFile
@@ -170,7 +169,7 @@ public class ImportFromFileWithBulkLoad {
    */
   // vv ImportFromFile
   public static void main(String[] args) throws Exception {
-    Configuration conf = ConfigurationUtils.getHadoopConfiguration();
+    Configuration conf = ConfigurationUtils.getHbaseConfiguration();
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs(); // co ImportFromFile-7-Args Give the command line arguments to the generic parser first to handle "-Dxyz" properties.
     CommandLine cmd = parseArgs(otherArgs);
@@ -187,24 +186,24 @@ public class ImportFromFileWithBulkLoad {
     
 //    conf.set(CommonConfigurationKeys.IO_SERIALIZATIONS_KEY, Put.class.getName());
 
-    Job job = new Job(conf, "Import from file " + input + " into table " + table); // co ImportFromFile-8-JobDef Define the job with the required classes.
+    Job job = new Job(conf, "Import from file with bulkload " + input + " into table " + table); // co ImportFromFile-8-JobDef Define the job with the required classes.
     job.setJarByClass(ImportFromFileWithBulkLoad.class);
     job.setMapperClass(ImportMapper.class);
 //    job.setOutputFormatClass(TableOutputFormat.class);
 //    job.getConfiguration().set(TableOutputFormat.OUTPUT_TABLE, table);
-    job.setOutputKeyClass(ImmutableBytesWritable.class);
+    job.setMapOutputKeyClass(ImmutableBytesWritable.class);
     //ReducerClass 无需指定，框架会自行根据 MapOutputValueClass 来决定是使用 KeyValueSortReducer 还是 PutSortReducer
-    job.setOutputValueClass(Put.class);
-//    job.setNumReduceTasks(0); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
+    job.setMapOutputValueClass(Put.class);
+//    job.setNumReduceTasks(2); // co ImportFromFile-9-MapOnly This is a map only job, therefore tell the framework to bypass the reduce step.
     FileInputFormat.addInputPath(job, new Path(input));
     FileOutputFormat.setOutputPath(job, new Path(tmpoutput));
     
-    Configuration hbaseConf = ConfigurationUtils.getHbaseConfiguration();
-    HTable htable =new HTable(hbaseConf, table); 
+//    Configuration hbaseConf = ConfigurationUtils.getHbaseConfiguration();
+    HTable htable = new HTable(conf, table); 
     HFileOutputFormat.configureIncrementalLoad(job, htable); 
     boolean result = job.waitForCompletion(true);
     
-    LoadIncrementalHFiles loader = new LoadIncrementalHFiles(hbaseConf); 
+    LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf); 
     loader.doBulkLoad(new Path(tmpoutput), htable); 
 
     System.exit(result ? 0 : 1);
