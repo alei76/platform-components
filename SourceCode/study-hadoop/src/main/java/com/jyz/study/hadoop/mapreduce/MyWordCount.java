@@ -63,13 +63,14 @@ public class MyWordCount {
       System.err.println("Usage: wordcount <in> <out>");
       System.exit(2);
     }
-    Job job = new Job(conf, "word count");
+    Job job = new Job(conf, "zzy");
     job.setJarByClass(MyWordCount.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setCombinerClass(IntSumReducer.class);
     job.setReducerClass(IntSumReducer.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
+    job.setNumReduceTasks(1);
     FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
     FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);
