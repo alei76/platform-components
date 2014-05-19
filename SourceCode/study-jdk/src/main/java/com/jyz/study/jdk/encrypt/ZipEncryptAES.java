@@ -255,13 +255,16 @@ public class ZipEncryptAES {
 	}
 
 	public static void main(String args[]) throws Exception {
-		long a = System.currentTimeMillis();
-		new ZipEncryptAES().encryptZip("F:\\test备份.jar", "F:\\test备份.zip", "F:\\public.key");
-
-		System.out.println(System.currentTimeMillis() - a);
-		a = System.currentTimeMillis();
-
-		new ZipEncryptAES().decryptUnzip("F:\\test.zip", "F:\\test2", "F:\\public.key");
-		System.out.println(System.currentTimeMillis() - a);
+//		long a = System.currentTimeMillis();
+//		new ZipEncryptAES().encryptZip("F:\\test备份.jar", "F:\\test备份.zip", "F:\\public.key");
+//
+//		System.out.println(System.currentTimeMillis() - a);
+//		a = System.currentTimeMillis();
+//
+//		new ZipEncryptAES().decryptUnzip("F:\\test.zip", "F:\\test2", "F:\\public.key");
+//		System.out.println(System.currentTimeMillis() - a);
+//	    [hdfs://192.168.1.200:9000/user/root/input/test-data.txt:0+134217728, hdfs://192.168.1.200:9000/user/root/input/test-data.txt:134217728+18093772]
+	    System.out.println(134217728/(1024*1024));
+	    System.out.println(18093772/(1024*1024));
 	}
 }
