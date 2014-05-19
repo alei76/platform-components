@@ -21,6 +21,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.IdentityTableReducer;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableMapper;
+import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -198,9 +199,11 @@ public class ParseJson2 {
       "(map only)");
     job.setJarByClass(ParseJson2.class);
     TableMapReduceUtil.initTableMapperJob(input, scan, ParseMapper.class,
-      ImmutableBytesWritable.class, Put.class, job);
-    TableMapReduceUtil.initTableReducerJob(output,
-      IdentityTableReducer.class, job);
+      ImmutableBytesWritable.class, Put.class, job, false);
+    job.setOutputFormatClass(TableOutputFormat.class);
+    job.getConfiguration().set(TableOutputFormat.OUTPUT_TABLE, "testtable");
+//    TableMapReduceUtil.initTableReducerJob(output,
+//      IdentityTableReducer.class, job);
     /*[*/job.setNumReduceTasks(0);/*]*/
     /*...*/
     // ^^ ParseJson2

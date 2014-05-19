@@ -23,6 +23,9 @@ import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.CompressionCodec;
+import org.apache.hadoop.io.compress.GzipCodec;
+import org.apache.hadoop.io.compress.SnappyCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -33,6 +36,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.jyz.study.hadoop.common.ConfigurationUtils;
+import com.jyz.study.hadoop.common.Utils;
 
 /**
  * 使用HBase作为数据源 TableMapReduceUtil.initTableMapperJob
@@ -215,6 +219,11 @@ public class AnalyzeData {
     /*...*/
     // ^^ AnalyzeData
     Configuration conf = ConfigurationUtils.getHbaseConfiguration();
+    
+//    conf.setBoolean("mapred.compress.map.output", true);  
+//    conf.setClass("mapred.map.output.compression.codec",GzipCodec.class, CompressionCodec.class);  
+
+    
     String libjars = conf.get("tmpjars");
     String[] otherArgs =
       new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -225,6 +234,7 @@ public class AnalyzeData {
     String table = cmd.getOptionValue("t");
     String column = cmd.getOptionValue("c");
     String output = cmd.getOptionValue("o");
+    Utils.deleteIfExists(conf, output);
 
     // vv AnalyzeData
     Scan scan = new Scan(); // co AnalyzeData-5-Scan Create and configure a Scan instance.
@@ -236,16 +246,19 @@ public class AnalyzeData {
         scan.addFamily(colkey[0]);
       }
     }
-
     Job job = new Job(conf, "Analyze data in " + table);
+//    job.addFileToClassPath(new Path("file:/D:/Maven/repo/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar"));
+//    DistributedCache.addFileToClassPath(new Path("/libs/hbase-0.92.1-cdh4.0.0-security.jar"), job.getConfiguration());
     job.setJarByClass(AnalyzeData.class);
     TableMapReduceUtil.initTableMapperJob(table, scan, AnalyzeMapper.class,
-      Text.class, IntWritable.class, job); // co AnalyzeData-6-Util Set up the table mapper phase using the supplied utility.
+      Text.class, IntWritable.class, job, false); // co AnalyzeData-6-Util Set up the table mapper phase using the supplied utility.
     job.setReducerClass(AnalyzeReducer.class);
     job.setOutputKeyClass(Text.class); // co AnalyzeData-7-Output Configure the reduce phase using the normal Hadoop syntax.
     job.setOutputValueClass(IntWritable.class);
     job.setNumReduceTasks(1);
     FileOutputFormat.setOutputPath(job, new Path(output));
+    FileOutputFormat.setCompressOutput(job, true);  
+    FileOutputFormat.setOutputCompressorClass(job, SnappyCodec.class);  
     System.exit(job.waitForCompletion(true) ? 0 : 1);
   }
   // ^^ AnalyzeData

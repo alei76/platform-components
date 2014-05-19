@@ -10,7 +10,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -33,6 +32,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.jyz.study.hadoop.common.ConfigurationUtils;
+import com.jyz.study.hadoop.common.Utils;
 
 /**
  * 使用HBase作为数据流向
@@ -182,6 +182,7 @@ public class ImportFromFileWithBulkLoad {
     String input = cmd.getOptionValue("i");
     String column = cmd.getOptionValue("c");
     String tmpoutput = cmd.getOptionValue("o");
+    Utils.deleteIfExists(conf, tmpoutput);
     conf.set("conf.column", column);
     
 //    conf.set(CommonConfigurationKeys.IO_SERIALIZATIONS_KEY, Put.class.getName());
