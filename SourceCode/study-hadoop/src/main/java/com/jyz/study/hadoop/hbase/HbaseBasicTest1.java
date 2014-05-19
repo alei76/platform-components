@@ -310,45 +310,45 @@ public class HbaseBasicTest1 {
     public static void main(String[] args) throws Exception {
 
         // 创建表
-        String tableName = "blog2";
+        String tableName = "blog3";
         String[] family = { "article", "author" };
-//        creatTable(tableName, family);
+        creatTable(tableName, family);
 
         // 为表添加数据
 
-        String[] column1 = { "title", "content", "tag" };
-        String[] value1 = {
-                "Head First HBase",
-                "HBase is the Hadoop database. Use it when you need random, realtime read/write access to your Big Data.",
-                "Hadoop,HBase,NoSQL" };
-        String[] column2 = { "name", "nickname" };
-        String[] value2 = { "nicholas", "lee" };
-        addData("rowkey1", "blog2", column1, value1, column2, value2);
-        addData("rowkey2", "blog2", column1, value1, column2, value2);
-        addData("rowkey3", "blog2", column1, value1, column2, value2);
-
-        // 遍历查询
-        getResultScann("blog2", "rowkey4", "rowkey5");
-        // 根据row key范围遍历查询
-        getResultScann("blog2", "rowkey4", "rowkey5");
-
-        // 查询
-        getResult("blog2", "rowkey1");
-
-        // 查询某一列的值
-        getResultByColumn("blog2", "rowkey1", "author", "name");
-
-        // 更新列
-        updateTable("blog2", "rowkey1", "author", "name", "bin");
-
-        // 查询某一列的值
-        getResultByColumn("blog2", "rowkey1", "author", "name");
-
-        // 查询某列的多版本
-        getResultByVersion("blog2", "rowkey1", "author", "name");
-
-        // 删除一列
-        deleteColumn("blog2", "rowkey1", "author", "nickname");
+//        String[] column1 = { "title", "content", "tag" };
+//        String[] value1 = {
+//                "Head First HBase",
+//                "HBase is the Hadoop database. Use it when you need random, realtime read/write access to your Big Data.",
+//                "Hadoop,HBase,NoSQL" };
+//        String[] column2 = { "name", "nickname" };
+//        String[] value2 = { "nicholas", "lee" };
+//        addData("rowkey1", "blog2", column1, value1, column2, value2);
+//        addData("rowkey2", "blog2", column1, value1, column2, value2);
+//        addData("rowkey3", "blog2", column1, value1, column2, value2);
+//
+//        // 遍历查询
+//        getResultScann("blog2", "rowkey4", "rowkey5");
+//        // 根据row key范围遍历查询
+//        getResultScann("blog2", "rowkey4", "rowkey5");
+//
+//        // 查询
+//        getResult("blog2", "rowkey1");
+//
+//        // 查询某一列的值
+//        getResultByColumn("blog2", "rowkey1", "author", "name");
+//
+//        // 更新列
+//        updateTable("blog2", "rowkey1", "author", "name", "bin");
+//
+//        // 查询某一列的值
+//        getResultByColumn("blog2", "rowkey1", "author", "name");
+//
+//        // 查询某列的多版本
+//        getResultByVersion("blog2", "rowkey1", "author", "name");
+//
+//        // 删除一列
+//        deleteColumn("blog2", "rowkey1", "author", "nickname");
 
         // 删除所有列
 //        deleteAllColumn("blog2", "rowkey1");
