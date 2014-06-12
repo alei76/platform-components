@@ -310,9 +310,9 @@ public class HbaseBasicTest1 {
     public static void main(String[] args) throws Exception {
 
         // 创建表
-        String tableName = "blog3";
-        String[] family = { "article", "author" };
-        creatTable(tableName, family);
+        String tableName = "blog2";
+//        String[] family = { "article", "author" };
+//        creatTable(tableName, family);
 
         // 为表添加数据
 
@@ -328,12 +328,12 @@ public class HbaseBasicTest1 {
 //        addData("rowkey3", "blog2", column1, value1, column2, value2);
 //
 //        // 遍历查询
-//        getResultScann("blog2", "rowkey4", "rowkey5");
+//        getResultScann("blog2");
 //        // 根据row key范围遍历查询
 //        getResultScann("blog2", "rowkey4", "rowkey5");
 //
 //        // 查询
-//        getResult("blog2", "rowkey1");
+        getResult("blog2", "rowkey1");
 //
 //        // 查询某一列的值
 //        getResultByColumn("blog2", "rowkey1", "author", "name");

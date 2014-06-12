@@ -15,6 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.ReflectionUtils;
 
 import com.jyz.study.hadoop.common.ConfigurationUtils;
+import com.jyz.study.hadoop.common.Utils;
 import com.jyz.study.hadoop.hdfs.SequenceFileTest;
 
 public class MapReduceReadFile {
@@ -63,6 +64,7 @@ public class MapReduceReadFile {
 	reader = new SequenceFile.Reader(fs, path, conf);
 	FileInputFormat.addInputPath(job, path);
 	FileOutputFormat.setOutputPath(job, new Path("/user/root/output96"));
+	Utils.deleteIfExists(conf, "/user/root/output96");
 	System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 

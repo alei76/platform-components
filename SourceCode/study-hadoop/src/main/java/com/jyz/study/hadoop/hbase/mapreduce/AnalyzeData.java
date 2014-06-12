@@ -22,13 +22,12 @@ import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.compress.CompressionCodec;
-import org.apache.hadoop.io.compress.GzipCodec;
-import org.apache.hadoop.io.compress.SnappyCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -223,6 +222,10 @@ public class AnalyzeData {
 //    conf.setBoolean("mapred.compress.map.output", true);  
 //    conf.setClass("mapred.map.output.compression.codec",GzipCodec.class, CompressionCodec.class);  
 
+//    conf.setBoolean("mapred.output.compress", true);
+//    conf.setBoolean("mapreduce.output.fileoutputformat.compress", true);
+//    conf.set("mapred.output.compression.codec", "org.apache.hadoop.io.compress.GzipCodec");
+//    conf.set("mapreduce.output.fileoutputformat.compress.codec", "org.apache.hadoop.io.compress.GzipCodec");
     
     String libjars = conf.get("tmpjars");
     String[] otherArgs =
@@ -257,8 +260,13 @@ public class AnalyzeData {
     job.setOutputValueClass(IntWritable.class);
     job.setNumReduceTasks(1);
     FileOutputFormat.setOutputPath(job, new Path(output));
-    FileOutputFormat.setCompressOutput(job, true);  
-    FileOutputFormat.setOutputCompressorClass(job, SnappyCodec.class);  
+//    FileOutputFormat.setCompressOutput(job, true);  
+//    FileOutputFormat.setOutputCompressorClass(job, Lz4Codec.class);  
+    
+    SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.BLOCK);  
+//    mapreduce.output.fileoutputformat.compress.type
+//    mapred.output.compression.type
+
     System.exit(job.waitForCompletion(true) ? 0 : 1);
   }
   // ^^ AnalyzeData
