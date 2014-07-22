@@ -1,14 +1,16 @@
-package com.jyz.study.hadoop.hbase.join;
+package com.jyz.study.hadoop.mapreduce.joinmore;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Partitioner;
+
+import com.jyz.study.hadoop.common.TextPair;
 
 /**
  * 分区
  * @author JoyoungZhang@gmail.com
  *
  */
-public class Example_Join_01_Partitioner extends Partitioner<TextPair, Text> {
+public class Example_JoinMore_01_Partitioner extends Partitioner<TextPair, Text> {
     @Override
     public int getPartition(TextPair key, Text value, int numParititon) {
 	return Math.abs(key.getFirst().hashCode() * 127) % numParititon;

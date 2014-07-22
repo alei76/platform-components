@@ -98,7 +98,7 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
     // Get the path of the temporary output file
     final Path outputPath = FileOutputFormat.getOutputPath(context);
     final Path outputdir = new FileOutputCommitter(outputPath, context).getWorkPath();
-    final Path ignoreRowkeyOutputPath = new Path(outputPath.getName() + "_deleted");//TODO if exists, deleted it first
+    final Path ignoreOutputPath = new Path(outputPath.getName() + "_ignore");
   
     final Configuration conf = context.getConfiguration();
     final FileSystem fs = outputdir.getFileSystem(conf);
@@ -111,9 +111,9 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
     final boolean compactionExclude = conf.getBoolean(
         "hbase.mapreduce.hfileoutputformat.compaction.exclude", false);
 
-    if(fs.exists(ignoreRowkeyOutputPath)){
-	LOG.info("Deleted " + ignoreRowkeyOutputPath.toString() + " success.");
-	fs.delete(ignoreRowkeyOutputPath, true);
+    if(fs.exists(ignoreOutputPath)){
+	LOG.info("Deleted " + ignoreOutputPath.toString() + " success.");
+	fs.delete(ignoreOutputPath, true);
     }
   
     // create a map from column family to the compression algorithm
@@ -140,7 +140,7 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
       // Map of families to writers and how much has been output on the writer.
       private final Map<byte [], WriterLength> writers =
         new TreeMap<byte [], WriterLength>(Bytes.BYTES_COMPARATOR);
-      private final FSDataOutputStream dos = fs.create(ignoreRowkeyOutputPath);
+      private final FSDataOutputStream dos = fs.create(ignoreOutputPath);
       private byte [] previousRow = HConstants.EMPTY_BYTE_ARRAY;
       private final byte [] now = Bytes.toBytes(System.currentTimeMillis());
       private boolean rollRequested = false;
@@ -154,10 +154,11 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
         }
 
         byte [] rowKey = kv.getRow();
-        long length = kv.getLength( );
+        long length = kv.getLength();
         byte [] family = kv.getFamily();
+        
         if(ignore(kv)){
-            byte[] readBuf = kv.getValue();
+            byte[] readBuf = rowKey;
             dos.write(readBuf, 0, readBuf.length);
             dos.write(Bytes.toBytes("\n"));
             return;
@@ -348,13 +349,13 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
    * The user should be sure to set the map output value class to either KeyValue or Put before
    * running this function.
    */
-  public static void configureIncrementalLoad(Job job, HTable table)
+  public static void configureIncrementalLoad(Job job, HTable table, Class<? extends HFileOutputFormatBase> hfileOutputFormatBase)
   throws IOException {
     Configuration conf = job.getConfiguration();
 
     job.setOutputKeyClass(ImmutableBytesWritable.class);
     job.setOutputValueClass(KeyValue.class);
-    job.setOutputFormatClass(HFileOutputFormatBase.class);
+    job.setOutputFormatClass(hfileOutputFormatBase);
 
     // Based on the configured map output class, set the correct reducer to properly
     // sort the incoming values.
@@ -546,7 +547,7 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
   
   public boolean ignore(KeyValue kv){
       boolean ignore = Bytes.toString(kv.getValue()).indexOf("Del") >= 0;
-	LOG.info("======================base ignore is " + ignore);
+	LOG.info("base ignore is " + ignore);
 	return ignore;
   }
   

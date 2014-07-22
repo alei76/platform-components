@@ -19,12 +19,6 @@ import com.jyz.study.hadoop.common.Utils;
 
 public class MyWordCount {
     
-    static {
-//	System.setProperty("hadoop.home.dir", "D:\\Hadoop\\tar\\hadoop-2.2.0\\hadoop-2.2.0");
-//	System.setProperty("user.name", "root");
-//	System.out.println(System.getenv("HADOOP_HOME"));
-    }
-
   public static class TokenizerMapper 
        extends Mapper<Object, Text, Text, IntWritable>{
     
@@ -60,8 +54,8 @@ public class MyWordCount {
   public static void main(String[] args) throws Exception {
     Configuration conf = ConfigurationUtils.getHadoopConfiguration();
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-    if (otherArgs.length != 2) {
-      System.err.println("Usage: wordcount <in> <out>");
+    if (otherArgs.length != 3) {
+      System.err.println("Usage: wordcount <in> <in> <out>");
       System.exit(2);
     }
     Job job = new Job(conf, "myWordCount");
@@ -71,16 +65,14 @@ public class MyWordCount {
     job.setReducerClass(IntSumReducer.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
-    job.setNumReduceTasks(0);
+    job.setNumReduceTasks(1);
+//    job.setInputFormatClass(TextInputFormat.class);
+//    job.setOutputFormatClass(TextOutputFormat.class);
     FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
-    Utils.deleteIfExists(conf, otherArgs[1]);
-    FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+    Utils.deleteIfExists(conf, otherArgs[2]);
+    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);
-//	  System.out.println(System.getProperty("java.library.path")); 
-//	  String arch = System.getProperty("sun.arch.data.model");
-//	  System.out.println(arch);
-//	  System.out.println(System.getProperty("os.arch"));
-//	  System.loadLibrary("hadoop");
 	  
   }
 }

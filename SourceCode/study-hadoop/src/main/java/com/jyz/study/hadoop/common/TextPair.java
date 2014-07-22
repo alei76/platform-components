@@ -1,4 +1,4 @@
-package com.jyz.study.hadoop.hbase.join;
+package com.jyz.study.hadoop.common;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -7,6 +7,11 @@ import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 
+/**
+ * Tuple类
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class TextPair implements WritableComparable<TextPair> {
     private Text first;
     private Text second;

@@ -1,7 +1,7 @@
-package com.jyz.study.hadoop.hbase.join;
+package com.jyz.study.hadoop.mapreduce.different;
 
 /**
- * 测试代码
+ * 对比两个文件 找出差异
  */
 import java.io.IOException;
 
@@ -14,32 +14,36 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 import com.jyz.study.hadoop.common.ConfigurationUtils;
+import com.jyz.study.hadoop.common.TextPair;
+import com.jyz.study.hadoop.common.Utils;
 
-public class Example_Join_01_Test {
+public class Example_Different_01_Test {
     public static void main(String agrs[]) throws IOException,
 	    InterruptedException, ClassNotFoundException {
 	Configuration conf = ConfigurationUtils.getHadoopConfiguration();
 	GenericOptionsParser parser = new GenericOptionsParser(conf, agrs);
 	String[] otherArgs = parser.getRemainingArgs();
 	if (agrs.length < 3) {
-	    System.err
-		    .println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
+	    System.err.println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
 	    System.exit(2);
 	}
-	Job job = new Job(conf, "Example_Join_01_Test");
+	Utils.deleteIfExists(conf, otherArgs[2]);
+	Job job = new Job(conf, "Example_Different_01_Test");
 
-	job.setJarByClass(Example_Join_01_Test.class);
+	job.setJarByClass(Example_Different_01_Test.class);
 	// 设置Map相关内容
-	job.setMapperClass(Example_Join_01_Mapper.class);
+	job.setMapperClass(Example_Different_01_Mapper.class);
 	// 设置Map的输出
 	job.setMapOutputKeyClass(TextPair.class);
 	job.setMapOutputValueClass(Text.class);
 	// 设置partition
-	job.setPartitionerClass(Example_Join_01_Partitioner.class);
+	job.setPartitionerClass(Example_Different_01_Partitioner.class);
 	// 在分区之后按照指定的条件分组
-	job.setGroupingComparatorClass(Example_Join_01_Comparator.class);
+	job.setGroupingComparatorClass(Example_Different_01_Comparator.class);
+	// key比较函数
+	job.setSortComparatorClass(Example_Different_01_KeyComparator.class); 
 
-	job.setReducerClass(Example_Join_01_Reduce.class);
+	job.setReducerClass(Example_Different_01_Reduce.class);
 	// 设置reduce的输出
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(Text.class);

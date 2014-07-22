@@ -15,7 +15,7 @@ import com.jyz.study.hadoop.common.ConfigurationUtils;
 public class SequenceFileTest {
     /** * @param args */
     public static FileSystem fs;
-    public static final String Output_path = "/user/root/test/A.txt";
+    public static final String Output_path = "/user/root/test/SequenceFile.txt";
     public static Random random = new Random();
     private static final String[] DATA = { "One,two,buckle my shoe",
 	    "Three,four,shut the door", "Five,six,pick up sticks",

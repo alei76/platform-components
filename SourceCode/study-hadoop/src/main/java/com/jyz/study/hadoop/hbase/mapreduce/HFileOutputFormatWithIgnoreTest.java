@@ -200,7 +200,7 @@ public class HFileOutputFormatWithIgnoreTest {
     
 //    Configuration hbaseConf = ConfigurationUtils.getHbaseConfiguration();
     HTable htable = new HTable(conf, table); 
-    HFileOutputFormatWithIgnore.configureIncrementalLoad(job, htable); 
+    HFileOutputFormatWithIgnore.configureIncrementalLoad(job, htable, HFileOutputFormatWithIgnore.class); 
     boolean result = job.waitForCompletion(true);
     
     LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf); 

@@ -1,7 +1,9 @@
-package com.jyz.study.hadoop.hbase.join;
+package com.jyz.study.hadoop.mapreduce.join;
 
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
+
+import com.jyz.study.hadoop.common.TextPair;
 
 /**
  * 分组比较器
