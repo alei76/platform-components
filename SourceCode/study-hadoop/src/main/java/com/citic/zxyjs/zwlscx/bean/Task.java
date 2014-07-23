@@ -9,7 +9,6 @@ import org.apache.hadoop.io.Writable;
 
 /**
  * 任务
- * 
  * @author JoyoungZhang@gmail.com
  */
 public class Task implements Writable  {
@@ -90,14 +89,12 @@ public class Task implements Writable  {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-	// TODO Auto-generated method stub
-	
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-	// TODO Auto-generated method stub
-	
+	leftSource.write(out);
+	rightSource.write(out);
     }
 
 }
