@@ -25,8 +25,8 @@ public class JoinJob {
     public Job generateJob(Task task, boolean init) throws IOException {
 	Configuration conf = new Configuration();
 	DefaultStringifier.store(conf, task ,"task");
-	DefaultStringifier.store(conf, init ,"init");
-	
+	conf.set("init", String.valueOf(init));
+
 	Job job = new Job(conf, "JoinJob");
 	job.setJarByClass(JoinJob.class);
 	

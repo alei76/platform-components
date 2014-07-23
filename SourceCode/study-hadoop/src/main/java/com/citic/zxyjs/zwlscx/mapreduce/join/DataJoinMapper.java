@@ -34,7 +34,7 @@ public class DataJoinMapper {
 
 	protected Text generateGroupKey(TaggedMapOutput aRecord, Context context) throws IOException {
 	    Task task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);
-	    boolean init = DefaultStringifier.load(context.getConfiguration(), "init", Boolean.class);
+	    boolean init = context.getConfiguration().getBoolean("init", false);
 	    
 	    String line = aRecord.getData().toString();
 	    String[] tokens = line.split(",");
@@ -44,7 +44,7 @@ public class DataJoinMapper {
 
 	protected TaggedMapOutput generateTaggedMapOutput(Text value, Context context) throws IOException {
 	    Task task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);
-	    boolean init = DefaultStringifier.load(context.getConfiguration(), "init", Boolean.class);
+	    boolean init = context.getConfiguration().getBoolean("init", false);
 	    
 	    TaggedWritable retv = new TaggedWritable(value);
 	    retv.setTag(this.inputTag);

@@ -1,13 +1,17 @@
 package com.citic.zxyjs.zwlscx.bean;
 
-import java.io.Serializable;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
+import org.apache.hadoop.io.Writable;
 
 /**
  * 列实体对象
  * 
  * @author JoyoungZhang@gmail.com
  */
-public class Field implements Serializable {
+public class Field implements Writable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +32,18 @@ public class Field implements Serializable {
 
     public void setName(String name) {
 	this.name = name;
+    }
+
+    @Override
+    public void readFields(DataInput in) throws IOException {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void write(DataOutput out) throws IOException {
+	// TODO Auto-generated method stub
+	
     }
 
 }
