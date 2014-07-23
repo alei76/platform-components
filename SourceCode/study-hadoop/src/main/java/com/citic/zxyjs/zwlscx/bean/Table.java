@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
 public class Table extends Source implements Writable{
@@ -31,14 +32,16 @@ public class Table extends Source implements Writable{
 
     @Override
     public void readFields(DataInput in) throws IOException {
-	// TODO Auto-generated method stub
-	
+	super.readFields(in);
+	this.hasZipperTable = in.readBoolean();
+	this.zipperTableName = Text.readString(in);
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-	// TODO Auto-generated method stub
-	
+	super.write(out);
+	out.writeBoolean(hasZipperTable);
+	Text.writeString(out, zipperTableName);
     }
     
 }

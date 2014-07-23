@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
 /**
@@ -27,14 +28,14 @@ public class File extends Source implements Writable{
     
     @Override
     public void readFields(DataInput in) throws IOException {
-	// TODO Auto-generated method stub
-	
+	super.readFields(in);
+	this.path = Text.readString(in);
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-	// TODO Auto-generated method stub
-	
+	super.write(out);
+	Text.writeString(out, path);
     }
     
 
