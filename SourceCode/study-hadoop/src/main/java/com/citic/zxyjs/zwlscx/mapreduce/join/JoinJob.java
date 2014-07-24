@@ -20,17 +20,19 @@ import com.citic.zxyjs.zwlscx.mapreduce.lib.input.MultipleInputs;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 import com.jyz.study.hadoop.common.Utils;
 
+/**
+ * 文件关联Job
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class JoinJob {
-
-    public JoinJob() {
-    }
 
     public Job generateJob(Task task, boolean init) throws IOException {
 	Configuration conf = ConfigurationUtils.getHbaseConfiguration();
 	DefaultStringifier.store(conf, task ,"task");
 	conf.set("init", String.valueOf(init));
 
-	Job job = new Job(conf, "JoinJob");
+	Job job = new Job(conf, "JoinJob[" + task.getIdentify() + "]");
 	job.setJarByClass(JoinJob.class);
 	
 	switch(task.getSourceType()){

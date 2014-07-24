@@ -43,9 +43,6 @@ public class ExecutorService {
 
 	JobControl jc = new JobControl("JobControl");
 	jc.addJobCollection(controlledJobs);
-//	LOG.info("将要运行的Job如下：");
-//	LOG.info("Job信息：" + Arrays.toString(jobs.toArray()));
-//	LOG.info("ControlledJob信息：" + Arrays.toString(controlledJobs.toArray()));
 
 	Thread jcThread = new Thread(jc);
 	jcThread.start();

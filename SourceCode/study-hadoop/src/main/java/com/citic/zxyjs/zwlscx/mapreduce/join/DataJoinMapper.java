@@ -127,7 +127,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = ParseXmlUtils.parseXml().getTasks().get(0);
+	    this.task = ParseXmlUtils.parseXml().getTasks().get(1);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    Table currentTable = null;
@@ -204,7 +204,6 @@ public class DataJoinMapper {
 	    }
 	    return new Text(groupKey.toString());
 	}
-
 	
     }
 }

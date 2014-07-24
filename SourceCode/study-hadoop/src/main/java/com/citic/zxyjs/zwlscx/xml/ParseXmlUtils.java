@@ -80,8 +80,8 @@ public class ParseXmlUtils {
 	t2.setTaskType(TaskType.Join);
 	
 	List<Task> tasks = new ArrayList<Task>();
-//	tasks.add(t1);
-	tasks.add(t2);
+	tasks.add(t1);
+//	tasks.add(t2);
 	
 	conf.setTasks(tasks);
 	conf.setInit(false);
