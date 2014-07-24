@@ -131,5 +131,8 @@ public class Task implements Writable  {
 	Text.writeString(out, output);
 	WritableUtils.writeEnum(out, taskType);
     }
-
+    
+    public String getIdentify(){
+	return leftSource.getName() + " " + rightSource.getName();
+    }
 }

@@ -1,7 +1,7 @@
 package com.citic.zxyjs.zwlscx.bean;
 
 /**
- * 任务类别
+ * 任务类型
  * 
  * @author JoyoungZhang@gmail.com
  */
