@@ -38,13 +38,13 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  */
 public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> extends Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT> {
 
-    protected String inputFile = null;
+    protected String datasource = null;
 
     protected Text inputTag = null;
 
     protected void setup(Context context) throws IOException, InterruptedException {
-	this.inputFile = ((FileSplit) context.getInputSplit()).getPath().toString();
-	this.inputTag = generateInputTag();
+	this.datasource = generateDatasource(context);;
+	this.inputTag = generateInputTag(context);
     }
 
     protected void map(KEYIN key, VALUEIN value, Context context) throws IOException, InterruptedException {
@@ -58,15 +58,23 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
 	}
 	context.write(groupKey, aRecord);
     }
-
+    
+    /**
+     * Determine the source input based on the input file name.
+     * 
+     * @param inputFile
+     * @return the source tag computed from the given file name.
+     */
+    protected abstract String generateDatasource(Context context) throws IOException;
+	
+    
     /**
      * Determine the source tag based on the input file name.
      * 
      * @param inputFile
      * @return the source tag computed from the given file name.
      */
-    protected Text generateInputTag() throws IOException{
-	String datasource = inputFile;
+    protected Text generateInputTag(Context context) throws IOException{
 	return new Text(datasource);
     }
 

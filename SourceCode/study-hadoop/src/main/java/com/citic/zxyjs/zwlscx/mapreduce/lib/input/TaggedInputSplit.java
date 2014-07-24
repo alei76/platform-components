@@ -23,7 +23,7 @@ import org.apache.hadoop.util.StringInterner;
  * An {@link InputSplit} that tags another InputSplit with extra data for use by
  * {@link DelegatingInputFormat}s and {@link DelegatingMapper}s.
  */
-class TaggedInputSplit extends InputSplit implements Configurable, Writable {
+public class TaggedInputSplit extends InputSplit implements Configurable, Writable {
 
     private Class<? extends InputSplit> inputSplitClass;
 
