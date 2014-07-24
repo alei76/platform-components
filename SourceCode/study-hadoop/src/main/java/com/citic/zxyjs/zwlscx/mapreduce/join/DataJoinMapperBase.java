@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 /**
  * This abstract class serves as the base class for the mapper class of a data
