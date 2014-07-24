@@ -44,7 +44,7 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
 
     protected void setup(Context context) throws IOException, InterruptedException {
 	this.inputFile = ((FileSplit) context.getInputSplit()).getPath().toString();
-	this.inputTag = generateInputTag(this.inputFile);
+	this.inputTag = generateInputTag();
     }
 
     protected void map(KEYIN key, VALUEIN value, Context context) throws IOException, InterruptedException {
@@ -65,7 +65,10 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
      * @param inputFile
      * @return the source tag computed from the given file name.
      */
-    protected abstract Text generateInputTag(String inputFile) throws IOException;
+    protected Text generateInputTag() throws IOException{
+	String datasource = inputFile;
+	return new Text(datasource);
+    }
 
     /**
      * Generate a tagged map output value. The user code can also perform
