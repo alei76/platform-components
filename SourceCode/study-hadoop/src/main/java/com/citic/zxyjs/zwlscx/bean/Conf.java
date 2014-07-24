@@ -43,7 +43,7 @@ public class Conf implements Writable {
 	for(int i=0;i<size;i++){
 	    Task task = null;
 	    task.readFields(in);
-	    tasks.set(i, task);
+	    tasks.add(task);
 	}
 	this.init = in.readBoolean();
     }

@@ -2,10 +2,6 @@ package com.citic.zxyjs.zwlscx.mapreduce.join;
 
 import org.apache.hadoop.io.Text;
 
-import com.jyz.study.hadoop.mapreduce.datajoin.DataJoinReducerBase;
-import com.jyz.study.hadoop.mapreduce.datajoin.TaggedMapOutput;
-import com.jyz.study.hadoop.mapreduce.datajoin.DataJoinUseNewApi.TaggedWritable;
-
 public class DataJoinReducer extends DataJoinReducerBase {
     protected TaggedMapOutput combine(Text[] tags, TaggedMapOutput[] values) {
 	String joinedStr = "";

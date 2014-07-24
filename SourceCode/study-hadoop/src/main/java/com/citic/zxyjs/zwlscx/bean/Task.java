@@ -20,8 +20,8 @@ public class Task implements Writable  {
 
     private Source leftSource;
     private Source rightSource;
-    private List<Field> leftFields;
-    private List<Field> rightFields;
+    private List<String> leftFields;
+    private List<String> rightFields;
     private String output;
 
     private TaskType taskType;
@@ -42,19 +42,19 @@ public class Task implements Writable  {
 	this.rightSource = rightSource;
     }
 
-    public List<Field> getLeftFields() {
+    public List<String> getLeftFields() {
 	return leftFields;
     }
 
-    public void setLeftFields(List<Field> leftFields) {
+    public void setLeftFields(List<String> leftFields) {
 	this.leftFields = leftFields;
     }
 
-    public List<Field> getRightFields() {
+    public List<String> getRightFields() {
 	return rightFields;
     }
 
-    public void setRightFields(List<Field> rightFields) {
+    public void setRightFields(List<String> rightFields) {
 	this.rightFields = rightFields;
     }
 
@@ -92,21 +92,21 @@ public class Task implements Writable  {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-	leftSource.readFields(in);
-	rightSource.readFields(in);
+	Source leftsource = new Source();
+	leftsource.readFields(in);
+	leftSource = leftsource;
+	Source rightsource = new Source();
+	rightsource.readFields(in);
+	rightSource = rightsource;
 	int size = in.readInt();
-	leftFields = new ArrayList<Field>(size);
+	leftFields = new ArrayList<String>(size);
 	for(int i=0;i<size;i++){
-	    Field field = null;
-	    field.readFields(in);
-	    leftFields.set(i, field);
+	    leftFields.add(Text.readString(in));
 	}
 	size = in.readInt();
-	rightFields = new ArrayList<Field>(size);
+	rightFields = new ArrayList<String>(size);
 	for(int i=0;i<size;i++){
-	    Field field = null;
-	    field.readFields(in);
-	    rightFields.set(i, field);
+	    rightFields.add(Text.readString(in));
 	}
 	this.output = Text.readString(in);
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
@@ -117,12 +117,12 @@ public class Task implements Writable  {
 	leftSource.write(out);
 	rightSource.write(out);
 	out.writeInt(leftFields.size());
-	for(Field filed : leftFields){
-	    filed.write(out);
+	for(String filed : leftFields){
+	    Text.writeString(out, filed);
 	}
 	out.writeInt(rightFields.size());
-	for(Field filed : rightFields){
-	    filed.write(out);
+	for(String filed : rightFields){
+	    Text.writeString(out, filed);
 	}
 	Text.writeString(out, output);
 	WritableUtils.writeEnum(out, taskType);

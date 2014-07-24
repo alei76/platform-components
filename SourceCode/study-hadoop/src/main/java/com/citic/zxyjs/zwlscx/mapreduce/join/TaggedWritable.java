@@ -7,8 +7,6 @@ import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.util.ReflectionUtils;
 
-import com.jyz.study.hadoop.mapreduce.datajoin.TaggedMapOutput;
-
 public class TaggedWritable extends TaggedMapOutput {
 
     private Text data;

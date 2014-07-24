@@ -20,7 +20,6 @@ package com.citic.zxyjs.zwlscx.mapreduce.join;
 
 import java.io.IOException;
 
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
@@ -37,7 +36,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  * choosing the join key. This class provides the appropriate plugin points for
  * the user defined subclasses to implement the appropriate logic.
  */
-public abstract class DataJoinMapperBase extends Mapper<LongWritable, Text, Text, TaggedMapOutput> {
+public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> extends Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT> {
 
     protected String inputFile = null;
 
@@ -48,12 +47,12 @@ public abstract class DataJoinMapperBase extends Mapper<LongWritable, Text, Text
 	this.inputTag = generateInputTag(this.inputFile);
     }
 
-    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-	TaggedMapOutput aRecord = generateTaggedMapOutput(value);
+    protected void map(KEYIN key, VALUEIN value, Context context) throws IOException, InterruptedException {
+	VALUEOUT aRecord = generateTaggedMapOutput(value, context);
 	if (aRecord == null) {
 	    return;
 	}
-	Text groupKey = generateGroupKey(aRecord);
+	KEYOUT groupKey = generateGroupKey(aRecord, context);
 	if (groupKey == null) {
 	    return;
 	}
@@ -66,7 +65,7 @@ public abstract class DataJoinMapperBase extends Mapper<LongWritable, Text, Text
      * @param inputFile
      * @return the source tag computed from the given file name.
      */
-    protected abstract Text generateInputTag(String inputFile);
+    protected abstract Text generateInputTag(String inputFile) throws IOException;
 
     /**
      * Generate a tagged map output value. The user code can also perform
@@ -76,7 +75,7 @@ public abstract class DataJoinMapperBase extends Mapper<LongWritable, Text, Text
      * @param value
      * @return an object of TaggedMapOutput computed from the given value.
      */
-    protected abstract TaggedMapOutput generateTaggedMapOutput(Text value);
+    protected abstract VALUEOUT generateTaggedMapOutput(VALUEIN value, Context context) throws IOException;
 
     /**
      * Generate a map output key. The user code can compute the key
@@ -86,6 +85,6 @@ public abstract class DataJoinMapperBase extends Mapper<LongWritable, Text, Text
      * @param aRecord
      * @return the group key for the given record
      */
-    protected abstract Text generateGroupKey(TaggedMapOutput aRecord);
+    protected abstract KEYOUT generateGroupKey(VALUEOUT aRecord, Context context) throws IOException;
 
 }
