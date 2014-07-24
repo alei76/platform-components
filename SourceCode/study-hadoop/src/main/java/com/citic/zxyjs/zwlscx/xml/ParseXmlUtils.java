@@ -1,92 +1,162 @@
 package com.citic.zxyjs.zwlscx.xml;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.citic.zxyjs.zwlscx.bean.Conf;
 import com.citic.zxyjs.zwlscx.bean.Field;
 import com.citic.zxyjs.zwlscx.bean.File;
+import com.citic.zxyjs.zwlscx.bean.Source;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.bean.TaskType;
 
-/**
- * 解析xml工具类
- * 
- * @author JoyoungZhang@gmail.com
- */
 public class ParseXmlUtils {
+    
+    private static final String XML = "etc/job.xml";
 
-    public static Conf parseXml() {
+    public static Conf parserXml() throws ParserConfigurationException, SAXException, IOException {
 	Conf conf = new Conf();
-	//file1
-	File file1 = new File();
-	Field field11 = new Field();Field field12 = new Field();Field field13 = new Field();
-	field11.setId("1");field11.setName("1");
-	field12.setId("2");field12.setName("2");
-	field13.setId("3");field13.setName("3");
-	List<Field> fields1 = new ArrayList<Field>();
-	fields1.add(field11);fields1.add(field12);fields1.add(field13);
-	file1.setFields(fields1);
-	file1.setId("1");
-	file1.setName("1");
-	file1.setPath("hdfs://200master:9000/user/root/zxyh/tt1.txt");
-	//file2
-	File file2 = new File();
-	Field field21 = new Field();Field field22 = new Field();Field field23 = new Field();
-	field21.setId("1");field21.setName("1");
-	field22.setId("2");field22.setName("2");
-	field23.setId("3");field23.setName("3");
-	List<Field> fields2 = new ArrayList<Field>();
-	fields2.add(field21);fields2.add(field22);fields2.add(field23);
-	file2.setFields(fields2);
-	file2.setId("2");
-	file2.setName("2");
-	file2.setPath("hdfs://200master:9000/user/root/zxyh/tt2.txt");
-	//table1
-	Table table1 = new Table();
-	Field fieldt11 = new Field();Field fieldt12 = new Field();Field fieldt13 = new Field();
-	fieldt11.setId("1");fieldt11.setName("1");
-	fieldt12.setId("2");fieldt12.setName("2");
-	fieldt13.setId("3");fieldt13.setName("3");
-	List<Field> fieldst1 = new ArrayList<Field>();
-	fieldst1.add(fieldt11);fieldst1.add(fieldt12);fieldst1.add(fieldt13);
-	table1.setFields(fieldst1);
-	table1.setId("1");
-	table1.setName("join");
-	table1.setHasZipperTable(true);
-	table1.setZipperTableName("1Z");
 	
-	Task t1 = new Task();
-	t1.setLeftSource(file1);
-	List<Field> leftFields1 = new ArrayList<Field>();leftFields1.add(field11);leftFields1.add(field12);
-	t1.setLeftFields(leftFields1);
-	t1.setRightSource(file2);
-	List<Field> rightFields1 = new ArrayList<Field>();rightFields1.add(field21);rightFields1.add(field23);
-	t1.setRightFields(rightFields1);
-	t1.setOutput("hdfs://200master:9000/user/root/zxyh/output1");
-	t1.setTaskType(TaskType.Join);
+	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	DocumentBuilder db = dbf.newDocumentBuilder();
+	Document document = db.parse(XML);
+	NodeList confs = document.getChildNodes();
 	
+	Node confNodes = null;
+	for(int i = 0; i < confs.getLength(); i++){
+	    Node node = confs.item(i);
+	    if(node instanceof Element && node.getNodeName().equals("conf")){
+		confNodes = node;
+	    }
+	}
 	
+	Node sourceNodes = null;
+	Node taskNodes = null;
 	
-	Task t2 = new Task();
-	t2.setLeftSource(file1);
-	List<Field> leftFields2 = new ArrayList<Field>();leftFields2.add(field11);leftFields2.add(field11);
-	t2.setLeftFields(leftFields2);
-	t2.setRightSource(table1);
-	List<Field> rightFields2 = new ArrayList<Field>();rightFields2.add(fieldt11);rightFields2.add(fieldt13);
-	t2.setRightFields(rightFields2);
-	t2.setOutput("hdfs://200master:9000/user/root/zxyh/output2");
-	t2.setTaskType(TaskType.Join);
+	for(int i = 0; i < confNodes.getChildNodes().getLength(); i++){
+	    Node node = confNodes.getChildNodes().item(i);
+	    if(node instanceof Element){
+		if(node.getNodeName().equals("sources")){
+		    sourceNodes = node;
+		}else if(node.getNodeName().equals("tasks")){
+		    taskNodes = node;
+		}
+	    }
+	}
+
+	Map<String, Source> sources = new HashMap<String, Source>();
+	
+	for(int j=0; j<sourceNodes.getChildNodes().getLength(); j++){
+	    Node sourceNode = sourceNodes.getChildNodes().item(j);
+	    if(sourceNode instanceof Element){
+		if(sourceNode.getNodeName().equals("file")){
+		    File file = new File();
+		    List<Field> fields = new ArrayList<Field>();
+		    for(int k=0; k<sourceNode.getChildNodes().getLength(); k++){
+			    Node fieldNode = sourceNode.getChildNodes().item(k);
+			    if(fieldNode instanceof Element){
+				Field field = new Field();
+				field.setId(((Element) fieldNode).getAttribute("id"));
+				field.setName(((Element) fieldNode).getAttribute("name"));
+				fields.add(field);
+			    }
+		    }
+		    file.setFields(fields);
+		    file.setId(((Element) sourceNode).getAttribute("id"));
+		    file.setName(((Element) sourceNode).getAttribute("name"));
+		    file.setPath(((Element) sourceNode).getAttribute("path"));
+		    sources.put(file.getId(), file);
+		}else if(sourceNode.getNodeName().equals("table")){
+		    Table table = new Table();
+		    List<Field> fields = new ArrayList<Field>();
+		    for(int k=0; k<sourceNode.getChildNodes().getLength(); k++){
+			    Node fieldNode = sourceNode.getChildNodes().item(k);
+			    if(fieldNode instanceof Element){
+				Field field = new Field();
+				field.setId(((Element) fieldNode).getAttribute("id"));
+				field.setName(((Element) fieldNode).getAttribute("name"));
+				fields.add(field);
+			    }
+		    }
+		    table.setFields(fields);
+		    table.setId(((Element) sourceNode).getAttribute("id"));
+		    table.setName(((Element) sourceNode).getAttribute("name"));
+		    String hasZipperTable = ((Element) sourceNode).getAttribute("hasZipperTable");
+		    table.setHasZipperTable(hasZipperTable == null ? false : Boolean.valueOf(hasZipperTable));
+		    table.setZipperTableName(((Element) sourceNode).getAttribute("zipperTableName"));
+		    sources.put(table.getId(), table);
+		}
+	    }
+	}
 	
 	List<Task> tasks = new ArrayList<Task>();
-	tasks.add(t1);
-//	tasks.add(t2);
-	
+	for(int m=0; m<taskNodes.getChildNodes().getLength(); m++){
+	    Node taskNode = taskNodes.getChildNodes().item(m);
+	    if(taskNode instanceof Element){
+		Task task = new Task();
+		if(taskNode.getNodeName().equals("join")){
+		    task.setTaskType(TaskType.Join);
+		}else if(taskNode.getNodeName().equals("union")){
+		    task.setTaskType(TaskType.Union);
+		}else if(taskNode.getNodeName().equals("append")){
+		    task.setTaskType(TaskType.Append);
+		}
+		String leftsource = ((Element) taskNode).getAttribute("leftsource");
+		String rightsource = ((Element) taskNode).getAttribute("rightsource");
+		task.setLeftSource(sources.get(leftsource));
+		task.setRightSource(sources.get(rightsource));
+		
+		List<Field> leftFields = new ArrayList<Field>();
+		for(String fieldId : ((Element) taskNode).getAttribute("leftfield").split(",")){
+		    for(Field field : task.getLeftSource().getFields()){
+			if(fieldId.equals(field.getId())){
+			    leftFields.add(field);
+			}
+		    }
+		}
+		task.setLeftFields(leftFields);
+		
+		List<Field> rightFields = new ArrayList<Field>();
+		for(String fieldId : ((Element) taskNode).getAttribute("rightfield").split(",")){
+		    for(Field field : task.getRightSource().getFields()){
+			if(fieldId.equals(field.getId())){
+			    rightFields.add(field);
+			}
+		    }
+		}
+		task.setRightFields(rightFields);
+		String output = ((Element) taskNode).getAttribute("output");
+		Source source = sources.get(output);
+		if(source instanceof File){
+		    task.setOutput(((File)source).getPath());
+		}else{
+		    task.setOutput(source.getName());
+		}
+		
+		tasks.add(task);
+	    }
+	}
 	conf.setTasks(tasks);
-	conf.setInit(false);
-	
+	conf.setInit(Boolean.valueOf(((Element) taskNodes).getAttribute("init")));
 	return conf;
     }
-
+    
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+	parserXml();
+    }
+    
 }

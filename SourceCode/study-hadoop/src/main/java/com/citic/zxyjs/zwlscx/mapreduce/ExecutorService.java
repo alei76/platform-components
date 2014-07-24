@@ -16,7 +16,7 @@ import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.append.AppendJob;
 import com.citic.zxyjs.zwlscx.mapreduce.join.JoinJob;
 import com.citic.zxyjs.zwlscx.mapreduce.union.UnionJob;
-import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
+import com.citic.zxyjs.zwlscx.xml.ParseXmlUtilsBak;
 
 /**
  * .sh入口
@@ -28,7 +28,7 @@ public class ExecutorService {
     private static final Log LOG = LogFactory.getLog(ExecutorService.class);
 
     public static void main(String[] args) throws IOException {
-	Conf conf = ParseXmlUtils.parseXml();
+	Conf conf = ParseXmlUtilsBak.parseXml();
 	List<Job> jobs = getJobs(conf);
 	List<ControlledJob> controlledJobs = new ArrayList<ControlledJob>();
 	for (int i = 0; i < jobs.size(); i++) {

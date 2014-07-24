@@ -18,7 +18,7 @@ import com.citic.zxyjs.zwlscx.bean.File;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.TaggedInputSplit;
-import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
+import com.citic.zxyjs.zwlscx.xml.ParseXmlUtilsBak;
 import com.citic.zxyjs.zwlscx.xml.Separator;
 
 /**
@@ -41,7 +41,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = ParseXmlUtils.parseXml().getTasks().get(0);
+	    this.task = ParseXmlUtilsBak.parseXml().getTasks().get(0);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    File currentFile = null;
@@ -127,7 +127,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = ParseXmlUtils.parseXml().getTasks().get(1);
+	    this.task = ParseXmlUtilsBak.parseXml().getTasks().get(1);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    Table currentTable = null;
