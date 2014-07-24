@@ -3,6 +3,7 @@ package com.citic.zxyjs.zwlscx.bean;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.io.Writable;
@@ -37,14 +38,23 @@ public class Conf implements Writable {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-	// TODO Auto-generated method stub
-	
+	int size = in.readInt();
+	tasks = new ArrayList<Task>(size);
+	for(int i=0;i<size;i++){
+	    Task task = null;
+	    task.readFields(in);
+	    tasks.set(i, task);
+	}
+	this.init = in.readBoolean();
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-	// TODO Auto-generated method stub
-	
+	out.writeInt(tasks.size());
+	for(Task task : tasks){
+	    task.write(out);
+	}
+	out.writeBoolean(init);
     }
 
 }

@@ -3,9 +3,12 @@ package com.citic.zxyjs.zwlscx.bean;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.WritableUtils;
 
 /**
  * 任务
@@ -89,12 +92,40 @@ public class Task implements Writable  {
 
     @Override
     public void readFields(DataInput in) throws IOException {
+	leftSource.readFields(in);
+	rightSource.readFields(in);
+	int size = in.readInt();
+	leftFields = new ArrayList<Field>(size);
+	for(int i=0;i<size;i++){
+	    Field field = null;
+	    field.readFields(in);
+	    leftFields.set(i, field);
+	}
+	size = in.readInt();
+	rightFields = new ArrayList<Field>(size);
+	for(int i=0;i<size;i++){
+	    Field field = null;
+	    field.readFields(in);
+	    rightFields.set(i, field);
+	}
+	this.output = Text.readString(in);
+	this.taskType = WritableUtils.readEnum(in, TaskType.class);
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
 	leftSource.write(out);
 	rightSource.write(out);
+	out.writeInt(leftFields.size());
+	for(Field filed : leftFields){
+	    filed.write(out);
+	}
+	out.writeInt(rightFields.size());
+	for(Field filed : rightFields){
+	    filed.write(out);
+	}
+	Text.writeString(out, output);
+	WritableUtils.writeEnum(out, taskType);
     }
 
 }
