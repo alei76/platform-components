@@ -24,6 +24,11 @@ import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.bean.TaskType;
 
+/**
+ * 解析配置文件工具
+ * @author JoyoungZhang@gmail.com
+ *
+ */
 public class ParseXmlUtils {
     
     private static final String XML = "etc/job.xml";
@@ -153,10 +158,6 @@ public class ParseXmlUtils {
 	conf.setTasks(tasks);
 	conf.setInit(Boolean.valueOf(((Element) taskNodes).getAttribute("init")));
 	return conf;
-    }
-    
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-	parserXml();
     }
     
 }

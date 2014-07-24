@@ -9,6 +9,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.io.DefaultStringifier;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
@@ -41,7 +42,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = ParseXmlUtilsBak.parseXml().getTasks().get(0);
+	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    File currentFile = null;
@@ -127,7 +128,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = ParseXmlUtilsBak.parseXml().getTasks().get(1);
+	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    Table currentTable = null;
