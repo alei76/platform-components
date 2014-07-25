@@ -134,7 +134,6 @@ public class Task implements Writable  {
 	    field.readFields(in);
 	    rightFields.add(field);
 	}
-//	this.output = Text.readString(in);
 	String className = Text.readString(in);
 	if(File.class.getName().equals(className)){
 	    File file = new File();
