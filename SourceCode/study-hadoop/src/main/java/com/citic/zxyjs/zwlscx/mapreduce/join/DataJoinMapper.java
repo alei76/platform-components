@@ -189,8 +189,12 @@ public class DataJoinMapper {
 	    if (fieldPositions.size() > 0) {
 		groupKey.deleteCharAt(groupKey.length() - 1);
 	    }
+	    List<Field> fields = task.getOutput().getFields();
 	    Put put = new Put(Bytes.toBytes(groupKey.toString()));
-//	    put.add(family, qualifier, Bytes.toBytes(value.toString()));
+	    for(int i=0;i<tokens.length;i++){
+		String token = tokens[i];
+	    	put.add(Bytes.toBytes("cf"), Bytes.toBytes(fields.get(i).getName()), Bytes.toBytes(token));
+	    }
 	    context.write(new ImmutableBytesWritable(Bytes.toBytes(groupKey.toString())), put);
 	}
 	
@@ -294,6 +298,87 @@ public class DataJoinMapper {
 		groupKey.deleteCharAt(groupKey.length() - 1);
 	    }
 	    return new Text(groupKey.toString());
+	}
+	
+    }
+    
+    
+    /**
+     * input is hbase table
+     * output is rowkey and put
+     * @author JoyoungZhang@gmail.com
+     */
+    public static class DataJoinTableInputFormatForHBaseMapper extends DataJoinMapperBase<ImmutableBytesWritable, Result, ImmutableBytesWritable, Put> {
+	
+	private Task task;
+	private List<Integer> fieldPositions;
+	private boolean init;
+	
+	protected void setup(Context context) throws IOException, InterruptedException {
+	    super.setup(context);
+	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
+	    this.init = context.getConfiguration().getBoolean("init", false);
+	    
+	    Table currentTable = null;
+	    List<Field> currentFields = null;
+	    switch (task.getSourceType()) {
+	    case FF:
+		//do nothing
+		break;
+	    case FT:
+		currentTable = (Table) task.getRightSource();
+		currentFields = task.getRightFields();
+		break;
+	    case TF:
+		currentTable = (Table) task.getLeftSource();
+		currentFields = task.getLeftFields();
+		break;
+	    case TT:
+		Table leftSource = (Table) task.getLeftSource();
+		Table rightSource = (Table) task.getRightSource();
+		if (datasource.equals(leftSource.getName())) {
+		    currentTable = leftSource;
+		    currentFields = task.getLeftFields();
+		}else{
+		    currentTable = rightSource;
+		    currentFields = task.getRightFields();
+		}
+		break;
+	    }
+	    fieldPositions = new ArrayList<Integer>();
+	    for (Field fieldOut : currentFields) {
+		for (int i = 0; i < currentTable.getFields().size(); i++) {
+		    Field fieldIn = currentTable.getFields().get(i);
+		    if (fieldIn.getId().equals(fieldOut.getId())) {
+			fieldPositions.add(i);
+			break;
+		    }
+		}
+	    }
+	}
+	
+	@Override
+	protected String generateDatasource(Context context) throws IOException {
+	    return context.getConfiguration().get(TableInputFormat.INPUT_TABLE);
+	}
+	
+	@Override
+	protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
+	    Put put = new Put(key.get());
+	    for (KeyValue kv : value.list()) {
+		put.add(Bytes.toBytes("cf"), kv.getQualifier(), kv.getValue());
+	    }
+	    context.write(key, put);
+	}
+	
+	@Override
+	protected Put generateTaggedMapOutput(Result value, Context context) {
+	    return null;
+	}
+	
+	@Override
+	protected ImmutableBytesWritable generateGroupKey(Put aRecord, Context context) throws IOException {
+	    return null;
 	}
 	
     }
