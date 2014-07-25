@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,6 +31,7 @@ import com.citic.zxyjs.zwlscx.bean.TaskType;
 public class ParseXmlUtils {
 
     private static final String XML = "etc/job.xml";
+    private static final Log LOG = LogFactory.getLog(ParseXmlUtils.class);
 
     public static Conf parseXml() {
 	try {
@@ -144,11 +147,7 @@ public class ParseXmlUtils {
 		    task.setRightFields(rightFields);
 		    String output = ((Element) taskNode).getAttribute("output");
 		    Source source = sources.get(output);
-		    if (source instanceof File) {
-			task.setOutput(((File) source).getPath());
-		    } else {
-			task.setOutput(source.getName());
-		    }
+		    task.setOutput(source);
 
 		    tasks.add(task);
 		}
@@ -157,7 +156,7 @@ public class ParseXmlUtils {
 	    conf.setInit(Boolean.valueOf(((Element) taskNodes).getAttribute("init")));
 	    return conf;
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    LOG.error("Parse xml[ " + XML + "] fail.", e);
 	}
 	return null;
     }

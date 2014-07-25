@@ -19,7 +19,7 @@ public class TaggedWritable extends TaggedMapOutput {
 	this.tag = new Text("");
 	this.data = data;
     }
-
+    
     public Text getData() {
 	return data;
     }

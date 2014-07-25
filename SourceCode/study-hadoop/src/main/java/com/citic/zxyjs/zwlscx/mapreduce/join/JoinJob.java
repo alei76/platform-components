@@ -13,6 +13,8 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import com.citic.zxyjs.zwlscx.bean.File;
+import com.citic.zxyjs.zwlscx.bean.Source;
+import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTableInputFormatMapper;
 import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTextInputFormatMapper;
@@ -60,8 +62,17 @@ public class JoinJob {
 	job.setOutputValueClass(Text.class);
 	job.setNumReduceTasks(1);
 	
-	Utils.deleteIfExists(conf, task.getOutput());
-	FileOutputFormat.setOutputPath(job, new Path(task.getOutput()));
+	Source output = task.getOutput();
+	if(output instanceof File){
+	    Utils.deleteIfExists(conf, ((File)output).getPath());
+	    FileOutputFormat.setOutputPath(job, new Path(((File)output).getPath()));
+	}else if(output instanceof Table){
+	    //TODO
+//	    FileOutputFormat.setOutputPath(job, new Path("hdfs://200master:9000/user/zxyh/tmp"));
+//	    HTable htable = new HTable(conf, output.getName());
+//	    HFileOutputFormat.configureIncrementalLoad(job, htable);
+	}
+
 	return job;
     }
     

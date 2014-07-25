@@ -6,17 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableUtils;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-
-import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTableInputFormatMapper;
-import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTextInputFormatMapper;
-import com.citic.zxyjs.zwlscx.mapreduce.lib.input.MultipleInputs;
 
 /**
  * 任务
@@ -30,7 +22,7 @@ public class Task implements Writable  {
     private Source rightSource;
     private List<Field> leftFields;
     private List<Field> rightFields;
-    private String output;
+    private Source output;
 
     private TaskType taskType;
 
@@ -66,11 +58,11 @@ public class Task implements Writable  {
 	this.rightFields = rightFields;
     }
 
-    public String getOutput() {
+    public Source getOutput() {
 	return output;
     }
 
-    public void setOutput(String output) {
+    public void setOutput(Source output) {
 	this.output = output;
     }
 
@@ -142,7 +134,17 @@ public class Task implements Writable  {
 	    field.readFields(in);
 	    rightFields.add(field);
 	}
-	this.output = Text.readString(in);
+//	this.output = Text.readString(in);
+	String className = Text.readString(in);
+	if(File.class.getName().equals(className)){
+	    File file = new File();
+	    file.readFields(in);
+	    this.output = file;
+	}else if(Table.class.getName().equals(className)){
+	    Table table = new Table();
+	    table.readFields(in);
+	    this.output = table;
+	}
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
     }
 
@@ -159,7 +161,8 @@ public class Task implements Writable  {
 	for(Field field : rightFields){
 	    field.write(out);
 	}
-	Text.writeString(out, output);
+	Text.writeString(out, output.getClass().getName());
+	output.write(out);
 	WritableUtils.writeEnum(out, taskType);
     }
     
