@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hadoop.classification.InterfaceStability.Unstable;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -116,10 +117,13 @@ public class DataJoinMapper {
     }
     
     /**
+     * 暂时没有任何业务场景使用此类，此类也经测试 
      * input is hdfs file
      * output is rowky and put
      * @author JoyoungZhang@gmail.com
      */
+    @Unstable
+    @Deprecated
     public static class DataJoinTextInputFormatForHBaseMapper extends DataJoinMapperBase<LongWritable, Text, ImmutableBytesWritable, Put> {
 
 	private Task task;
@@ -304,10 +308,13 @@ public class DataJoinMapper {
     
     
     /**
+     * 暂时没有任何业务场景使用此类，此类也经测试 
      * input is hbase table
      * output is rowkey and put
      * @author JoyoungZhang@gmail.com
      */
+    @Unstable
+    @Deprecated
     public static class DataJoinTableInputFormatForHBaseMapper extends DataJoinMapperBase<ImmutableBytesWritable, Result, ImmutableBytesWritable, Put> {
 	
 	private Task task;
