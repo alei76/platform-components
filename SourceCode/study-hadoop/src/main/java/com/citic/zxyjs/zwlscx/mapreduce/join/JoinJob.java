@@ -50,7 +50,8 @@ public class JoinJob {
     	    MultipleInputs.addInputPath(job, new Path(((File) task.getRightSource()).getPath()), TextInputFormat.class, DataJoinTextInputFormatMapper.class);
     	    break;
     	case TT :
-    	    job.setMapperClass(DataJoinTableInputFormatMapper.class);
+    	    MultipleInputs.addInputPath(job, new Path(task.getLeftSource().getName()), TableInputFormat.class, DataJoinTableInputFormatMapper.class);
+    	    MultipleInputs.addInputPath(job, new Path(task.getRightSource().getName()), TableInputFormat.class, DataJoinTableInputFormatMapper.class);
     	    break;
 	}
 	job.setReducerClass(DataJoinReducer.class);

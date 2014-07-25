@@ -6,9 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableUtils;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+
+import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTableInputFormatMapper;
+import com.citic.zxyjs.zwlscx.mapreduce.join.DataJoinMapper.DataJoinTextInputFormatMapper;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.input.MultipleInputs;
 
 /**
  * 任务
@@ -92,12 +100,34 @@ public class Task implements Writable  {
 
     @Override
     public void readFields(DataInput in) throws IOException {
+	SourceType sourceType = WritableUtils.readEnum(in, SourceType.class);
 	Source leftsource = new Source();
-	leftsource.readFields(in);
-	leftSource = leftsource;
 	Source rightsource = new Source();
+	
+	switch(sourceType){
+    	case FF :
+    	    leftsource = new File();
+    	    rightsource = new File();
+    	    break;
+    	case FT :
+    	    leftsource = new File();
+    	    rightsource = new Table();
+    	    break;
+    	case TF :
+    	    leftsource = new Table();
+	    rightsource = new File();
+    	    break;
+    	case TT :
+    	    leftsource = new Table();
+	    rightsource = new Table();
+    	    break;
+	}
+	
+	leftsource.readFields(in);
 	rightsource.readFields(in);
+	leftSource = leftsource;
 	rightSource = rightsource;
+	
 	int size = in.readInt();
 	leftFields = new ArrayList<Field>(size);
 	for(int i=0;i<size;i++){
@@ -118,6 +148,7 @@ public class Task implements Writable  {
 
     @Override
     public void write(DataOutput out) throws IOException {
+	WritableUtils.writeEnum(out, this.getSourceType());
 	leftSource.write(out);
 	rightSource.write(out);
 	out.writeInt(leftFields.size());

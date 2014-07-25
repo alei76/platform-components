@@ -19,7 +19,6 @@ import com.citic.zxyjs.zwlscx.bean.File;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.TaggedInputSplit;
-import com.citic.zxyjs.zwlscx.xml.ParseXmlUtilsBak;
 import com.citic.zxyjs.zwlscx.xml.Separator;
 
 /**
