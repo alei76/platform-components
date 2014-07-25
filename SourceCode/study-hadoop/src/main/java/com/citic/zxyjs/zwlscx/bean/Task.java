@@ -140,7 +140,7 @@ public class Task implements Writable  {
 	for(int i=0;i<size;i++){
 	    Field field = new Field();
 	    field.readFields(in);
-	    leftFields.add(field);
+	    rightFields.add(field);
 	}
 	this.output = Text.readString(in);
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
