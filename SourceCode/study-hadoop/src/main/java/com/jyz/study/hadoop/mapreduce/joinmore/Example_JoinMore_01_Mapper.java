@@ -11,17 +11,14 @@ import com.jyz.study.hadoop.common.TextPair;
 
 /**
  * Mapper函数
+ * 
  * @author JoyoungZhang@gmail.com
- *
  */
-public class Example_JoinMore_01_Mapper extends
-	Mapper<LongWritable, Text, TextPair, Text> {
+public class Example_JoinMore_01_Mapper extends Mapper<LongWritable, Text, TextPair, Text> {
     @Override
-    protected void map(LongWritable key, Text value, Context context)
-	    throws IOException, InterruptedException {
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 	// 获取输入文件的全路径和名称
-	String pathName = ((FileSplit) context.getInputSplit()).getPath()
-		.toString();
+	String pathName = ((FileSplit) context.getInputSplit()).getPath().toString();
 	if (pathName.contains("data.txt")) {
 	    String values[] = value.toString().split("\t");
 	    if (values.length < 3) {

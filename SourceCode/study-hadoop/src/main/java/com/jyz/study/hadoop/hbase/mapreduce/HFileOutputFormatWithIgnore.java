@@ -29,19 +29,21 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 
 /**
- * Writes HFiles. Passed KeyValues must arrive in order.
- * Writes current time as the sequence id for the file. Sets the major compacted
- * attribute on created hfiles. Calling write(null,null) will forceably roll
- * all HFiles being written.
+ * Writes HFiles. Passed KeyValues must arrive in order. Writes current time as
+ * the sequence id for the file. Sets the major compacted attribute on created
+ * hfiles. Calling write(null,null) will forceably roll all HFiles being
+ * written.
  * <p>
- * Using this class as part of a MapReduce job is best done
- * using {@link #configureIncrementalLoad(Job, HTable)}.
+ * Using this class as part of a MapReduce job is best done using
+ * {@link #configureIncrementalLoad(Job, HTable)}.
+ * 
  * @see KeyValueSortReducer
  */
 @InterfaceAudience.Public
 @InterfaceStability.Stable
 public class HFileOutputFormatWithIgnore extends HFileOutputFormatBase {
     static Log LOG = LogFactory.getLog(HFileOutputFormatWithIgnore.class);
+
     @Override
     public boolean ignore(KeyValue kv) {
 	boolean ignore = Bytes.toString(kv.getValue()).indexOf("Del") >= 0;

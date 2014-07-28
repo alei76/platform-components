@@ -23,15 +23,12 @@ public class MapReduceReadFile {
     private static SequenceFile.Reader reader = null;
     private static Configuration conf = ConfigurationUtils.getHadoopConfiguration();
 
-    public static class ReadFileMapper extends
-	    Mapper<Text, IntWritable, Text, IntWritable> {
+    public static class ReadFileMapper extends Mapper<Text, IntWritable, Text, IntWritable> {
 
 	@Override
 	public void map(Text key, IntWritable value, Context context) {
-	    key = (Text) ReflectionUtils.newInstance(reader
-		    .getKeyClass(), conf);
-	    value = (IntWritable) ReflectionUtils.newInstance(reader.getValueClass(),
-		    conf);
+	    key = (Text) ReflectionUtils.newInstance(reader.getKeyClass(), conf);
+	    value = (IntWritable) ReflectionUtils.newInstance(reader.getValueClass(), conf);
 	    try {
 		while (reader.next(key, value)) {
 		    System.out.printf("%s\t%s\n", key, value);
@@ -52,8 +49,7 @@ public class MapReduceReadFile {
      * @throws InterruptedException
      * @throws ClassNotFoundException
      */
-    public static void main(String[] args) throws IOException,
-	    InterruptedException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
 
 	Job job = new Job(conf, "read seq file");
 	job.setJarByClass(MapReduceReadFile.class);

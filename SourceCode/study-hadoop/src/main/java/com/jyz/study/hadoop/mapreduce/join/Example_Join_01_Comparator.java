@@ -7,8 +7,8 @@ import com.jyz.study.hadoop.common.TextPair;
 
 /**
  * 分组比较器
+ * 
  * @author JoyoungZhang@gmail.com
- *
  */
 public class Example_Join_01_Comparator extends WritableComparator {
     public Example_Join_01_Comparator() {

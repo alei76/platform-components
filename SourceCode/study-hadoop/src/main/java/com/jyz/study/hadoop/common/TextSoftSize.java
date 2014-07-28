@@ -16,23 +16,23 @@ public class TextSoftSize implements WritableComparable<TextSoftSize> {
     }
 
     public Text[] getText() {
-        return text;
+	return text;
     }
 
     public void setText(Text[] text) {
-        this.text = text;
+	this.text = text;
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
-	for(Text t : text){
+	for (Text t : text) {
 	    t.readFields(in);
 	}
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-	for(Text t : text){
+	for (Text t : text) {
 	    t.write(out);
 	}
     }
@@ -41,7 +41,5 @@ public class TextSoftSize implements WritableComparable<TextSoftSize> {
     public int compareTo(TextSoftSize o) {
 	return 0;
     }
-    
-    
-    
+
 }

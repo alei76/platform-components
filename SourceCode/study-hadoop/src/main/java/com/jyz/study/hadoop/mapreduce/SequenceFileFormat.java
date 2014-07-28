@@ -19,26 +19,22 @@ import com.jyz.study.hadoop.common.ConfigurationUtils;
 import com.jyz.study.hadoop.common.Utils;
 
 public class SequenceFileFormat {
-    public static class SequenceFileMapper extends
-	    Mapper<Text, IntWritable, Text, IntWritable> {
+    public static class SequenceFileMapper extends Mapper<Text, IntWritable, Text, IntWritable> {
 
 	/**
 	 * key is Text, value is IntWritable
 	 */
-	public void map(Text key, IntWritable value, Context context)
-		throws IOException, InterruptedException {
+	public void map(Text key, IntWritable value, Context context) throws IOException, InterruptedException {
 	    context.write(key, value);
 	}
     }
 
-    public static class SequenceFileReduce extends
-	    Reducer<Text, IntWritable, Text, Text> {
+    public static class SequenceFileReduce extends Reducer<Text, IntWritable, Text, Text> {
 
-	public void reduce(Text key, Iterable<IntWritable> values, Context context)
-		throws IOException, InterruptedException {
+	public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 	    StringBuffer sb = new StringBuffer();
 	    Iterator<IntWritable> it = values.iterator();
-	    while(it.hasNext()){
+	    while (it.hasNext()) {
 		sb.append(it.next().toString());
 	    }
 	    context.write(key, new Text(sb.toString()));
@@ -59,7 +55,7 @@ public class SequenceFileFormat {
 	job.setNumReduceTasks(1);
 
 	job.setInputFormatClass(SequenceFileInputFormat.class);
-//	job.setOutputFormatClass(SequenceFileOutputFormat.class);//默认使用FileOutputFormat输出
+	// job.setOutputFormatClass(SequenceFileOutputFormat.class);//默认使用FileOutputFormat输出
 
 	Utils.deleteIfExists(conf, "hdfs://200master:9000/user/root/output2");
 	FileInputFormat.addInputPath(job, new Path("hdfs://200master:9000/user/root/test/SequenceFile.txt"));

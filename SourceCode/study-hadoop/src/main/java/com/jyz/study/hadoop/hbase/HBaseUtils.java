@@ -23,7 +23,6 @@ import com.jyz.study.hadoop.common.ConfigurationUtils;
  * HBase工具类
  * 
  * @author JoyoungZhang@gmail.com
- * 
  */
 public class HBaseUtils {
 
@@ -36,13 +35,10 @@ public class HBaseUtils {
 
     /*
      * 创建表
-     * 
      * @tableName 表名
-     * 
      * @family 列族列表
      */
-    public static void creatTable(String tableName, String[] family)
-	    throws IOException {
+    public static void creatTable(String tableName, String[] family) throws IOException {
 	HBaseAdmin admin = new HBaseAdmin(conf);
 	HTableDescriptor desc = new HTableDescriptor(tableName);
 	for (int i = 0; i < family.length; i++) {
@@ -57,13 +53,11 @@ public class HBaseUtils {
 	}
     }
 
-    public static void addData(String rowKey, String tableName,
-	    String[] column1, String[] value1) throws IOException {
+    public static void addData(String rowKey, String tableName, String[] column1, String[] value1) throws IOException {
 	Put put = new Put(Bytes.toBytes(rowKey));
 	HTable table = new HTable(conf, Bytes.toBytes(tableName));
 	for (int j = 0; j < column1.length; j++) {
-	    put.add(Bytes.toBytes("cf"), Bytes.toBytes(column1[j]), Bytes
-		    .toBytes(value1[j]));
+	    put.add(Bytes.toBytes("cf"), Bytes.toBytes(column1[j]), Bytes.toBytes(value1[j]));
 	}
 	table.put(put);
 	LOG.info("add data Success!");
@@ -71,20 +65,16 @@ public class HBaseUtils {
 
     /*
      * 根据rwokey查询
-     * 
      * @rowKey rowKey
-     * 
      * @tableName 表名
      */
-    public static Result getResult(String tableName, String rowKey)
-	    throws IOException {
+    public static Result getResult(String tableName, String rowKey) throws IOException {
 	Get get = new Get(Bytes.toBytes(rowKey));
 	HTable table = new HTable(conf, Bytes.toBytes(tableName));// 获取表
 	Result result = table.get(get);
 	for (KeyValue kv : result.list()) {
 	    System.out.println("family:" + Bytes.toString(kv.getFamily()));
-	    System.out
-		    .println("qualifier:" + Bytes.toString(kv.getQualifier()));
+	    System.out.println("qualifier:" + Bytes.toString(kv.getQualifier()));
 	    System.out.println("value:" + Bytes.toString(kv.getValue()));
 	    System.out.println("Timestamp:" + kv.getTimestamp());
 	    System.out.println("-------------------------------------------");
@@ -94,7 +84,6 @@ public class HBaseUtils {
 
     /*
      * 遍历查询hbase表
-     * 
      * @tableName 表名
      */
     public static void getResultScann(String tableName) throws IOException {
@@ -106,15 +95,11 @@ public class HBaseUtils {
 	    for (Result r : rs) {
 		for (KeyValue kv : r.list()) {
 		    System.out.println("row:" + Bytes.toString(kv.getRow()));
-		    System.out.println("family:"
-			    + Bytes.toString(kv.getFamily()));
-		    System.out.println("qualifier:"
-			    + Bytes.toString(kv.getQualifier()));
-		    System.out
-			    .println("value:" + Bytes.toString(kv.getValue()));
+		    System.out.println("family:" + Bytes.toString(kv.getFamily()));
+		    System.out.println("qualifier:" + Bytes.toString(kv.getQualifier()));
+		    System.out.println("value:" + Bytes.toString(kv.getValue()));
 		    System.out.println("timestamp:" + kv.getTimestamp());
-		    System.out
-			    .println("-------------------------------------------");
+		    System.out.println("-------------------------------------------");
 		}
 	    }
 	} finally {
@@ -124,7 +109,6 @@ public class HBaseUtils {
 
     /*
      * 删除表
-     * 
      * @tableName 表名
      */
     public static void deleteIfExistsTable(String tableName) throws IOException {

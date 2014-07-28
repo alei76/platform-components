@@ -9,8 +9,8 @@ import org.apache.hadoop.io.WritableComparable;
 
 /**
  * Tuple类
+ * 
  * @author JoyoungZhang@gmail.com
- *
  */
 public class TextPair implements WritableComparable<TextPair> {
     private Text first;

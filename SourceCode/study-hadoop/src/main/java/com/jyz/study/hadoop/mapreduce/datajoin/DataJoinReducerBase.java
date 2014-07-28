@@ -23,29 +23,26 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.Reducer;
-
-import com.jyz.study.hadoop.mapreduce.datajoin.DataJoinUseNewApi.TaggedWritable;
 
 /**
  * This abstract class serves as the base class for the reducer class of a data
  * join job. The reduce function will first group the values according to their
  * input tags, and then compute the cross product of over the groups. For each
  * tuple in the cross product, it calls the following method, which is expected
- * to be implemented in a subclass.
- * 
- * protected abstract TaggedMapOutput combine(Object[] tags, Object[] values);
- * 
- * The above method is expected to produce one output value from an array of
- * records of different sources. The user code can also perform filtering here.
- * It can return null if it decides to the records do not meet certain
- * conditions.
- * 
+ * to be implemented in a subclass. protected abstract TaggedMapOutput
+ * combine(Object[] tags, Object[] values); The above method is expected to
+ * produce one output value from an array of records of different sources. The
+ * user code can also perform filtering here. It can return null if it decides
+ * to the records do not meet certain conditions.
  */
-public abstract class DataJoinReducerBase extends
-	Reducer<Text, TaggedMapOutput, Text, Text> {
+public abstract class DataJoinReducerBase extends Reducer<Text, TaggedMapOutput, Text, Text> {
+
+    private static final Log LOG = LogFactory.getLog(DataJoinReducerBase.class);
 
     protected Reporter reporter = null;
 
@@ -55,49 +52,44 @@ public abstract class DataJoinReducerBase extends
 
     protected long numOfValues = 0;
 
-    protected void setup(Context context) throws IOException,
-	    InterruptedException {
-	this.maxNumOfValuesPerGroup = context.getConfiguration().getLong(
-		"datajoin.maxNumOfValuesPerGroup", 100);
+    protected void setup(Context context) throws IOException, InterruptedException {
+	this.maxNumOfValuesPerGroup = context.getConfiguration().getLong("datajoin.maxNumOfValuesPerGroup", 100);
     }
 
     /**
      * The subclass can provide a different implementation on ResetableIterator.
      * This is necessary if the number of values in a reduce call is very high.
-     * 
      * The default provided here uses ArrayListBackedIterator
      * 
      * @return an Object of ResetableIterator.
      */
-    protected ResetableIterator createResetableIterator() {
-	return new ArrayListBackedIterator();
+    protected <T> ResetableIterator<T> createResetableIterator() {
+	return new ArrayListBackedIterator<T>();
     }
 
     /**
      * This is the function that re-groups values for a key into sub-groups
      * based on a secondary key (input tag).
      * 
-     * @param arg1
+     * @param values
      * @return
      */
-    private SortedMap<Text, ResetableIterator> regroup(Text key, Iterator arg1,
+    private SortedMap<Text, ResetableIterator<TaggedMapOutput>> regroup(Text key, Iterator<TaggedMapOutput> values,
 	    Context context) throws IOException {
 	this.numOfValues = 0;
-	SortedMap<Text, ResetableIterator> retv = new TreeMap<Text, ResetableIterator>();
+	SortedMap<Text, ResetableIterator<TaggedMapOutput>> retv = new TreeMap<Text, ResetableIterator<TaggedMapOutput>>();
 	TaggedMapOutput aRecord = null;
-	while (arg1.hasNext()) {
+	while (values.hasNext()) {
 	    this.numOfValues += 1;
 	    if (this.numOfValues % 100 == 0) {
-		reporter.setStatus("key: " + key.toString() + " numOfValues: "
-			+ this.numOfValues);
+		reporter.setStatus("key: " + key.toString() + " numOfValues: " + this.numOfValues);
 	    }
 	    if (this.numOfValues > this.maxNumOfValuesPerGroup) {
 		continue;
 	    }
-	    aRecord = ((TaggedMapOutput) arg1.next()).clone(context
-		    .getConfiguration());
+	    aRecord = values.next().clone(context.getConfiguration());
 	    Text tag = aRecord.getTag();
-	    ResetableIterator data = retv.get(tag);
+	    ResetableIterator<TaggedMapOutput> data = retv.get(tag);
 	    if (data == null) {
 		data = createResetableIterator();
 		retv.put(tag, data);
@@ -106,16 +98,14 @@ public abstract class DataJoinReducerBase extends
 	}
 	if (this.numOfValues > this.largestNumOfValues) {
 	    this.largestNumOfValues = numOfValues;
-	    // LOG.info("key: " + key.toString() + " this.largestNumOfValues: "
-	    // + this.largestNumOfValues);
+	    LOG.info("key: " + key.toString() + " this.largestNumOfValues: " + this.largestNumOfValues);
 	}
 	return retv;
     }
 
-    protected void reduce(Text key, Iterable values, Context context)
-	    throws IOException, InterruptedException {
-	SortedMap<Text, ResetableIterator> groups = regroup(key, values
-		.iterator(), context);
+    @SuppressWarnings("unchecked")
+    protected void reduce(Text key, Iterable<TaggedMapOutput> values, Context context) throws IOException, InterruptedException {
+	SortedMap<Text, ResetableIterator<TaggedMapOutput>> groups = regroup(key, values.iterator(), context);
 	Text[] tags = groups.keySet().toArray(new Text[0]);
 	ResetableIterator<TaggedMapOutput>[] groupValues = new ResetableIterator[tags.length];
 	for (int i = 0; i < tags.length; i++) {
@@ -139,12 +129,12 @@ public abstract class DataJoinReducerBase extends
      * @throws IOException
      * @throws InterruptedException
      */
-    private void joinAndCollect(Text[] tags, ResetableIterator[] values,
-	    Text key, Context context) throws IOException, InterruptedException {
+    private void joinAndCollect(Text[] tags, ResetableIterator<TaggedMapOutput>[] values, Text key, Context context)
+	    throws IOException, InterruptedException {
 	if (values.length < 1) {
 	    return;
 	}
-	TaggedWritable[] partialList = new TaggedWritable[values.length];
+	TaggedMapOutput[] partialList = new TaggedMapOutput[values.length];
 	joinAndCollect(tags, values, 0, partialList, key, context);
     }
 
@@ -164,9 +154,8 @@ public abstract class DataJoinReducerBase extends
      * @throws IOException
      * @throws InterruptedException
      */
-    private void joinAndCollect(Text[] tags, ResetableIterator[] values,
-	    int pos, TaggedWritable[] partialList, Text key, Context context)
-	    throws IOException, InterruptedException {
+    private void joinAndCollect(Text[] tags, ResetableIterator<TaggedMapOutput>[] values, int pos, TaggedMapOutput[] partialList,
+	    Text key, Context context) throws IOException, InterruptedException {
 
 	if (values.length == pos) {
 	    // get a value from each source. Combine them
@@ -174,10 +163,10 @@ public abstract class DataJoinReducerBase extends
 	    context.write(key, combined.getData());
 	    return;
 	}
-	ResetableIterator nextValues = values[pos];
+	ResetableIterator<TaggedMapOutput> nextValues = values[pos];
 	nextValues.reset();
 	while (nextValues.hasNext()) {
-	    TaggedWritable v = (TaggedWritable) nextValues.next();
+	    TaggedMapOutput v = (TaggedMapOutput) nextValues.next();
 	    partialList[pos] = v;
 	    joinAndCollect(tags, values, pos + 1, partialList, key, context);
 	}
@@ -188,14 +177,12 @@ public abstract class DataJoinReducerBase extends
     public static Text NUM_OF_VALUES_FIELD = new Text("NUM_OF_VALUES");
 
     /**
-     * 
      * @param tags
      *            a list of source tags
      * @param values
      *            a value per source
      * @return combined value derived from values of the sources
      */
-    protected abstract TaggedMapOutput combine(Text[] tags,
-	    TaggedWritable[] values);
+    protected abstract TaggedMapOutput combine(Text[] tags, TaggedMapOutput[] values);
 
 }

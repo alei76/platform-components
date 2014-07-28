@@ -25,8 +25,6 @@ import java.util.Iterator;
 /**
  * This class provides an implementation of ResetableIterator. The
  * implementation will be based on ArrayList.
- * 
- * 
  */
 public class ArrayListBackedIterator<E> implements ResetableIterator<E> {
 

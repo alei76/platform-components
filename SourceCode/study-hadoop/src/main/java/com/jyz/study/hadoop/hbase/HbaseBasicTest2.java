@@ -18,12 +18,11 @@ public class HbaseBasicTest2 {
     public static void main(String[] args) throws Exception {
 	Configuration conf = HBaseConfiguration.create();
 	conf.set("hbase.zookeeper.quorum", ConfigurationUtils.LOCATION);
-//	conf.set("hbase.zookeeper.property.clientPort", "2181");
-	
+	// conf.set("hbase.zookeeper.property.clientPort", "2181");
+
 	HBaseAdmin admin = new HBaseAdmin(conf);
 
-	HTableDescriptor tableDescripter = new HTableDescriptor("tab1"
-		.getBytes());
+	HTableDescriptor tableDescripter = new HTableDescriptor("tab1".getBytes());
 	tableDescripter.addFamily(new HColumnDescriptor("fam1"));
 	admin.createTable(tableDescripter);
 	HTable table = new HTable(conf, "tab1");
@@ -40,15 +39,14 @@ public class HbaseBasicTest2 {
 
 	for (Result row : table.getScanner("fam1".getBytes())) {
 	    System.out.format("ROW\t%s\n", new String(row.getRow()));
-	    for (Map.Entry<byte[], byte[]> entry : row.getFamilyMap(
-		    "fam1".getBytes()).entrySet()) {
+	    for (Map.Entry<byte[], byte[]> entry : row.getFamilyMap("fam1".getBytes()).entrySet()) {
 		String column = new String(entry.getKey());
 		String value = new String(entry.getValue());
 		System.out.format("COLUMN\tfam1:%s\t%s\n", column, value);
 	    }
 	}
-//	admin.disableTable("tab1");
-//	admin.deleteTable("tab1");
+	// admin.disableTable("tab1");
+	// admin.deleteTable("tab1");
     }
 
 }

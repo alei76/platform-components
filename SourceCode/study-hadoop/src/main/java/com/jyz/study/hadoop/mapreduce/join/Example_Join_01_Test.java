@@ -19,14 +19,12 @@ import com.jyz.study.hadoop.common.Utils;
 import com.jyz.study.hadoop.mapreduce.different.Example_Different_01_KeyComparator;
 
 public class Example_Join_01_Test {
-    public static void main(String agrs[]) throws IOException,
-	    InterruptedException, ClassNotFoundException {
+    public static void main(String agrs[]) throws IOException, InterruptedException, ClassNotFoundException {
 	Configuration conf = ConfigurationUtils.getHadoopConfiguration();
 	GenericOptionsParser parser = new GenericOptionsParser(conf, agrs);
 	String[] otherArgs = parser.getRemainingArgs();
 	if (agrs.length < 3) {
-	    System.err
-		    .println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
+	    System.err.println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
 	    System.exit(2);
 	}
 	Utils.deleteIfExists(conf, otherArgs[2]);
@@ -41,7 +39,7 @@ public class Example_Join_01_Test {
 	// 设置partition
 	job.setPartitionerClass(Example_Join_01_Partitioner.class);
 	// key比较函数
-	job.setSortComparatorClass(Example_Different_01_KeyComparator.class); 
+	job.setSortComparatorClass(Example_Different_01_KeyComparator.class);
 	// 在分区之后按照指定的条件分组
 	job.setGroupingComparatorClass(Example_Join_01_Comparator.class);
 

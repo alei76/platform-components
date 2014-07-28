@@ -98,11 +98,9 @@ public class DataJoinUseOldApi extends Configured implements Tool {
 	public void readFields(DataInput in) throws IOException {
 	    this.tag.readFields(in);
 	    String dataClz = in.readUTF();
-	    if (this.data == null
-		    || !this.data.getClass().getName().equals(dataClz)) {
+	    if (this.data == null || !this.data.getClass().getName().equals(dataClz)) {
 		try {
-		    this.data = (Writable) ReflectionUtils.newInstance(Class
-			    .forName(dataClz), null);
+		    this.data = (Writable) ReflectionUtils.newInstance(Class.forName(dataClz), null);
 		} catch (ClassNotFoundException e) {
 		    e.printStackTrace();
 		}
@@ -137,10 +135,8 @@ public class DataJoinUseOldApi extends Configured implements Tool {
     }
 
     public static void main(String[] args) throws Exception {
-	String[] arg = { "hdfs://200master:9000/user/root/input2",
-		"hdfs://200master:9000/user/root/output20" };
-	int res = ToolRunner.run(new Configuration(), new DataJoinUseOldApi(),
-		arg);
+	String[] arg = { "hdfs://200master:9000/user/root/input2", "hdfs://200master:9000/user/root/output20" };
+	int res = ToolRunner.run(new Configuration(), new DataJoinUseOldApi(), arg);
 	System.exit(res);
     }
 }

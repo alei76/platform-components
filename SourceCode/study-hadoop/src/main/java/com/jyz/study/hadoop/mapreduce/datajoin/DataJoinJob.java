@@ -41,15 +41,13 @@ import org.apache.hadoop.mapred.TextOutputFormat;
  * data of different sources. To create sucn a job, the user must implement a
  * mapper class that extends DataJoinMapperBase class, and a reducer class that
  * extends DataJoinReducerBase.
- * 
  */
 public class DataJoinJob {
 
     public static Class getClassByName(String className) {
 	Class retv = null;
 	try {
-	    ClassLoader classLoader = Thread.currentThread()
-		    .getContextClassLoader();
+	    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	    retv = Class.forName(className, true, classLoader);
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
@@ -102,8 +100,7 @@ public class DataJoinJob {
 	job.setMapperClass(mapper);
 	FileOutputFormat.setOutputPath(job, new Path(outputDir));
 	job.setOutputFormat(outputFormat);
-	SequenceFileOutputFormat.setOutputCompressionType(job,
-		SequenceFile.CompressionType.BLOCK);
+	SequenceFileOutputFormat.setOutputCompressionType(job, SequenceFile.CompressionType.BLOCK);
 	job.setMapOutputKeyClass(Text.class);
 	job.setMapOutputValueClass(mapoutputValueClass);
 	job.setOutputKeyClass(Text.class);
@@ -155,14 +152,9 @@ public class DataJoinJob {
     public static void main(String[] args) {
 	boolean success;
 	if (args.length < 8 || args.length > 10) {
-	    System.out
-		    .println("usage: DataJoinJob "
-			    + "inputdirs outputdir map_input_file_format "
-			    + "numofParts "
-			    + "mapper_class "
-			    + "reducer_class "
-			    + "map_output_value_class "
-			    + "output_value_class [maxNumOfValuesPerGroup [descriptionOfJob]]]");
+	    System.out.println("usage: DataJoinJob " + "inputdirs outputdir map_input_file_format " + "numofParts "
+		    + "mapper_class " + "reducer_class " + "map_output_value_class "
+		    + "output_value_class [maxNumOfValuesPerGroup [descriptionOfJob]]]");
 	    System.exit(-1);
 	}
 

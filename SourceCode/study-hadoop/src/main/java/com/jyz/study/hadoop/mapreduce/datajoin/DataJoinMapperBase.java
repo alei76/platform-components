@@ -20,7 +20,6 @@ package com.jyz.study.hadoop.mapreduce.datajoin;
 
 import java.io.IOException;
 
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
@@ -28,31 +27,36 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 /**
  * This abstract class serves as the base class for the mapper class of a data
  * join job. This class expects its subclasses to implement methods for the
- * following functionalities:
- * 
- * 1. Compute the source tag of input values 2. Compute the map output value
- * object 3. Compute the map output key object
- * 
- * The source tag will be used by the reducer to determine from which source
- * (which table in SQL terminology) a value comes. Computing the map output
- * value object amounts to performing projecting/filtering work in a SQL
- * statement (through the select/where clauses). Computing the map output key
- * amounts to choosing the join key. This class provides the appropriate plugin
- * points for the user defined subclasses to implement the appropriate logic.
- * 
+ * following functionalities: 1. Compute the source tag of input values 2.
+ * Compute the map output value object 3. Compute the map output key object The
+ * source tag will be used by the reducer to determine from which source (which
+ * table in SQL terminology) a value comes. Computing the map output value
+ * object amounts to performing projecting/filtering work in a SQL statement
+ * (through the select/where clauses). Computing the map output key amounts to
+ * choosing the join key. This class provides the appropriate plugin points for
+ * the user defined subclasses to implement the appropriate logic.
  */
-public abstract class DataJoinMapperBase extends
-	Mapper<LongWritable, Text, Text, TaggedMapOutput> {
+public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> extends Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT> {
 
     protected String inputFile = null;
 
     protected Text inputTag = null;
 
-    protected void setup(Context context) throws IOException,
-	    InterruptedException {
-	this.inputFile = ((FileSplit) context.getInputSplit()).getPath()
-		.toString();
+    protected void setup(Context context) throws IOException, InterruptedException {
+	this.inputFile = ((FileSplit) context.getInputSplit()).getPath().toString();
 	this.inputTag = generateInputTag(this.inputFile);
+    }
+
+    protected void map(KEYIN key, VALUEIN value, Context context) throws IOException, InterruptedException {
+	VALUEOUT aRecord = generateTaggedMapOutput(value, context);
+	if (aRecord == null) {
+	    return;
+	}
+	KEYOUT groupKey = generateGroupKey(aRecord, context);
+	if (groupKey == null) {
+	    return;
+	}
+	context.write(groupKey, aRecord);
     }
 
     /**
@@ -61,7 +65,7 @@ public abstract class DataJoinMapperBase extends
      * @param inputFile
      * @return the source tag computed from the given file name.
      */
-    protected abstract Text generateInputTag(String inputFile);
+    protected abstract Text generateInputTag(String inputFile) throws IOException;
 
     /**
      * Generate a tagged map output value. The user code can also perform
@@ -71,7 +75,7 @@ public abstract class DataJoinMapperBase extends
      * @param value
      * @return an object of TaggedMapOutput computed from the given value.
      */
-    protected abstract TaggedMapOutput generateTaggedMapOutput(Text value);
+    protected abstract VALUEOUT generateTaggedMapOutput(VALUEIN value, Context context) throws IOException;
 
     /**
      * Generate a map output key. The user code can compute the key
@@ -81,19 +85,6 @@ public abstract class DataJoinMapperBase extends
      * @param aRecord
      * @return the group key for the given record
      */
-    protected abstract Text generateGroupKey(TaggedMapOutput aRecord);
-
-    protected void map(LongWritable key, Text value, Context context)
-	    throws IOException, InterruptedException {
-	TaggedMapOutput aRecord = generateTaggedMapOutput(value);
-	if (aRecord == null) {
-	    return;
-	}
-	Text groupKey = generateGroupKey(aRecord);
-	if (groupKey == null) {
-	    return;
-	}
-	context.write(groupKey, aRecord);
-    }
+    protected abstract KEYOUT generateGroupKey(VALUEOUT aRecord, Context context) throws IOException;
 
 }

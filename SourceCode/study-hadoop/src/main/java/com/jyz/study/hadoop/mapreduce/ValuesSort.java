@@ -21,41 +21,36 @@ import com.jyz.study.hadoop.mapreduce.different.Example_Different_01_Partitioner
 
 /**
  * 同一个key下的values组内排序
+ * 
  * @author JoyoungZhang@gmail.com
- *
  */
 public class ValuesSort {
 
-    public static class TokenizerMapper extends
-	    Mapper<Object, Text, TextPair, Text> {
+    public static class TokenizerMapper extends Mapper<Object, Text, TextPair, Text> {
 
 	/**
-	 * key is offset
-	 * value is line
+	 * key is offset value is line
 	 */
-	public void map(Object key, Text value, Context context)
-		throws IOException, InterruptedException {
+	public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 	    String values[] = value.toString().split("\t");
-	    if(values[0].equals("1001")){
+	    if (values[0].equals("1001")) {
 		return;
 	    }
 	    context.write(new TextPair(values[0], values[1]), new Text(values[1]));
 	}
     }
 
-    public static class JoinReduce extends
-	    Reducer<TextPair, Text, Text, Text> {
+    public static class JoinReduce extends Reducer<TextPair, Text, Text, Text> {
 
-	public void reduce(TextPair key, Iterable<Text> values,
-		Context context) throws IOException, InterruptedException {
+	public void reduce(TextPair key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 	    Text keyout = new Text(key.getFirst());
-	    StringBuffer sb=new StringBuffer();  
-	    for(Text val : values)  {  
-		sb.append(val+",");  
-	    }  
-	    if(sb.length()>0)  {  
-		sb.deleteCharAt(sb.length()-1);  
-	    }  
+	    StringBuffer sb = new StringBuffer();
+	    for (Text val : values) {
+		sb.append(val + ",");
+	    }
+	    if (sb.length() > 0) {
+		sb.deleteCharAt(sb.length() - 1);
+	    }
 	    Text valueout = new Text(sb.toString());
 	    context.write(keyout, valueout);
 	}
@@ -63,8 +58,7 @@ public class ValuesSort {
 
     public static void main(String[] args) throws Exception {
 	Configuration conf = ConfigurationUtils.getHadoopConfiguration();
-	String[] otherArgs = new GenericOptionsParser(conf, args)
-		.getRemainingArgs();
+	String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 	if (otherArgs.length != 2) {
 	    System.err.println("Usage: wordcount <in> <out>");
 	    System.exit(2);
@@ -77,14 +71,14 @@ public class ValuesSort {
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(Text.class);
 	job.setNumReduceTasks(1);
-	
+
 	// 设置partition
 	job.setPartitionerClass(Example_Different_01_Partitioner.class);
 	// 在分区之后按照指定的条件分组
 	job.setGroupingComparatorClass(Example_Different_01_Comparator.class);
 	// key比较函数
-	job.setSortComparatorClass(Example_Different_01_KeyComparator.class); 
-	
+	job.setSortComparatorClass(Example_Different_01_KeyComparator.class);
+
 	FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
 	Utils.deleteIfExists(conf, otherArgs[1]);
 	FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));

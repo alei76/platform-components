@@ -20,16 +20,14 @@ import org.apache.hadoop.hbase.regionserver.wal.WALEdit;
 import org.apache.hadoop.hbase.util.Bytes;
 
 /**
- * 
  * @author JoyoungZhang@gmail.com
- *
  */
 public class MyObserver extends BaseRegionObserver {
 
     private static final Log LOG = LogFactory.getLog(MyObserver.class);
     private static Configuration conf = HBaseConfiguration.create();
     private static final String TN = "CreateFromMyObserver";
-    
+
     @Override
     public void start(CoprocessorEnvironment e) throws IOException {
 	HBaseAdmin admin = new HBaseAdmin(conf);
@@ -37,21 +35,22 @@ public class MyObserver extends BaseRegionObserver {
 	    admin.disableTable(TN);
 	    admin.deleteTable(TN);
 	    LOG.info("table drop Success!");
-        } else {
-            admin.createTable(new HTableDescriptor(TN));
-            LOG.info("create table Success!");
-        }
+	} else {
+	    admin.createTable(new HTableDescriptor(TN));
+	    LOG.info("create table Success!");
+	}
     }
-    
+
     @Override
     public void stop(CoprocessorEnvironment e) throws IOException {
 	LOG.info("stop success!.");
     }
-    
+
     @Override
-    public void prePut(ObserverContext<RegionCoprocessorEnvironment> e, Put put, WALEdit edit, Durability durability) throws IOException {
+    public void prePut(ObserverContext<RegionCoprocessorEnvironment> e, Put put, WALEdit edit, Durability durability)
+	    throws IOException {
 	byte[] tableName = e.getEnvironment().getRegion().getRegionInfo().getTableName();
-	if(!Bytes.equals(tableName, Bytes.toBytes("MyObserver"))){
+	if (!Bytes.equals(tableName, Bytes.toBytes("MyObserver"))) {
 	    return;
 	}
 	LOG.info("WALEdit信息：" + edit);
@@ -59,16 +58,17 @@ public class MyObserver extends BaseRegionObserver {
 	KeyValue kv = (KeyValue) put.get(Bytes.toBytes("cf"), Bytes.toBytes("c1")).get(0);
 	LOG.info("KeyValue信息：" + kv);
     }
-    
+
     @Override
-    public void postPut(ObserverContext<RegionCoprocessorEnvironment> e, Put put, WALEdit edit, Durability durability) throws IOException {
+    public void postPut(ObserverContext<RegionCoprocessorEnvironment> e, Put put, WALEdit edit, Durability durability)
+	    throws IOException {
 	byte[] tableName = e.getEnvironment().getRegion().getRegionInfo().getTableName();
-	if(!Bytes.equals(tableName, Bytes.toBytes("MyObserver"))){
+	if (!Bytes.equals(tableName, Bytes.toBytes("MyObserver"))) {
 	    return;
 	}
 	HTable table = new HTable(conf, Bytes.toBytes(TN));
-        table.put(put);
-        LOG.info("add data to " + TN + " success!");
+	table.put(put);
+	LOG.info("add data to " + TN + " success!");
     }
-    
+
 }

@@ -25,19 +25,15 @@ import com.jyz.study.hadoop.common.Utils;
  * Mapper函数
  * 
  * @author JoyoungZhang@gmail.com
- * 
  */
-public class Example_Join_01_Mapper_DistributedCache extends
-	Mapper<Text, Text, Text, Text> {
+public class Example_Join_01_Mapper_DistributedCache extends Mapper<Text, Text, Text, Text> {
 
     private Hashtable<String, String> joinData = new Hashtable<String, String>();
 
-    protected void setup(
-	    org.apache.hadoop.mapreduce.Mapper<Text, Text, Text, Text>.Context context)
-	    throws IOException, InterruptedException {
+    protected void setup(org.apache.hadoop.mapreduce.Mapper<Text, Text, Text, Text>.Context context) throws IOException,
+	    InterruptedException {
 	try {
-	    Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context
-		    .getConfiguration());
+	    Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
 	    if (cacheFiles != null && cacheFiles.length > 0) {
 		String line;
 		String[] tokens;
@@ -57,22 +53,19 @@ public class Example_Join_01_Mapper_DistributedCache extends
     }
 
     @Override
-    protected void map(Text key, Text value, Context context)
-	    throws IOException, InterruptedException {
+    protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 	String joinValue = joinData.get(key.toString());
 	if (joinValue != null) {
 	    context.write(key, new Text(value.toString() + "," + joinValue));
 	}
     }
 
-    public static void main(String agrs[]) throws IOException,
-	    InterruptedException, ClassNotFoundException {
+    public static void main(String agrs[]) throws IOException, InterruptedException, ClassNotFoundException {
 	Configuration conf = ConfigurationUtils.getHadoopConfiguration();
 	GenericOptionsParser parser = new GenericOptionsParser(conf, agrs);
 	String[] otherArgs = parser.getRemainingArgs();
 	if (agrs.length < 3) {
-	    System.err
-		    .println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
+	    System.err.println("Usage: Example_Join_01 <in_path_one> <in_path_two> <output>");
 	    System.exit(2);
 	}
 	Utils.deleteIfExists(conf, otherArgs[2]);
@@ -81,8 +74,8 @@ public class Example_Join_01_Mapper_DistributedCache extends
 	Job job = new Job(conf, "Example_Join_01_Mapper_DistributedCache");
 
 	conf.set(KeyValueLineRecordReader.KEY_VALUE_SEPERATOR, "\t");
-	job.setInputFormatClass(KeyValueTextInputFormat.class); 
-	
+	job.setInputFormatClass(KeyValueTextInputFormat.class);
+
 	job.setJarByClass(Example_Join_01_Mapper_DistributedCache.class);
 	// 设置Map相关内容
 	job.setMapperClass(Example_Join_01_Mapper_DistributedCache.class);

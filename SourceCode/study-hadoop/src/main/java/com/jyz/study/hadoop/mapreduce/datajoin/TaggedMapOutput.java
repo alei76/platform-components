@@ -30,7 +30,6 @@ import org.apache.hadoop.io.WritableUtils;
  * attributes or based on the file name of the input file. This tag will be used
  * by the reducers to re-group the values of a given key according to their
  * source tags.
- * 
  */
 public abstract class TaggedMapOutput implements Writable {
     protected Text tag;

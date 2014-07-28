@@ -11,14 +11,14 @@ import org.apache.hadoop.fs.Path;
 public class Utils {
 
     private static final Log LOG = LogFactory.getLog(Utils.class);
-    
-    public static void deleteIfExists(Configuration conf, String path) throws IOException{
-	FileSystem fs = FileSystem.get(conf);   
-        Path pout = new Path(path);   
-        if(fs.exists(pout)){   
-            fs.delete(pout, true);   
-            LOG.info("Delete Hdfs path[" + path + "] success.");   
-        }    
+
+    public static void deleteIfExists(Configuration conf, String path) throws IOException {
+	FileSystem fs = FileSystem.get(conf);
+	Path pout = new Path(path);
+	if (fs.exists(pout)) {
+	    fs.delete(pout, true);
+	    LOG.info("Delete Hdfs path[" + path + "] success.");
+	}
 
     }
 }
