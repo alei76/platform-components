@@ -13,9 +13,6 @@ import org.apache.hadoop.mapreduce.lib.jobcontrol.JobControl;
 
 import com.citic.zxyjs.zwlscx.bean.Conf;
 import com.citic.zxyjs.zwlscx.bean.Task;
-import com.citic.zxyjs.zwlscx.mapreduce.append.AppendJob;
-import com.citic.zxyjs.zwlscx.mapreduce.join.JoinJob;
-import com.citic.zxyjs.zwlscx.mapreduce.union.UnionJob;
 import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
 
 /**
@@ -55,6 +52,8 @@ public class ExecutorService {
 		    code = 1;
 		}
 		jc.stop();
+		//clear
+		//TODO
 		System.exit(code);
 	    }
 	}
@@ -65,17 +64,7 @@ public class ExecutorService {
 	boolean init = conf.isInit();
 	List<Job> jobs = new ArrayList<Job>();
 	for (Task task : conf.getTasks()) {
-	    switch (task.getTaskType()) {
-	    case Join:
-		jobs.add(new JoinJob().generateJob(task, init));
-		break;
-	    case Union:
-		jobs.add(new UnionJob().generateJob(task, init));
-		break;
-	    case Append:
-		jobs.add(new AppendJob().generateJob(task, init));
-		break;
-	    }
+	    jobs.add(JobGeneratorFactory.getJobGenerator(task, init).generateJob());
 	}
 	return jobs;
     }

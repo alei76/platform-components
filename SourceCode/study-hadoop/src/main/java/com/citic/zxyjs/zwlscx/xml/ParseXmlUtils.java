@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -78,6 +79,11 @@ public class ParseXmlUtils {
 				Field field = new Field();
 				field.setId(((Element) fieldNode).getAttribute("id"));
 				field.setName(((Element) fieldNode).getAttribute("name"));
+				if(StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))){
+				    field.setSourceId(((Element) sourceNode).getAttribute("id"));
+				}else{
+				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
+				}
 				fields.add(field);
 			    }
 			}
@@ -95,6 +101,11 @@ public class ParseXmlUtils {
 				Field field = new Field();
 				field.setId(((Element) fieldNode).getAttribute("id"));
 				field.setName(((Element) fieldNode).getAttribute("name"));
+				if(StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))){
+				    field.setSourceId(((Element) sourceNode).getAttribute("id"));
+				}else{
+				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
+				}
 				fields.add(field);
 			    }
 			}
