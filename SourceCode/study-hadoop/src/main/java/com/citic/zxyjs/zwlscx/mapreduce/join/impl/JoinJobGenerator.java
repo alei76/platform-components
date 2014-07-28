@@ -24,7 +24,7 @@ import com.jyz.study.hadoop.common.ConfigurationUtils;
 import com.jyz.study.hadoop.common.Utils;
 
 /**
- * 文件关联Job
+ * 文件关联Job生成器
  * 
  * @author JoyoungZhang@gmail.com
  */
@@ -41,11 +41,11 @@ public class JoinJobGenerator implements JobGenerator {
     public Job generateJob() throws IOException {
 
 	if (task.getOutput() instanceof Table) {
-	    throw new IOException("Join mapreduce's output can only File.");
+	    throw new IOException("JoinJob mapreduce's output can only File.");
 	}
 
 	Configuration conf = ConfigurationUtils.getHbaseConfiguration();
-	DefaultStringifier.store(conf, task, "task");
+	DefaultStringifier.store(conf, task, JobGenerator.JOIN_JOB_TASK);
 	conf.set("init", String.valueOf(init));
 
 	Job job = new Job(conf, "JoinJob[" + task.getIdentify() + "]");

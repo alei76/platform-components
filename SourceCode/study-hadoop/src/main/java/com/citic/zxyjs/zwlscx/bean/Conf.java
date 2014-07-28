@@ -40,7 +40,7 @@ public class Conf implements Writable {
     public void readFields(DataInput in) throws IOException {
 	int size = in.readInt();
 	tasks = new ArrayList<Task>(size);
-	for(int i=0;i<size;i++){
+	for (int i = 0; i < size; i++) {
 	    Task task = null;
 	    task.readFields(in);
 	    tasks.add(task);
@@ -51,7 +51,7 @@ public class Conf implements Writable {
     @Override
     public void write(DataOutput out) throws IOException {
 	out.writeInt(tasks.size());
-	for(Task task : tasks){
+	for (Task task : tasks) {
 	    task.write(out);
 	}
 	out.writeBoolean(init);

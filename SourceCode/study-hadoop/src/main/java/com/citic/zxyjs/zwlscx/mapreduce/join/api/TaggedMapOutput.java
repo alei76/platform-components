@@ -23,7 +23,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableUtils;
 
-
 /**
  * This abstract class serves as the base class for the values that flow from
  * the mappers to the reducers in a data join job. Typically, in such a job, the
@@ -36,21 +35,21 @@ public abstract class TaggedMapOutput implements Writable {
     protected Text tag;
 
     public TaggedMapOutput() {
-      this.tag = new Text("");
+	this.tag = new Text("");
     }
 
     public Text getTag() {
-      return tag;
+	return tag;
     }
 
     public void setTag(Text tag) {
-      this.tag = tag;
+	this.tag = tag;
     }
 
     public abstract Writable getData();
-    
+
     public TaggedMapOutput clone(Configuration conf) {
-      return (TaggedMapOutput) WritableUtils.clone(this, conf);
+	return (TaggedMapOutput) WritableUtils.clone(this, conf);
     }
 
-  }
+}

@@ -21,21 +21,22 @@ import com.citic.zxyjs.zwlscx.bean.Field;
 import com.citic.zxyjs.zwlscx.bean.File;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
+import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.DataJoinMapperBase;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.TaggedMapOutput;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.TaggedInputSplit;
 import com.citic.zxyjs.zwlscx.xml.Separator;
 
 /**
- * Join时不同类型的mapper
+ * Join操作下不同类型的mapper
  * 
  * @author JoyoungZhang@gmail.com
  */
 public class DataJoinMapper {
 
     /**
-     * input is hdfs file
-     * output is text and text
+     * input is hdfs file output is text and text
+     * 
      * @author JoyoungZhang@gmail.com
      */
     public static class DataJoinTextInputFormatMapper extends DataJoinMapperBase<LongWritable, Text, Text, TaggedMapOutput> {
@@ -47,7 +48,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
+	    this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    switch (task.getSourceType()) {
@@ -57,7 +58,7 @@ public class DataJoinMapper {
 		if (datasource.equals(leftSource.getPath())) {
 		    currentFile = leftSource;
 		    currentFields = task.getLeftFields();
-		}else{
+		} else {
 		    currentFile = rightSource;
 		    currentFields = task.getRightFields();
 		}
@@ -78,28 +79,28 @@ public class DataJoinMapper {
 
 	@Override
 	protected String generateDatasource(Context context) throws IOException {
-	    if(context.getInputSplit() instanceof TaggedInputSplit){
-		return ((FileSplit)((TaggedInputSplit) context.getInputSplit()).getInputSplit()).getPath().toString();
+	    if (context.getInputSplit() instanceof TaggedInputSplit) {
+		return ((FileSplit) ((TaggedInputSplit) context.getInputSplit()).getInputSplit()).getPath().toString();
 	    }
 	    return ((FileSplit) context.getInputSplit()).getPath().toString();
 	}
-	
+
 	@Override
 	protected TaggedMapOutput generateTaggedMapOutput(Text value, Context context) throws IOException {
-	    String[] tokens = value.toString().split(Separator.SEP_COMMA); 
+	    String[] tokens = value.toString().split(Separator.SEP_COMMA);
 	    List<Field> fields = currentFile.getFields();
-	    if(tokens.length != fields.size()){
+	    if (tokens.length != fields.size()) {
 		return null;
 	    }
 	    MapWritable map = new MapWritable();
-	    for(int i=0;i<tokens.length;i++){
+	    for (int i = 0; i < tokens.length; i++) {
 		map.put(fields.get(i), new Text(tokens[i]));
 	    }
 	    TaggedWritable retv = new TaggedWritable(map);
 	    retv.setTag(this.inputTag);
 	    return retv;
 	}
-	
+
 	@Override
 	protected Text generateGroupKey(TaggedMapOutput aRecord, Context context) throws IOException {
 	    MapWritable map = (MapWritable) aRecord.getData();
@@ -113,18 +114,18 @@ public class DataJoinMapper {
 	    }
 	    return new Text(groupKey.toString());
 	}
-	
+
     }
-    
+
     /**
-     * 暂时没有任何业务场景使用此类，此类也经测试 
-     * input is hdfs file
-     * output is rowky and put
+     * 暂时没有任何业务场景使用此类，此类也经测试 input is hdfs file output is rowky and put
+     * 
      * @author JoyoungZhang@gmail.com
      */
     @Unstable
     @Deprecated
-    public static class DataJoinTextInputFormatForHBaseMapper extends DataJoinMapperBase<LongWritable, Text, ImmutableBytesWritable, Put> {
+    public static class DataJoinTextInputFormatForHBaseMapper extends
+	    DataJoinMapperBase<LongWritable, Text, ImmutableBytesWritable, Put> {
 
 	private Task task;
 	private List<Integer> fieldPositions;
@@ -144,7 +145,7 @@ public class DataJoinMapper {
 		if (datasource.equals(leftSource.getPath())) {
 		    currentFile = leftSource;
 		    currentFields = task.getLeftFields();
-		}else{
+		} else {
 		    currentFile = rightSource;
 		    currentFields = task.getRightFields();
 		}
@@ -175,12 +176,12 @@ public class DataJoinMapper {
 
 	@Override
 	protected String generateDatasource(Context context) throws IOException {
-	    if(context.getInputSplit() instanceof TaggedInputSplit){
-		return ((FileSplit)((TaggedInputSplit) context.getInputSplit()).getInputSplit()).getPath().toString();
+	    if (context.getInputSplit() instanceof TaggedInputSplit) {
+		return ((FileSplit) ((TaggedInputSplit) context.getInputSplit()).getInputSplit()).getPath().toString();
 	    }
 	    return ((FileSplit) context.getInputSplit()).getPath().toString();
 	}
-	
+
 	@Override
 	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 	    String line = value.toString();
@@ -195,18 +196,18 @@ public class DataJoinMapper {
 	    }
 	    List<Field> fields = task.getOutput().getFields();
 	    Put put = new Put(Bytes.toBytes(groupKey.toString()));
-	    for(int i=0;i<tokens.length;i++){
+	    for (int i = 0; i < tokens.length; i++) {
 		String token = tokens[i];
-	    	put.add(Bytes.toBytes("cf"), Bytes.toBytes(fields.get(i).getName()), Bytes.toBytes(token));
+		put.add(Bytes.toBytes("cf"), Bytes.toBytes(fields.get(i).getName()), Bytes.toBytes(token));
 	    }
 	    context.write(new ImmutableBytesWritable(Bytes.toBytes(groupKey.toString())), put);
 	}
-	
+
 	@Override
 	protected Put generateTaggedMapOutput(Text value, Context context) throws IOException {
 	    return null;
 	}
-	
+
 	@Override
 	protected ImmutableBytesWritable generateGroupKey(Put aRecord, Context context) throws IOException {
 	    return null;
@@ -214,11 +215,12 @@ public class DataJoinMapper {
     }
 
     /**
-     * input is hbase table
-     * output is text and text
+     * input is hbase table output is text and text
+     * 
      * @author JoyoungZhang@gmail.com
      */
-    public static class DataJoinTableInputFormatMapper extends DataJoinMapperBase<ImmutableBytesWritable, Result, Text, TaggedMapOutput> {
+    public static class DataJoinTableInputFormatMapper extends
+	    DataJoinMapperBase<ImmutableBytesWritable, Result, Text, TaggedMapOutput> {
 
 	private Task task;
 	private Table currentTable;
@@ -227,7 +229,7 @@ public class DataJoinMapper {
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
-	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
+	    this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
 	    this.init = context.getConfiguration().getBoolean("init", false);
 
 	    switch (task.getSourceType()) {
@@ -248,7 +250,7 @@ public class DataJoinMapper {
 		if (datasource.equals(leftSource.getName())) {
 		    currentTable = leftSource;
 		    currentFields = task.getLeftFields();
-		}else{
+		} else {
 		    currentTable = rightSource;
 		    currentFields = task.getRightFields();
 		}
@@ -260,23 +262,23 @@ public class DataJoinMapper {
 	protected String generateDatasource(Context context) throws IOException {
 	    return context.getConfiguration().get(TableInputFormat.INPUT_TABLE);
 	}
-	
+
 	@Override
 	protected TaggedMapOutput generateTaggedMapOutput(Result value, Context context) {
 	    List<Field> fields = currentTable.getFields();
 	    List<KeyValue> kvs = value.list();
-	    if(kvs.size()!= fields.size()){
+	    if (kvs.size() != fields.size()) {
 		return null;
 	    }
 	    MapWritable map = new MapWritable();
-	    for (int i=0; i<kvs.size(); i++) {
+	    for (int i = 0; i < kvs.size(); i++) {
 		map.put(fields.get(i), new Text(Bytes.toString(kvs.get(i).getValue())));
 	    }
 	    TaggedWritable retv = new TaggedWritable(map);
 	    retv.setTag(this.inputTag);
 	    return retv;
 	}
-	
+
 	@Override
 	protected Text generateGroupKey(TaggedMapOutput aRecord, Context context) throws IOException {
 	    MapWritable map = (MapWritable) aRecord.getData();
@@ -290,29 +292,28 @@ public class DataJoinMapper {
 	    }
 	    return new Text(groupKey.toString());
 	}
-	
+
     }
-    
-    
+
     /**
-     * 暂时没有任何业务场景使用此类，此类也经测试 
-     * input is hbase table
-     * output is rowkey and put
+     * 暂时没有任何业务场景使用此类，此类也经测试 input is hbase table output is rowkey and put
+     * 
      * @author JoyoungZhang@gmail.com
      */
     @Unstable
     @Deprecated
-    public static class DataJoinTableInputFormatForHBaseMapper extends DataJoinMapperBase<ImmutableBytesWritable, Result, ImmutableBytesWritable, Put> {
-	
+    public static class DataJoinTableInputFormatForHBaseMapper extends
+	    DataJoinMapperBase<ImmutableBytesWritable, Result, ImmutableBytesWritable, Put> {
+
 	private Task task;
 	private List<Integer> fieldPositions;
 	private boolean init;
-	
+
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
 	    this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
 	    this.init = context.getConfiguration().getBoolean("init", false);
-	    
+
 	    Table currentTable = null;
 	    List<Field> currentFields = null;
 	    switch (task.getSourceType()) {
@@ -333,7 +334,7 @@ public class DataJoinMapper {
 		if (datasource.equals(leftSource.getName())) {
 		    currentTable = leftSource;
 		    currentFields = task.getLeftFields();
-		}else{
+		} else {
 		    currentTable = rightSource;
 		    currentFields = task.getRightFields();
 		}
@@ -350,12 +351,12 @@ public class DataJoinMapper {
 		}
 	    }
 	}
-	
+
 	@Override
 	protected String generateDatasource(Context context) throws IOException {
 	    return context.getConfiguration().get(TableInputFormat.INPUT_TABLE);
 	}
-	
+
 	@Override
 	protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
 	    Put put = new Put(key.get());
@@ -364,16 +365,16 @@ public class DataJoinMapper {
 	    }
 	    context.write(key, put);
 	}
-	
+
 	@Override
 	protected Put generateTaggedMapOutput(Result value, Context context) {
 	    return null;
 	}
-	
+
 	@Override
 	protected ImmutableBytesWritable generateGroupKey(Put aRecord, Context context) throws IOException {
 	    return null;
 	}
-	
+
     }
 }

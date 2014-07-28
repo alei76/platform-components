@@ -20,7 +20,7 @@ public class Source implements Writable {
 
     private String id;
     private String name;
-    
+
     private List<Field> fields;
 
     public String getId() {
@@ -40,11 +40,11 @@ public class Source implements Writable {
     }
 
     public List<Field> getFields() {
-        return fields;
+	return fields;
     }
 
     public void setFields(List<Field> fields) {
-        this.fields = fields;
+	this.fields = fields;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Source implements Writable {
 	this.name = Text.readString(in);
 	int size = in.readInt();
 	fields = new ArrayList<Field>(size);
-	for(int i=0;i<size;i++){
+	for (int i = 0; i < size; i++) {
 	    Field field = new Field();
 	    field.readFields(in);
 	    fields.add(field);
@@ -65,7 +65,7 @@ public class Source implements Writable {
 	Text.writeString(out, id);
 	Text.writeString(out, name);
 	out.writeInt(fields.size());
-	for(Field field : fields){
+	for (Field field : fields) {
 	    field.write(out);
 	}
     }

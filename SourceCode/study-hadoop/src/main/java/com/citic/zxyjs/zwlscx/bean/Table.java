@@ -7,7 +7,12 @@ import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
-public class Table extends Source implements Writable{
+/**
+ * 表实体对象
+ * 
+ * @author JoyoungZhang@gmail.com
+ */
+public class Table extends Source implements Writable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,5 +48,5 @@ public class Table extends Source implements Writable{
 	out.writeBoolean(hasZipperTable);
 	Text.writeString(out, zipperTableName);
     }
-    
+
 }

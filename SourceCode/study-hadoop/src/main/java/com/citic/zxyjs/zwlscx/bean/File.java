@@ -12,11 +12,20 @@ import org.apache.hadoop.io.Writable;
  * 
  * @author JoyoungZhang@gmail.com
  */
-public class File extends Source implements Writable{
+public class File extends Source implements Writable {
 
     private static final long serialVersionUID = 1L;
 
     private String path;
+    
+    public File() {
+	super();
+    }
+    
+    public File(String path) {
+	super();
+	this.path = path;
+    }
 
     public String getPath() {
 	return path;
@@ -25,7 +34,7 @@ public class File extends Source implements Writable{
     public void setPath(String path) {
 	this.path = path;
     }
-    
+
     @Override
     public void readFields(DataInput in) throws IOException {
 	super.readFields(in);
@@ -37,6 +46,5 @@ public class File extends Source implements Writable{
 	super.write(out);
 	Text.writeString(out, path);
     }
-    
 
 }

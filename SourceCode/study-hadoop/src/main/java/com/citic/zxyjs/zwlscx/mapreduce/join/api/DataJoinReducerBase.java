@@ -29,7 +29,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.Reducer;
 
-
 /**
  * This abstract class serves as the base class for the reducer class of a data
  * join job. The reduce function will first group the values according to their
@@ -161,7 +160,7 @@ public abstract class DataJoinReducerBase extends Reducer<Text, TaggedMapOutput,
 	if (values.length == pos) {
 	    // get a value from each source. Combine them
 	    Text combined = combine(tags, partialList);
-//	    context.write(new Text(), combined);
+	    //	    context.write(new Text(), combined);
 	    write(context, key, combined);
 	    return;
 	}
@@ -186,14 +185,15 @@ public abstract class DataJoinReducerBase extends Reducer<Text, TaggedMapOutput,
      * @return combined value derived from values of the sources
      */
     protected abstract Text combine(Text[] tags, TaggedMapOutput[] values);
-    
+
     /**
      * write reduce output
+     * 
      * @param context
      * @param key
      * @param value
-     * @throws InterruptedException 
-     * @throws IOException 
+     * @throws InterruptedException
+     * @throws IOException
      */
     protected abstract void write(Context context, Text key, Text value) throws IOException, InterruptedException;
 

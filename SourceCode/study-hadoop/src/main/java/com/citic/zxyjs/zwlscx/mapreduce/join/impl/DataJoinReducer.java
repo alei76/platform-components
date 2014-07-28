@@ -8,10 +8,16 @@ import org.apache.hadoop.io.Text;
 
 import com.citic.zxyjs.zwlscx.bean.Field;
 import com.citic.zxyjs.zwlscx.bean.Task;
+import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.DataJoinReducerBase;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.TaggedMapOutput;
 import com.citic.zxyjs.zwlscx.xml.Separator;
 
+/**
+ * Join reduce
+ * 
+ * @author JoyoungZhang@gmail.com
+ */
 public class DataJoinReducer extends DataJoinReducerBase {
 
     private Task task;
@@ -20,7 +26,7 @@ public class DataJoinReducer extends DataJoinReducerBase {
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
 	super.setup(context);
-	this.task = DefaultStringifier.load(context.getConfiguration(), "task", Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
+	this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
 	this.init = context.getConfiguration().getBoolean("init", false);
     }
 

@@ -12,9 +12,10 @@ import org.apache.hadoop.io.WritableUtils;
 
 /**
  * 任务
+ * 
  * @author JoyoungZhang@gmail.com
  */
-public class Task implements Writable  {
+public class Task implements Writable {
 
     private static final long serialVersionUID = 1L;
 
@@ -73,18 +74,18 @@ public class Task implements Writable  {
     public void setTaskType(TaskType taskType) {
 	this.taskType = taskType;
     }
-    
-    public SourceType getSourceType(){
-	if(leftSource instanceof File){
-	    if(rightSource instanceof File){
+
+    public SourceType getSourceType() {
+	if (leftSource instanceof File) {
+	    if (rightSource instanceof File) {
 		return SourceType.FF;
-	    }else{
+	    } else {
 		return SourceType.FT;
 	    }
-	}else{
-	    if(rightSource instanceof File){
+	} else {
+	    if (rightSource instanceof File) {
 		return SourceType.TF;
-	    }else{
+	    } else {
 		return SourceType.TT;
 	    }
 	}
@@ -95,54 +96,56 @@ public class Task implements Writable  {
 	SourceType sourceType = WritableUtils.readEnum(in, SourceType.class);
 	Source leftsource = new Source();
 	Source rightsource = new Source();
-	
-	switch(sourceType){
-    	case FF :
-    	    leftsource = new File();
-    	    rightsource = new File();
-    	    break;
-    	case FT :
-    	    leftsource = new File();
-    	    rightsource = new Table();
-    	    break;
-    	case TF :
-    	    leftsource = new Table();
+
+	switch (sourceType) {
+	case FF:
+	    leftsource = new File();
 	    rightsource = new File();
-    	    break;
-    	case TT :
-    	    leftsource = new Table();
+	    break;
+	case FT:
+	    leftsource = new File();
 	    rightsource = new Table();
-    	    break;
+	    break;
+	case TF:
+	    leftsource = new Table();
+	    rightsource = new File();
+	    break;
+	case TT:
+	    leftsource = new Table();
+	    rightsource = new Table();
+	    break;
 	}
-	
+
 	leftsource.readFields(in);
 	rightsource.readFields(in);
 	leftSource = leftsource;
 	rightSource = rightsource;
-	
+
 	int size = in.readInt();
 	leftFields = new ArrayList<Field>(size);
-	for(int i=0;i<size;i++){
+	for (int i = 0; i < size; i++) {
 	    Field field = new Field();
 	    field.readFields(in);
 	    leftFields.add(field);
 	}
 	size = in.readInt();
 	rightFields = new ArrayList<Field>(size);
-	for(int i=0;i<size;i++){
+	for (int i = 0; i < size; i++) {
 	    Field field = new Field();
 	    field.readFields(in);
 	    rightFields.add(field);
 	}
 	String className = Text.readString(in);
-	if(File.class.getName().equals(className)){
-	    File file = new File();
-	    file.readFields(in);
-	    this.output = file;
-	}else if(Table.class.getName().equals(className)){
-	    Table table = new Table();
-	    table.readFields(in);
-	    this.output = table;
+	if(!className.equals("null")){
+	    if (File.class.getName().equals(className)) {
+		File file = new File();
+		file.readFields(in);
+		this.output = file;
+	    } else if (Table.class.getName().equals(className)) {
+		Table table = new Table();
+		table.readFields(in);
+		this.output = table;
+	    }
 	}
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
     }
@@ -153,19 +156,23 @@ public class Task implements Writable  {
 	leftSource.write(out);
 	rightSource.write(out);
 	out.writeInt(leftFields.size());
-	for(Field field : leftFields){
+	for (Field field : leftFields) {
 	    field.write(out);
 	}
 	out.writeInt(rightFields.size());
-	for(Field field : rightFields){
+	for (Field field : rightFields) {
 	    field.write(out);
 	}
-	Text.writeString(out, output.getClass().getName());
-	output.write(out);
+	if(output != null){
+	    Text.writeString(out, output.getClass().getName());
+	    output.write(out);
+	}else{
+	    Text.writeString(out, "null");
+	}
 	WritableUtils.writeEnum(out, taskType);
     }
-    
-    public String getIdentify(){
+
+    public String getIdentify() {
 	return leftSource.getName() + " " + rightSource.getName();
     }
 }

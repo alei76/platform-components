@@ -42,7 +42,8 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
     protected Text inputTag = null;
 
     protected void setup(Context context) throws IOException, InterruptedException {
-	this.datasource = generateDatasource(context);;
+	this.datasource = generateDatasource(context);
+	;
 	this.inputTag = generateInputTag(context);
     }
 
@@ -57,7 +58,7 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
 	}
 	context.write(groupKey, aRecord);
     }
-    
+
     /**
      * Determine the source input based on the input file name.
      * 
@@ -65,15 +66,14 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
      * @return the source tag computed from the given file name.
      */
     protected abstract String generateDatasource(Context context) throws IOException;
-	
-    
+
     /**
      * Determine the source tag based on the input file name.
      * 
      * @param inputFile
      * @return the source tag computed from the given file name.
      */
-    protected Text generateInputTag(Context context) throws IOException{
+    protected Text generateInputTag(Context context) throws IOException {
 	return new Text(datasource);
     }
 

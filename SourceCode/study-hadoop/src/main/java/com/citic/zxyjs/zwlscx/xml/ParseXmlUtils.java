@@ -79,9 +79,9 @@ public class ParseXmlUtils {
 				Field field = new Field();
 				field.setId(((Element) fieldNode).getAttribute("id"));
 				field.setName(((Element) fieldNode).getAttribute("name"));
-				if(StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))){
+				if (StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))) {
 				    field.setSourceId(((Element) sourceNode).getAttribute("id"));
-				}else{
+				} else {
 				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
 				}
 				fields.add(field);
@@ -101,9 +101,9 @@ public class ParseXmlUtils {
 				Field field = new Field();
 				field.setId(((Element) fieldNode).getAttribute("id"));
 				field.setName(((Element) fieldNode).getAttribute("name"));
-				if(StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))){
+				if (StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceId"))) {
 				    field.setSourceId(((Element) sourceNode).getAttribute("id"));
-				}else{
+				} else {
 				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
 				}
 				fields.add(field);
@@ -127,8 +127,6 @@ public class ParseXmlUtils {
 		    Task task = new Task();
 		    if (taskNode.getNodeName().equals("join")) {
 			task.setTaskType(TaskType.Join);
-		    } else if (taskNode.getNodeName().equals("union")) {
-			task.setTaskType(TaskType.Union);
 		    } else if (taskNode.getNodeName().equals("append")) {
 			task.setTaskType(TaskType.Append);
 		    }
@@ -158,6 +156,9 @@ public class ParseXmlUtils {
 		    task.setRightFields(rightFields);
 		    String output = ((Element) taskNode).getAttribute("output");
 		    Source source = sources.get(output);
+//		    if(source == null){
+//			source = new File(output);
+//		    }
 		    task.setOutput(source);
 
 		    tasks.add(task);

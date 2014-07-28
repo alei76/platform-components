@@ -6,5 +6,5 @@ package com.citic.zxyjs.zwlscx.bean;
  * @author JoyoungZhang@gmail.com
  */
 public enum TaskType {
-    Join, Union, Append
+    Join, Append
 }

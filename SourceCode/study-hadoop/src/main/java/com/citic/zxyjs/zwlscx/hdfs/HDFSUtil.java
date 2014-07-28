@@ -11,6 +11,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 
 /**
@@ -22,11 +23,26 @@ public class HDFSUtil {
 
     private static final Log LOG = LogFactory.getLog(HDFSUtil.class);
 
+    /**
+     * 获取FileSystem
+     * 
+     * @param conf
+     * @return
+     * @throws IOException
+     */
     public static FileSystem getFileSystem(Configuration conf) throws IOException {
 	FileSystem fs = FileSystem.get(conf);
 	return fs;
     }
 
+    /**
+     * 获得path下的part-r-文件
+     * 
+     * @param conf
+     * @param path
+     * @return
+     * @throws IOException
+     */
     public static List<Path> findReduceOutputByPath(Configuration conf, Path path) throws IOException {
 	List<Path> paths = new ArrayList<Path>();
 	FileSystem fs = getFileSystem(conf);
@@ -37,15 +53,15 @@ public class HDFSUtil {
 		    paths.add(status.getPath());
 		}
 	    }
-	}else{
+	} else {
 	    paths.add(path);
 	}
-	LOG.info("Find reduce output " + Arrays.toString(paths.toArray())+ " by path[" + path + "] success.");
+	LOG.info("Find reduce output " + Arrays.toString(paths.toArray()) + " by path[" + path + "] success.");
 	return paths;
     }
 
     public static void main(String[] args) throws IllegalArgumentException, IOException {
-	System.out.println(Arrays.toString(findReduceOutputByPath(ConfigurationUtils.getHadoopConfiguration(), new Path(
-		"hdfs://200master:9000/user/root/zxyh/1_2output")).toArray()));
+	System.out.println(Arrays.toString(findReduceOutputByPath(ConfigurationUtils.getHadoopConfiguration(),
+		new Path("hdfs://200master:9000/user/root/zxyh/1_2output")).toArray()));
     }
 }
