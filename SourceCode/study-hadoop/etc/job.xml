@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conf>
+	<sources>
+		<file id="1" name="tt1" path="hdfs://200master:9000/user/root/zxyh/detail.txt" >   
+			<field id="1" name="id"/>
+			<field id="2" name="city"/>
+			<field id="3" name="operation"/>
+		</file>
+		<table id="2" name="code" >   
+			<field id="1" name="city"/>
+			<field id="2" name="cityInfo"/>
+		</table>
+		<table id="3" name="info" > 	
+			<field id="1" name="id"/>
+			<field id="2" name="name"/>
+		</table>
+		<file id="11" name="join12" path="hdfs://200master:9000/user/root/zxyh/1_2output" >   
+			<field id="1" sourceId="1" name="id"/>
+			<field id="2" sourceId="1" name="city"/>
+			<field id="3" sourceId="1" name="operation"/>
+			<field id="4" sourceId="2" name="city"/>
+			<field id="5" sourceId="2" name="cityInfo"/>
+		</file>
+		<file id="12" name="user" path="hdfs://200master:9000/user/root/zxyh/11_3output" >   
+			<field id="1" sourceId="1" name="id"/>
+			<field id="2" sourceId="1" name="city"/>
+			<field id="3" sourceId="1" name="operation"/>
+			<field id="4" sourceId="2" name="city"/>
+			<field id="5" sourceId="2" name="cityInfo"/>
+			<field id="6" sourceId="3" name="id"/>
+			<field id="7" sourceId="3" name="name"/>
+		</file>
+		<table id="13" name="user"  >   
+			<field id="1"  name="id"/>
+			<field id="2"  name="city"/>
+			<field id="3"  name="operation"/>
+			<field id="4"  name="city"/>
+			<field id="5"  name="cityInfo"/>
+			<field id="6"  name="id"/>
+			<field id="7"  name="name"/>
+		</table>
+	</sources>
+	
+	<tasks init="true"> 		<!-- init 是否属于初始化 -->
+		<join leftsource="1" rightsource="2" leftfield="2" rightfield="1" output="11"  />
+		<join leftsource="11" rightsource="3" leftfield="1" rightfield="1" output="12"  />
+		<append leftsource="12" rightsource="13" output="hdfs://200master:9000/root/user/zxyh/tmp"></append>
+	</tasks>
+</conf>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<source>
+		<file id="1" name="储蓄活期主文件" path="hdfs://localhost:9000/{yyyy-MM}/A_{dd}.txt" />    
+		<table id="2" name="储蓄活期历史主文件" path="hdfs://localhost:9000/{yyyy-MM}/B_{dd}.txt" /> 	
+		<table id="3" name="储蓄活期主表" hasZipperTable="true" zipperTableName="储蓄活期主拉链表" /> 		
+		
+		<table id="5" name="union12" /> 		
+	</source>
+	
+	<tasks init="false"> 		<!-- init 是否属于初始化 -->
+		<union leftsource="1" rightsource="2"  output="5"  />									
+		<append leftsource="5" rightsource="3"  output="3" />			
+	</tasks>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<source>
+		<file id="1" name="储蓄活期明细文件" path="hdfs://localhost:9000/{yyyy-MM}/A_{dd}.txt" >   
+			<field id="1" name="a1"/>
+			<field id="2" name="a2"/>
+			<field id="3" name="a3"/>
+		</file>
+		<table id="2" name="交易摘要码表 " > 	
+			<field id="1" name="b1"/>
+			<field id="2" name="b2"/>
+			<field id="3" name="b3"/>
+		</table>
+		<table id="3" name="join12" > 		
+			<field id="1" name="a1"/>
+			<field id="2" name="a2"/>
+			<field id="3" name="a3"/>
+			<field id="5" name="b2"/>
+			<field id="6" name="b3"/>
+		</table>
+		<table id="4" name="平台业务流水信息表" > 	
+			<field id="1" name="d1"/>
+			<field id="2" name="d2"/>
+			<field id="3" name="d3"/>
+		</table>
+		<table id="5" name="join34" > 	
+			<field id="1" name="a1"/>
+			<field id="2" name="a2"/>
+			<field id="3" name="a3"/>
+			<field id="5" name="b2"/>
+			<field id="6" name="b3"/>
+			<field id="7" name="d1"/>
+			<field id="9" name="d3"/>
+		</table>
+		<table id="6" name="储蓄活期明细表" > 	
+			<field id="1" name="a1"/>
+			<field id="2" name="a2"/>
+			<field id="3" name="a3"/>
+			<field id="5" name="b2"/>
+			<field id="6" name="b3"/>
+			<field id="7" name="d1"/>
+			<field id="9" name="d3"/>
+		</table>
+	</source>
+	
+	<tasks init="false"> 		<!-- init 是否属于初始化 -->
+		<join leftsource="1" rightsource="2" leftfield="a1" rightfield="b1" output="3"  />
+		<join leftsource="3" rightsource="4" leftfield="a2" rightfield="d2" output="5"  />
+		<append leftsource="5" rightsource="6" output="6" />
+	</tasks>
