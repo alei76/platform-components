@@ -42,7 +42,7 @@ import org.apache.hadoop.mapreduce.Job;
 @InterfaceAudience.Public
 @InterfaceStability.Stable
 public class HFileOutputFormatWithIgnore extends HFileOutputFormatBase {
-    static Log LOG = LogFactory.getLog(HFileOutputFormatWithIgnore.class);
+    private static Log LOG = LogFactory.getLog(HFileOutputFormatWithIgnore.class);
 
     @Override
     public boolean ignore(KeyValue kv) {

@@ -87,7 +87,7 @@ import org.apache.hadoop.mapreduce.lib.partition.TotalOrderPartitioner;
 @InterfaceAudience.Public
 @InterfaceStability.Stable
 public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritable, KeyValue> {
-    static Log LOG = LogFactory.getLog(HFileOutputFormatBase.class);
+    private static Log LOG = LogFactory.getLog(HFileOutputFormatBase.class);
     static final String COMPRESSION_CONF_KEY = "hbase.hfileoutputformat.families.compression";
     private static final String BLOOM_TYPE_CONF_KEY = "hbase.hfileoutputformat.families.bloomtype";
     private static final String DATABLOCK_ENCODING_CONF_KEY = "hbase.mapreduce.hfileoutputformat.datablock.encoding";
