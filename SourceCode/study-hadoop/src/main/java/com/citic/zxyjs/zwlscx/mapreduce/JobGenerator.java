@@ -10,10 +10,10 @@ import org.apache.hadoop.mapreduce.Job;
  * @author JoyoungZhang@gmail.com
  */
 public interface JobGenerator {
-    
+
     public static final String JOIN_JOB_TASK = "join.job.task";
     public static final String APPEND_JOB_TASK = "append.job.task";
-    
+
     public Job generateJob() throws IOException;
 
 }

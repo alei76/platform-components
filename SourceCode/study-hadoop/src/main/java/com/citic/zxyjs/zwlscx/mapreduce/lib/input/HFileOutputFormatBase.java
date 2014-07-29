@@ -521,7 +521,6 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
 
     public boolean ignore(KeyValue kv) {
 	boolean ignore = Bytes.toString(kv.getValue()).indexOf("Del") >= 0;
-	LOG.info("base ignore is " + ignore);
 	return ignore;
     }
 

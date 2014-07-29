@@ -18,7 +18,7 @@ public class Conf implements Writable {
     private static final long serialVersionUID = 1L;
 
     private List<Task> tasks;
-    private boolean init;
+    private boolean clear;
 
     public List<Task> getTasks() {
 	return tasks;
@@ -28,12 +28,12 @@ public class Conf implements Writable {
 	this.tasks = tasks;
     }
 
-    public boolean isInit() {
-	return init;
+    public boolean isClear() {
+	return clear;
     }
 
-    public void setInit(boolean init) {
-	this.init = init;
+    public void setClear(boolean clear) {
+	this.clear = clear;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Conf implements Writable {
 	    task.readFields(in);
 	    tasks.add(task);
 	}
-	this.init = in.readBoolean();
+	this.clear = in.readBoolean();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Conf implements Writable {
 	for (Task task : tasks) {
 	    task.write(out);
 	}
-	out.writeBoolean(init);
+	out.writeBoolean(clear);
     }
 
 }

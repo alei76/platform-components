@@ -47,7 +47,6 @@ public class HFileOutputFormatWithIgnore extends HFileOutputFormatBase {
     @Override
     public boolean ignore(KeyValue kv) {
 	boolean ignore = Bytes.toString(kv.getValue()).indexOf("Del") >= 0;
-	LOG.info("ignore is " + ignore);
 	return ignore;
     }
 }

@@ -12,11 +12,11 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import com.citic.zxyjs.zwlscx.bean.File;
 import com.citic.zxyjs.zwlscx.bean.Source;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
+import com.citic.zxyjs.zwlscx.mapreduce.JobGeneratorBase;
 import com.citic.zxyjs.zwlscx.mapreduce.join.impl.DataJoinMapper.DataJoinTableInputFormatMapper;
 import com.citic.zxyjs.zwlscx.mapreduce.join.impl.DataJoinMapper.DataJoinTextInputFormatMapper;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.MultipleInputs;
@@ -28,14 +28,10 @@ import com.jyz.study.hadoop.common.Utils;
  * 
  * @author JoyoungZhang@gmail.com
  */
-public class JoinJobGenerator implements JobGenerator {
+public class JoinJobGenerator extends JobGeneratorBase {
 
-    private Task task;
-    private boolean init;
-
-    public JoinJobGenerator(Task task, boolean init) {
-	this.task = task;
-	this.init = init;
+    public JoinJobGenerator(Task task) {
+	super(task);
     }
 
     public Job generateJob() throws IOException {
@@ -46,18 +42,17 @@ public class JoinJobGenerator implements JobGenerator {
 
 	Configuration conf = ConfigurationUtils.getHbaseConfiguration();
 	DefaultStringifier.store(conf, task, JobGenerator.JOIN_JOB_TASK);
-	conf.set("init", String.valueOf(init));
 
 	Job job = new Job(conf, "JoinJob[" + task.getIdentify() + "]");
 	job.setJarByClass(JoinJobGenerator.class);
 
 	switch (task.getSourceType()) {
 	case FF:
-	    FileInputFormat.addInputPath(job, new Path(((File) task.getLeftSource()).getPath()));
-	    FileInputFormat.addInputPath(job, new Path(((File) task.getRightSource()).getPath()));
+	    FileInputFormat.addInputPath(job, new Path(task.getLeftSource().getPath()));
+	    FileInputFormat.addInputPath(job, new Path(task.getRightSource().getPath()));
 	    break;
 	case FT:
-	    MultipleInputs.addInputPath(job, new Path(((File) task.getLeftSource()).getPath()), TextInputFormat.class,
+	    MultipleInputs.addInputPath(job, new Path(task.getLeftSource().getPath()), TextInputFormat.class,
 		    DataJoinTextInputFormatMapper.class);
 	    MultipleInputs.addInputPath(job, new Path(task.getRightSource().getName()), TableInputFormat.class,
 		    DataJoinTableInputFormatMapper.class);
@@ -65,7 +60,7 @@ public class JoinJobGenerator implements JobGenerator {
 	case TF:
 	    MultipleInputs.addInputPath(job, new Path(task.getLeftSource().getName()), TableInputFormat.class,
 		    DataJoinTableInputFormatMapper.class);
-	    MultipleInputs.addInputPath(job, new Path(((File) task.getRightSource()).getPath()), TextInputFormat.class,
+	    MultipleInputs.addInputPath(job, new Path(task.getRightSource().getPath()), TextInputFormat.class,
 		    DataJoinTextInputFormatMapper.class);
 	    break;
 	case TT:
@@ -82,8 +77,8 @@ public class JoinJobGenerator implements JobGenerator {
 	job.setNumReduceTasks(1);
 
 	Source output = task.getOutput();
-	Utils.deleteIfExists(conf, ((File) output).getPath());
-	FileOutputFormat.setOutputPath(job, new Path(((File) output).getPath()));
+	Utils.deleteIfExists(conf, output.getPath());
+	FileOutputFormat.setOutputPath(job, new Path(output.getPath()));
 
 	return job;
     }

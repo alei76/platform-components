@@ -18,31 +18,32 @@ import com.citic.zxyjs.zwlscx.xml.Separator;
 
 /**
  * Append操作的mapper
+ * 
  * @author JoyoungZhang@gmail.com
- *
  */
 public class DataAppendMapper extends Mapper<LongWritable, Text, ImmutableBytesWritable, Put> { // co
 
     private Task task;
-    private boolean init;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
 	super.setup(context);
 	this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.APPEND_JOB_TASK, Task.class);
-	this.init = context.getConfiguration().getBoolean("init", false);
     }
 
     @Override
     public void map(LongWritable offset, Text line, Context context) throws IOException {
 	String lineString = line.toString();
-	byte[] rowkey = Bytes.toBytes(lineString.hashCode()); // co
+	//TODO 
+	//调用导入配置MetadateManager.getPuInfoByLine(lineString, List<Filed>)获取rowkey及若干cf:qualifier value
+	byte[] rowkey = Bytes.toBytes(lineString.hashCode());
 	Put put = new Put(rowkey);
 	String[] tokens = lineString.split(Separator.SEP_COMMA);
 	List<Field> fields = task.getRightSource().getFields();
-	for(int i=0;i<tokens.length;i++){
-	    put.add(Bytes.toBytes("cf1"), Bytes.toBytes(fields.get(i).getName()), Bytes.toBytes(tokens[i])); 
+	for (int i = 0; i < tokens.length; i++) {
+	    put.add(Bytes.toBytes("cf"), Bytes.toBytes(fields.get(i).getName()), Bytes.toBytes(tokens[i]));
 	}
+	//TODO end
 	try {
 	    context.write(new ImmutableBytesWritable(rowkey), put);
 	} catch (InterruptedException e) {

@@ -20,6 +20,7 @@ public class Source implements Writable {
 
     private String id;
     private String name;
+    private String path;
 
     private List<Field> fields;
 
@@ -47,6 +48,14 @@ public class Source implements Writable {
 	this.fields = fields;
     }
 
+    public String getPath() {
+	return path;
+    }
+
+    public void setPath(String path) {
+	this.path = path;
+    }
+
     @Override
     public void readFields(DataInput in) throws IOException {
 	this.id = Text.readString(in);
@@ -58,6 +67,10 @@ public class Source implements Writable {
 	    field.readFields(in);
 	    fields.add(field);
 	}
+	boolean pathIsNotNull = in.readBoolean();
+	if (pathIsNotNull) {
+	    this.path = Text.readString(in);
+	}
     }
 
     @Override
@@ -67,6 +80,11 @@ public class Source implements Writable {
 	out.writeInt(fields.size());
 	for (Field field : fields) {
 	    field.write(out);
+	}
+	boolean pathIsNotNull = (path != null);
+	out.writeBoolean(pathIsNotNull);
+	if (pathIsNotNull) {
+	    Text.writeString(out, path);
 	}
     }
 

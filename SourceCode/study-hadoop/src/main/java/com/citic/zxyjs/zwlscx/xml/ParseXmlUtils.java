@@ -84,6 +84,11 @@ public class ParseXmlUtils {
 				} else {
 				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
 				}
+				if (StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceFieldId"))) {
+				    field.setSourceFieldId(((Element) fieldNode).getAttribute("id"));
+				} else {
+				    field.setSourceFieldId(((Element) fieldNode).getAttribute("sourceFieldId"));
+				}
 				fields.add(field);
 			    }
 			}
@@ -106,6 +111,11 @@ public class ParseXmlUtils {
 				} else {
 				    field.setSourceId(((Element) fieldNode).getAttribute("sourceId"));
 				}
+				if (StringUtils.isBlank(((Element) fieldNode).getAttribute("sourceFieldId"))) {
+				    field.setSourceFieldId(((Element) fieldNode).getAttribute("id"));
+				} else {
+				    field.setSourceFieldId(((Element) fieldNode).getAttribute("sourceFieldId"));
+				}
 				fields.add(field);
 			    }
 			}
@@ -115,6 +125,7 @@ public class ParseXmlUtils {
 			String hasZipperTable = ((Element) sourceNode).getAttribute("hasZipperTable");
 			table.setHasZipperTable(hasZipperTable == null ? false : Boolean.valueOf(hasZipperTable));
 			table.setZipperTableName(((Element) sourceNode).getAttribute("zipperTableName"));
+			table.setPath(((Element) sourceNode).getAttribute("path"));
 			sources.put(table.getId(), table);
 		    }
 		}
@@ -156,16 +167,13 @@ public class ParseXmlUtils {
 		    task.setRightFields(rightFields);
 		    String output = ((Element) taskNode).getAttribute("output");
 		    Source source = sources.get(output);
-//		    if(source == null){
-//			source = new File(output);
-//		    }
 		    task.setOutput(source);
 
 		    tasks.add(task);
 		}
 	    }
 	    conf.setTasks(tasks);
-	    conf.setInit(Boolean.valueOf(((Element) taskNodes).getAttribute("init")));
+	    conf.setClear(Boolean.valueOf(((Element) taskNodes).getAttribute("clear")));
 	    return conf;
 	} catch (Exception e) {
 	    LOG.error("Parse xml[ " + XML + "] fail.", e);

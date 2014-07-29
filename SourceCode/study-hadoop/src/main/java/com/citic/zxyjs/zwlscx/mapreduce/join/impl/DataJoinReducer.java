@@ -21,13 +21,11 @@ import com.citic.zxyjs.zwlscx.xml.Separator;
 public class DataJoinReducer extends DataJoinReducerBase {
 
     private Task task;
-    private boolean init;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
 	super.setup(context);
 	this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
-	this.init = context.getConfiguration().getBoolean("init", false);
     }
 
     @Override

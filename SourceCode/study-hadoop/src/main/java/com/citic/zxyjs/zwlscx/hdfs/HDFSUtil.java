@@ -60,6 +60,23 @@ public class HDFSUtil {
 	return paths;
     }
 
+    /**
+     * 删除一个目录
+     * 
+     * @param conf
+     * @param path
+     * @param recursive
+     *            是否递归删除子文件
+     * @return
+     * @throws IOException
+     */
+    public static boolean deleteByDir(Configuration conf, Path path, boolean recursive) throws IOException {
+	FileSystem fs = getFileSystem(conf);
+	boolean success = fs.delete(path, recursive);
+	LOG.info("Delete directory[" + path + "] success? " + success);
+	return success;
+    }
+
     public static void main(String[] args) throws IllegalArgumentException, IOException {
 	System.out.println(Arrays.toString(findReduceOutputByPath(ConfigurationUtils.getHadoopConfiguration(),
 		new Path("hdfs://200master:9000/user/root/zxyh/1_2output")).toArray()));

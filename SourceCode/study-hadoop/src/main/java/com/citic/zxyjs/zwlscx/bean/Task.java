@@ -136,7 +136,7 @@ public class Task implements Writable {
 	    rightFields.add(field);
 	}
 	String className = Text.readString(in);
-	if(!className.equals("null")){
+	if (!className.equals("null")) {
 	    if (File.class.getName().equals(className)) {
 		File file = new File();
 		file.readFields(in);
@@ -163,10 +163,10 @@ public class Task implements Writable {
 	for (Field field : rightFields) {
 	    field.write(out);
 	}
-	if(output != null){
+	if (output != null) {
 	    Text.writeString(out, output.getClass().getName());
 	    output.write(out);
-	}else{
+	} else {
 	    Text.writeString(out, "null");
 	}
 	WritableUtils.writeEnum(out, taskType);

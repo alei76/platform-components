@@ -20,6 +20,7 @@ public class Field implements Writable {
     private String name;
 
     private String sourceId;
+    private String sourceFieldId;
 
     public String getId() {
 	return id;
@@ -45,11 +46,19 @@ public class Field implements Writable {
 	this.sourceId = sourceId;
     }
 
+    public String getSourceFieldId() {
+	return sourceFieldId;
+    }
+
+    public void setSourceFieldId(String sourceFieldId) {
+	this.sourceFieldId = sourceFieldId;
+    }
+
     @Override
     public int hashCode() {
 	final int prime = 31;
 	int result = 1;
-	result = prime * result + ((name == null) ? 0 : name.hashCode());
+	result = prime * result + ((sourceFieldId == null) ? 0 : sourceFieldId.hashCode());
 	result = prime * result + ((sourceId == null) ? 0 : sourceId.hashCode());
 	return result;
     }
@@ -63,10 +72,10 @@ public class Field implements Writable {
 	if (getClass() != obj.getClass())
 	    return false;
 	Field other = (Field) obj;
-	if (name == null) {
-	    if (other.name != null)
+	if (sourceFieldId == null) {
+	    if (other.sourceFieldId != null)
 		return false;
-	} else if (!name.equals(other.name))
+	} else if (!sourceFieldId.equals(other.sourceFieldId))
 	    return false;
 	if (sourceId == null) {
 	    if (other.sourceId != null)
@@ -78,7 +87,7 @@ public class Field implements Writable {
 
     @Override
     public String toString() {
-	return "Field [id=" + id + ", name=" + name + ", sourceId=" + sourceId + "]";
+	return "Field [id=" + id + ", name=" + name + ", sourceFieldId=" + sourceFieldId + ", sourceId=" + sourceId + "]";
     }
 
     @Override
@@ -86,6 +95,7 @@ public class Field implements Writable {
 	this.id = Text.readString(in);
 	this.name = Text.readString(in);
 	this.sourceId = Text.readString(in);
+	this.sourceFieldId = Text.readString(in);
     }
 
     @Override
@@ -93,6 +103,7 @@ public class Field implements Writable {
 	Text.writeString(out, id);
 	Text.writeString(out, name);
 	Text.writeString(out, sourceId);
+	Text.writeString(out, sourceFieldId);
     }
 
 }
