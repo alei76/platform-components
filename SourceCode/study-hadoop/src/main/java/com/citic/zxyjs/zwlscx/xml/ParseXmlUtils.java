@@ -96,6 +96,7 @@ public class ParseXmlUtils {
 			file.setId(((Element) sourceNode).getAttribute("id"));
 			file.setName(((Element) sourceNode).getAttribute("name"));
 			file.setPath(((Element) sourceNode).getAttribute("path"));
+			file.setErrorPath(((Element) sourceNode).getAttribute("errorpath"));
 			sources.put(file.getId(), file);
 		    } else if (sourceNode.getNodeName().equals("table")) {
 			Table table = new Table();
@@ -168,6 +169,7 @@ public class ParseXmlUtils {
 		    String output = ((Element) taskNode).getAttribute("output");
 		    Source source = sources.get(output);
 		    task.setOutput(source);
+		    task.setExtension(((Element) taskNode).getAttribute("extension"));
 
 		    tasks.add(task);
 		}
@@ -180,5 +182,4 @@ public class ParseXmlUtils {
 	}
 	return null;
     }
-
 }

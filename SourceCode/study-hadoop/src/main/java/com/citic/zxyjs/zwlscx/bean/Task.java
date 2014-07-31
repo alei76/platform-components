@@ -24,7 +24,8 @@ public class Task implements Writable {
     private List<Field> leftFields;
     private List<Field> rightFields;
     private Source output;
-
+    private String extension;
+    
     private TaskType taskType;
 
     public Source getLeftSource() {
@@ -73,6 +74,14 @@ public class Task implements Writable {
 
     public void setTaskType(TaskType taskType) {
 	this.taskType = taskType;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 
     public SourceType getSourceType() {
@@ -148,6 +157,10 @@ public class Task implements Writable {
 	    }
 	}
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
+	boolean extensionIsNotNull = in.readBoolean();
+	if (extensionIsNotNull) {
+	    this.extension = Text.readString(in);
+	}
     }
 
     @Override
@@ -170,6 +183,11 @@ public class Task implements Writable {
 	    Text.writeString(out, "null");
 	}
 	WritableUtils.writeEnum(out, taskType);
+	boolean extensionIsNotNull = (extension != null);
+	out.writeBoolean(extensionIsNotNull);
+	if (extensionIsNotNull) {
+	    Text.writeString(out, extension);
+	}
     }
 
     public String getIdentify() {

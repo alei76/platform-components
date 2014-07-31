@@ -43,7 +43,6 @@ public abstract class DataJoinMapperBase<KEYIN, VALUEIN, KEYOUT, VALUEOUT> exten
 
     protected void setup(Context context) throws IOException, InterruptedException {
 	this.datasource = generateDatasource(context);
-	;
 	this.inputTag = generateInputTag(context);
     }
 

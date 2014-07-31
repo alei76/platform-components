@@ -11,6 +11,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import com.citic.zxyjs.zwlscx.bean.Source;
 import com.citic.zxyjs.zwlscx.bean.Table;
@@ -75,6 +77,9 @@ public class JoinJobGenerator extends JobGeneratorBase {
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(Text.class);
 	job.setNumReduceTasks(1);
+	
+	MultipleOutputs.addNamedOutput(job, "normal", TextOutputFormat.class, Text.class, Text.class); 
+	MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, Text.class); 
 
 	Source output = task.getOutput();
 	Utils.deleteIfExists(conf, output.getPath());

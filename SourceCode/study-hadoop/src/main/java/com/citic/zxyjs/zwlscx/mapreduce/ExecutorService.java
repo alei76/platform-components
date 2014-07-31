@@ -21,8 +21,12 @@ import com.citic.zxyjs.zwlscx.hdfs.HDFSUtil;
 import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
 
 /**
- * 执行mr入口
- * 
+ * .sh脚本入口
+ * 1.pasre xml
+ * 2.get job list base on xml
+ * 3.run job list
+ * 4.callback
+ * 5.clear
  * @author JoyoungZhang@gmail.com
  */
 public class ExecutorService {

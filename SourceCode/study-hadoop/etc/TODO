@@ -1,0 +1,7 @@
+1、join不上的记录，输出到单独文件
+	输出到job.xml指定的errorpath里
+2、一个job运行完后，调用扩展代码
+3、where条件
+4、map reduce时，调用扩展代码处理一行数据
+5、append拷贝文件
+6、单一append

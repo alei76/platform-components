@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Reducer.Context;
 
 /**
  * This abstract class serves as the base class for the reducer class of a data
@@ -158,10 +159,7 @@ public abstract class DataJoinReducerBase extends Reducer<Text, TaggedMapOutput,
 	    Text key, Context context) throws IOException, InterruptedException {
 
 	if (values.length == pos) {
-	    // get a value from each source. Combine them
-	    Text combined = combine(tags, partialList);
-	    //	    context.write(new Text(), combined);
-	    write(context, key, combined);
+	    doCombinedAndWrite(context, key, tags, partialList);
 	    return;
 	}
 	ResetableIterator<TaggedMapOutput> nextValues = values[pos];
@@ -195,6 +193,13 @@ public abstract class DataJoinReducerBase extends Reducer<Text, TaggedMapOutput,
      * @throws InterruptedException
      * @throws IOException
      */
-    protected abstract void write(Context context, Text key, Text value) throws IOException, InterruptedException;
+    protected void write(Context context, Text key, Text value) throws IOException, InterruptedException {
+	context.write(key, value);
+    }
+    
+    protected void doCombinedAndWrite(Context context, Text key, Text[] tags, TaggedMapOutput[] partialList) throws IOException, InterruptedException {
+	Text combined = combine(tags, partialList);
+	write(context, key, combined);
+    }
 
 }

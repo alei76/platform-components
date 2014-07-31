@@ -17,12 +17,12 @@ public class ConfigurationUtils {
 	Configuration conf = new Configuration();
 	conf.set("fs.defaultFS", "hdfs://" + LOCATION + ":9000");
 	conf.set("mapred.job.tracker", "" + LOCATION + ":9001");
-//	 conf.set("mapreduce.framework.name", "yarn");
+	//	 conf.set("mapreduce.framework.name", "yarn");
 	conf.set("mapred.remote.os", "Linux");
-//	 conf.set("mapreduce.application.classpath",
-//	 "/usr/hadoop/etc,/usr/hadoop/share/hadoop/common/*,/usr/hadoop/share/hadoop/common/lib/*,/usr/hadoop/share/hadoop/hdfs/*,/usr/hadoop/share/hadoop/hdfs/lib/*,/usr/hadoop/share/hadoop/mapreduce/*,/usr/hadoop/share/hadoop/mapreduce/lib/*,/usr/hadoop/share/hadoop/yarn/*,/usr/hadoop/share/hadoop/yarn/lib/*,/usr/hbase/lib/*,/usr/mrlibs/*");
-//	 conf.set("mapreduce.application.classpath",
-//	 "/usr/hadoop/etc,/usr/hadoop/share/hadoop/common/*,/usr/hadoop/share/hadoop/common/lib/*,/usr/hadoop/share/hadoop/hdfs/*,/usr/hadoop/share/hadoop/hdfs/lib/*,/usr/hadoop/share/hadoop/mapreduce/*,/usr/hadoop/share/hadoop/mapreduce/lib/*,/usr/hadoop/share/hadoop/yarn/*,/usr/hadoop/share/hadoop/yarn/lib/*,/usr/hbase/lib/*");
+	//	 conf.set("mapreduce.application.classpath",
+	//	 "/usr/hadoop/etc,/usr/hadoop/share/hadoop/common/*,/usr/hadoop/share/hadoop/common/lib/*,/usr/hadoop/share/hadoop/hdfs/*,/usr/hadoop/share/hadoop/hdfs/lib/*,/usr/hadoop/share/hadoop/mapreduce/*,/usr/hadoop/share/hadoop/mapreduce/lib/*,/usr/hadoop/share/hadoop/yarn/*,/usr/hadoop/share/hadoop/yarn/lib/*,/usr/hbase/lib/*,/usr/mrlibs/*");
+	//	 conf.set("mapreduce.application.classpath",
+	//	 "/usr/hadoop/etc,/usr/hadoop/share/hadoop/common/*,/usr/hadoop/share/hadoop/common/lib/*,/usr/hadoop/share/hadoop/hdfs/*,/usr/hadoop/share/hadoop/hdfs/lib/*,/usr/hadoop/share/hadoop/mapreduce/*,/usr/hadoop/share/hadoop/mapreduce/lib/*,/usr/hadoop/share/hadoop/yarn/*,/usr/hadoop/share/hadoop/yarn/lib/*,/usr/hbase/lib/*");
 	// conf.set("tmpjars",
 	// "file:/D:/GoogleCode/platform-components/trunk/SourceCode/study-hadoop/lib/json-simple-1.1.jar");
 	//	System.setProperty("path.separator", ":");
