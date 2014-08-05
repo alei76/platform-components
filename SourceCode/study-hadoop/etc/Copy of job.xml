@@ -4,13 +4,29 @@
 		<file name="HDP_TX_O_F_DSDSA" >																				
 			<path>hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt</path>
 			<compressed>gzip</compressed>
-			<where>DSACNO>100</where>
+			<excludeField>
+				<field name="A"/>
+				<field name="B"/>
+				<field name="C"/>
+			</excludeField>
+			<where>
+				<or>
+					<and>
+						<field name="A" cond="lT" value="1"></field>
+						<field name="B" cond="lT" value="1"></field>
+					</and>
+					<field name="C" cond="lT" value="1"></field>
+				</or>
+			</where>
 		</file> 
 		<table name="HDP_CM_O_F_PMTPA" >
-			<where>DSACNO>100</where>
+			<excludeField>
+				<field name="A"/>
+				<field name="B"/>
+				<field name="C"/>
+			</excludeField>
 		</table>   
 		<table name="HDP_TX_O_F_TRANSLIST" > 											
-			<where>DSACNO>100</where>
 		</table>
 		<file name="HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA"> 
 			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</path>
@@ -19,7 +35,7 @@
 			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</path>
 		</file>
 		<table name="HDP_TX_O_F_DSDSA_T">	<!-- 储蓄活期明细表 -->
-			<field name="DSACNO"/>		<!-- 账号 -->
+			<field name="DSACNORename" sourceName="DSACNO"/>		<!-- 账号 -->
 			<field name="DSNFFG"/>		<!-- 非金融标识 -->
 			<field name="DSTRDT"/>		<!-- 交易日期 -->
 			<field name="DSTRTM"/>		<!-- 交易时间 -->
@@ -37,26 +53,28 @@
 		<join>
 			<leftSource>HDP_TX_O_F_DSDSA</leftSource>
 			<rightSource>HDP_CM_O_F_PMTPA</rightSource>
-			<leftField>DSTRCD</leftField>
-			<rightField>TPTRCD</rightField>
-			<reservedField>DSTRCD</reservedField>
+			<joinField>
+				<field leftField="A" rightField="A" outputField="A"></field>
+				<field leftField="B" rightField="B" outputField="B"></field>
+			</joinField>
 			<mapperExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.MapperExtension</mapperExtension>
 			<reducerExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.ReducerExtension</reducerExtension>
 			<jobExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.JobExtension</jobExtension>
-			<output>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA</output>
-			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_DSDSA</errorOutput>
+			<output>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</output>
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA/HDP_TX_O_F_DSDSA</errorOutput>
 		</join>
 		<join>
-			<leftSource>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA</leftSource>
+			<leftSource>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</leftSource>
 			<rightSource>HDP_TX_O_F_TRANSLIST</rightSource>
-			<leftField>DSTRNO</leftField>
-			<rightField>DSACNO</rightField>
-			<reservedField>DSTRNO</reservedField>
-			<output>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST</output>
-			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST-HDP_TX_O_F_DSDSA</errorOutput>
+			<joinField>
+				<field leftField="A" rightField="A" outputField="A"></field>
+				<field leftField="B" rightField="B" outputField="B"></field>
+			</joinField>
+			<output>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</output>
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST/HDP_TX_O_F_DSDSA</errorOutput>
 		</join>
 		<append>
-			<leftSource>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST</leftSource>
+			<leftSource>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</leftSource>
 			<rightSource>HDP_TX_O_F_DSDSA_T</rightSource>
 			<output>hdfs://200master:9000/user/root/zxyh/tmp/hfile</output>
 		</append>    
