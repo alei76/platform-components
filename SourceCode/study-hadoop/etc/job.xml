@@ -58,8 +58,11 @@
 	</sources>
 	
 	<tasks clear="false"> 		<!-- clear 是否清理中间文件 -->
-		<join leftsource="1" rightsource="2" leftfield="5" rightfield="1" output="11"  extension="com.citic.zxyjs.zwlscx.mapreduce.lib.extension.Test"/>
-		<join leftsource="11" rightsource="3" leftfield="6" rightfield="1" output="12"  />
+		<join leftsource="1" rightsource="2" leftfield="5" rightfield="1" output="11" 
+			reducerExtension="com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.ReducerExtension"
+			jobExtension="com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.JobExtension" />
+		<join leftsource="11" rightsource="3" leftfield="6" rightfield="1" output="12"  
+			mapperExtension="com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.MapperExtension"/>
 		<append leftsource="12" rightsource="13"></append>    <!-- 增量 全量处理逻辑不同 -->
 	</tasks>
 </conf>

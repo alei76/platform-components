@@ -15,7 +15,7 @@ import org.apache.hadoop.io.Writable;
 public class File extends Source implements Writable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String errorPath;
 
     public File() {
@@ -28,11 +28,11 @@ public class File extends Source implements Writable {
     }
 
     public String getErrorPath() {
-        return errorPath;
+	return errorPath;
     }
 
     public void setErrorPath(String errorPath) {
-        this.errorPath = errorPath;
+	this.errorPath = errorPath;
     }
 
     @Override

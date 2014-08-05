@@ -77,9 +77,9 @@ public class JoinJobGenerator extends JobGeneratorBase {
 	job.setOutputKeyClass(Text.class);
 	job.setOutputValueClass(Text.class);
 	job.setNumReduceTasks(1);
-	
-	MultipleOutputs.addNamedOutput(job, "normal", TextOutputFormat.class, Text.class, Text.class); 
-	MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, Text.class); 
+
+	MultipleOutputs.addNamedOutput(job, "normal", TextOutputFormat.class, Text.class, Text.class);
+	MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, Text.class);
 
 	Source output = task.getOutput();
 	Utils.deleteIfExists(conf, output.getPath());

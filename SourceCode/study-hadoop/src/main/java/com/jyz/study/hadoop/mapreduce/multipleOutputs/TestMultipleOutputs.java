@@ -41,12 +41,12 @@ public class TestMultipleOutputs {
 	    while (itr.hasMoreTokens()) {
 		String token = itr.nextToken();
 		word.set(token);
-//		if (token.equals("1002")) {
-		    mos.write(word, one, "hdfs://200master:9000/user/root/error");
-//		} else {
-		    //mos.write("normal", key, result);
-//		    context.write(word, one);
-//		}
+		//		if (token.equals("1002")) {
+		mos.write(word, one, "hdfs://200master:9000/user/root/error");
+		//		} else {
+		//mos.write("normal", key, result);
+		//		    context.write(word, one);
+		//		}
 	    }
 	}
     }
@@ -73,10 +73,10 @@ public class TestMultipleOutputs {
 	    }
 	    result.set(sum);
 	    //	    if(key.toString().equals("1001")){
-//	    		mos.write("error", key, result);
+	    //	    		mos.write("error", key, result);
 	    //	    }else{
 	    //		mos.write("normal", key, result);
-//	    context.write(key, result);
+	    //	    context.write(key, result);
 	    //	    }
 	}
     }
@@ -91,8 +91,8 @@ public class TestMultipleOutputs {
 	job.setOutputValueClass(IntWritable.class);
 	job.setNumReduceTasks(1);
 
-//	MultipleOutputs.addNamedOutput(job, "normal", TextOutputFormat.class, Text.class, IntWritable.class);
-//	MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, IntWritable.class);
+	//	MultipleOutputs.addNamedOutput(job, "normal", TextOutputFormat.class, Text.class, IntWritable.class);
+	//	MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, IntWritable.class);
 
 	FileInputFormat.addInputPath(job, new Path("hdfs://200master:9000/user/root/input/all.txt"));
 	Utils.deleteIfExists(conf, "hdfs://200master:9000/user/root/multioutput");

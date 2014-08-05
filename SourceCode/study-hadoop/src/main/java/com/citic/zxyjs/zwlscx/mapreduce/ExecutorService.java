@@ -11,22 +11,21 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.jobcontrol.ControlledJob;
-import org.apache.hadoop.mapreduce.lib.jobcontrol.JobControl;
 
 import com.citic.zxyjs.zwlscx.bean.Conf;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.bean.TaskType;
 import com.citic.zxyjs.zwlscx.hdfs.HDFSUtil;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.ExtensionUtils;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.JobExtensionParmeters;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.jobcontrol.ControlledJob;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.jobcontrol.JobControl;
 import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
 
 /**
- * .sh脚本入口
- * 1.pasre xml
- * 2.get job list base on xml
- * 3.run job list
- * 4.callback
+ * .sh脚本入口 1.pasre xml 2.get job list base on xml 3.run job list 4.callback
  * 5.clear
+ * 
  * @author JoyoungZhang@gmail.com
  */
 public class ExecutorService {
@@ -38,16 +37,20 @@ public class ExecutorService {
      */
     public static void main(String[] args) {
 	Conf conf = ParseXmlUtils.parseXml();
+	List<Task> tasks = conf.getTasks();
 	List<Job> jobs = null;
 	List<ControlledJob> controlledJobs = new ArrayList<ControlledJob>();
 	JobControl jc = new JobControl("JobControl");
 	int code = 0;
 	try {
-	    jobs = getJobs(conf);
+	    jobs = getJobs(tasks);
 	    for (int i = 0; i < jobs.size(); i++) {
 		Job job = jobs.get(i);
+		Task task = tasks.get(i);
 		ControlledJob controlledJob = new ControlledJob(job.getConfiguration());
 		controlledJob.setJob(job);
+		controlledJob.setExtendable(ExtensionUtils.newInstance(task.getJobExtension(), job.getConfiguration()));
+		controlledJob.setExtensionParmeters(new JobExtensionParmeters(task));
 		if (i > 0) {
 		    controlledJob.addDependingJob(controlledJobs.get(i - 1));
 		}
@@ -102,9 +105,9 @@ public class ExecutorService {
      * @return
      * @throws IOException
      */
-    private static List<Job> getJobs(Conf conf) throws IOException {
+    private static List<Job> getJobs(List<Task> tasks) throws IOException {
 	List<Job> jobs = new ArrayList<Job>();
-	for (Task task : conf.getTasks()) {
+	for (Task task : tasks) {
 	    jobs.add(JobGeneratorFactory.getJobGenerator(task).generateJob());
 	}
 	return jobs;

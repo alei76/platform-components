@@ -21,6 +21,10 @@ import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.DataJoinMapperBase;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.TaggedMapOutput;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.Extendable;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.ExtensionUtils;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.MapperReducerExtensionParmeters;
+import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.SystemExtensionParmeters;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.TaggedInputSplit;
 import com.citic.zxyjs.zwlscx.xml.Separator;
 
@@ -39,12 +43,16 @@ public class DataJoinMapper {
     public static class DataJoinTextInputFormatMapper extends DataJoinMapperBase<LongWritable, Text, Text, TaggedMapOutput> {
 
 	private Task task;
+	private Extendable userExtension;
+	private Extendable systemExtension;
 	private File currentFile;
 	private List<Field> currentFields;
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
 	    this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
+	    this.userExtension = ExtensionUtils.newInstance(task.getMapperExtension(), context.getConfiguration());
+	    this.systemExtension = ExtensionUtils.getSystenExtension(context.getConfiguration());
 
 	    switch (task.getSourceType()) {
 	    case FF:
@@ -78,6 +86,26 @@ public class DataJoinMapper {
 		return ((FileSplit) ((TaggedInputSplit) context.getInputSplit()).getInputSplit()).getPath().toString();
 	    }
 	    return ((FileSplit) context.getInputSplit()).getPath().toString();
+	}
+
+	@Override
+	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+	    TaggedMapOutput aRecord = generateTaggedMapOutput(value, context);
+	    if (aRecord == null) {
+		return;
+	    }
+	    Text groupKey = generateGroupKey(aRecord, context);
+	    if (groupKey == null) {
+		return;
+	    }
+	    systemExtension.doExtend(new SystemExtensionParmeters());
+	    if (userExtension == null) {
+		context.write(groupKey, aRecord);
+	    } else {
+		MapperReducerExtensionParmeters pars = new MapperReducerExtensionParmeters(task, groupKey, aRecord);
+		userExtension.doExtend(pars);
+		context.write((Text) pars.getKey(), (TaggedMapOutput) pars.getValue());
+	    }
 	}
 
 	@Override
@@ -121,12 +149,16 @@ public class DataJoinMapper {
 	    DataJoinMapperBase<ImmutableBytesWritable, Result, Text, TaggedMapOutput> {
 
 	private Task task;
+	private Extendable userExtension;
+	private Extendable systemExtension;
 	private Table currentTable;
 	private List<Field> currentFields;
 
 	protected void setup(Context context) throws IOException, InterruptedException {
 	    super.setup(context);
 	    this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(1);
+	    this.userExtension = ExtensionUtils.newInstance(task.getMapperExtension(), context.getConfiguration());
+	    this.systemExtension = ExtensionUtils.getSystenExtension(context.getConfiguration());
 
 	    switch (task.getSourceType()) {
 	    case FF:
@@ -157,6 +189,26 @@ public class DataJoinMapper {
 	@Override
 	protected String generateDatasource(Context context) throws IOException {
 	    return context.getConfiguration().get(TableInputFormat.INPUT_TABLE);
+	}
+
+	@Override
+	protected void map(ImmutableBytesWritable key, Result value, Context context) throws IOException, InterruptedException {
+	    TaggedMapOutput aRecord = generateTaggedMapOutput(value, context);
+	    if (aRecord == null) {
+		return;
+	    }
+	    Text groupKey = generateGroupKey(aRecord, context);
+	    if (groupKey == null) {
+		return;
+	    }
+	    systemExtension.doExtend(new SystemExtensionParmeters());
+	    if (userExtension == null) {
+		context.write(groupKey, aRecord);
+	    } else {
+		MapperReducerExtensionParmeters pars = new MapperReducerExtensionParmeters(task, groupKey, aRecord);
+		userExtension.doExtend(pars);
+		context.write((Text) pars.getKey(), (TaggedMapOutput) pars.getValue());
+	    }
 	}
 
 	@Override

@@ -13,9 +13,12 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import com.citic.zxyjs.zwlscx.bean.SourceType;
+import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
 import com.citic.zxyjs.zwlscx.mapreduce.JobGeneratorBase;
+import com.citic.zxyjs.zwlscx.mapreduce.append.DataAppendMapper.DataAppendTableInputFormatMapper;
+import com.citic.zxyjs.zwlscx.mapreduce.append.DataAppendMapper.DataAppendTextInputFormatMapper;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.input.HFileOutputFormatWithIgnore;
 import com.jyz.study.hadoop.common.ConfigurationUtils;
 import com.jyz.study.hadoop.common.Utils;
@@ -33,8 +36,8 @@ public class AppendJobGenerator extends JobGeneratorBase {
 
     @Override
     public Job generateJob() throws IOException {
-	if (task.getSourceType() != SourceType.FT) {
-	    throw new IOException("AppendJob mapreduce's input can only file, output can only Table.");
+	if (!(task.getRightSource() instanceof Table)) {
+	    throw new IOException("AppendJob mapreduce's output can only Table.");
 	}
 	Configuration conf = ConfigurationUtils.getHbaseConfiguration();
 	DefaultStringifier.store(conf, task, JobGenerator.APPEND_JOB_TASK);
@@ -43,7 +46,11 @@ public class AppendJobGenerator extends JobGeneratorBase {
 	job.setJarByClass(AppendJobGenerator.class);
 
 	job.setJarByClass(AppendJobGenerator.class);
-	job.setMapperClass(DataAppendMapper.class);
+	if (task.getSourceType() == SourceType.FT) {
+	    job.setMapperClass(DataAppendTextInputFormatMapper.class);
+	} else if (task.getSourceType() == SourceType.TT) {
+	    job.setMapperClass(DataAppendTableInputFormatMapper.class);
+	}
 	job.setMapOutputKeyClass(ImmutableBytesWritable.class);
 	job.setMapOutputValueClass(Put.class);
 

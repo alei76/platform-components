@@ -1,7 +1,10 @@
 1、join不上的记录，输出到单独文件
-	输出到job.xml指定的errorpath里
+	输出到job.xml指定的errorpath里。后续写到什么hbase里及后续业务待定。
 2、一个job运行完后，调用扩展代码
+	job.xml里指定jobExtension
 3、where条件
-4、map reduce时，调用扩展代码处理一行数据
+4、map或reduce时，调用扩展代码处理一行数据
+	job.xml里指定mapperExtension或reducerExtension
 5、append拷贝文件
 6、单一append
+	增加一个DataAppendTableInputFormatMapper。完成。

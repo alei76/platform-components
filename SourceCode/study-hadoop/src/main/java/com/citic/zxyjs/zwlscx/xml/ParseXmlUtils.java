@@ -169,7 +169,9 @@ public class ParseXmlUtils {
 		    String output = ((Element) taskNode).getAttribute("output");
 		    Source source = sources.get(output);
 		    task.setOutput(source);
-		    task.setExtension(((Element) taskNode).getAttribute("extension"));
+		    task.setMapperExtension(((Element) taskNode).getAttribute("mapperExtension"));
+		    task.setReducerExtension(((Element) taskNode).getAttribute("reducerExtension"));
+		    task.setJobExtension(((Element) taskNode).getAttribute("jobExtension"));
 
 		    tasks.add(task);
 		}

@@ -76,11 +76,11 @@ public class HDFSUtil {
 	LOG.info("Delete directory[" + path + "] success? " + success);
 	return success;
     }
-    
+
     //TODO
     public static boolean isValidPath(Configuration conf, Path path) throws IOException {
 	FileSystem fs = getFileSystem(conf);
-	if(path.toString().startsWith("hdfs://")){
+	if (path.toString().startsWith("hdfs://")) {
 	    return true;
 	}
 	return false;

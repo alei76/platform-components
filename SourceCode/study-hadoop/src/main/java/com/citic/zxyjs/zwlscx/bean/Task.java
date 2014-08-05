@@ -24,8 +24,10 @@ public class Task implements Writable {
     private List<Field> leftFields;
     private List<Field> rightFields;
     private Source output;
-    private String extension;
-    
+    private String mapperExtension;
+    private String reducerExtension;
+    private String jobExtension;
+
     private TaskType taskType;
 
     public Source getLeftSource() {
@@ -76,12 +78,28 @@ public class Task implements Writable {
 	this.taskType = taskType;
     }
 
-    public String getExtension() {
-        return extension;
+    public String getMapperExtension() {
+	return mapperExtension;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setMapperExtension(String mapperExtension) {
+	this.mapperExtension = mapperExtension;
+    }
+
+    public String getReducerExtension() {
+	return reducerExtension;
+    }
+
+    public void setReducerExtension(String reducerExtension) {
+	this.reducerExtension = reducerExtension;
+    }
+
+    public String getJobExtension() {
+	return jobExtension;
+    }
+
+    public void setJobExtension(String jobExtension) {
+	this.jobExtension = jobExtension;
     }
 
     public SourceType getSourceType() {
@@ -157,9 +175,17 @@ public class Task implements Writable {
 	    }
 	}
 	this.taskType = WritableUtils.readEnum(in, TaskType.class);
-	boolean extensionIsNotNull = in.readBoolean();
-	if (extensionIsNotNull) {
-	    this.extension = Text.readString(in);
+	boolean mapperExtensionIsNotNull = in.readBoolean();
+	if (mapperExtensionIsNotNull) {
+	    this.mapperExtension = Text.readString(in);
+	}
+	boolean reducerExtensionIsNotNull = in.readBoolean();
+	if (reducerExtensionIsNotNull) {
+	    this.reducerExtension = Text.readString(in);
+	}
+	boolean jobExtensionIsNotNull = in.readBoolean();
+	if (jobExtensionIsNotNull) {
+	    this.jobExtension = Text.readString(in);
 	}
     }
 
@@ -183,10 +209,20 @@ public class Task implements Writable {
 	    Text.writeString(out, "null");
 	}
 	WritableUtils.writeEnum(out, taskType);
-	boolean extensionIsNotNull = (extension != null);
-	out.writeBoolean(extensionIsNotNull);
-	if (extensionIsNotNull) {
-	    Text.writeString(out, extension);
+	boolean mapperExtensionIsNotNull = (mapperExtension != null);
+	out.writeBoolean(mapperExtensionIsNotNull);
+	if (mapperExtensionIsNotNull) {
+	    Text.writeString(out, mapperExtension);
+	}
+	boolean reducerExtensionIsNotNull = (reducerExtension != null);
+	out.writeBoolean(reducerExtensionIsNotNull);
+	if (reducerExtensionIsNotNull) {
+	    Text.writeString(out, reducerExtension);
+	}
+	boolean jobExtensionIsNotNull = (jobExtension != null);
+	out.writeBoolean(jobExtensionIsNotNull);
+	if (jobExtensionIsNotNull) {
+	    Text.writeString(out, jobExtension);
 	}
     }
 

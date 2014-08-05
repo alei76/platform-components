@@ -1,44 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conf>
 	<sources>
-		<file id="1" name="HDP_TX_O_F_DSDSA" path="hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt" sourcemetaId="xx" >   
-		</file>
-		<table id="2" name="HDP_CM_O_F_PMTPA" sourcemetaId="xx" >   
+		<file name="HDP_TX_O_F_DSDSA" >																				
+			<path>hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt</path>
+			<compressed>gzip</compressed>
+			<where>DSACNO>100</where>
+		</file> 
+		<table name="HDP_CM_O_F_PMTPA" >
+			<where>DSACNO>100</where>
+		</table>   
+		<table name="HDP_TX_O_F_TRANSLIST" > 											
+			<where>DSACNO>100</where>
 		</table>
-		<table id="3" name="HDP_TX_O_F_TRANSLIST" sourcemetaId="xx" > 	
-		</table>
-		
-		<file id="11" name="join12" path="hdfs://200master:9000/user/root/zxyh/1_2output.txt" >   
-			<field id="1" sourceId="1" sourceFieldId="1" name="DSACNO"/>
-			<field id="2" sourceId="1" sourceFieldId="2" name="DSNFFG"/>
-			<field id="3" sourceId="1" sourceFieldId="3" name="DSTRDT"/>
-			<field id="4" sourceId="1" sourceFieldId="4" name="DSTRTM"/>
-			<field id="5" sourceId="1" sourceFieldId="5" name="DSTRCD"/>
-			<field id="6" sourceId="1" sourceFieldId="6" name="DSTRNO"/>
-			
-			<field id="7" sourceId="2" sourceFieldId="2" name="TPTACD"/>
-			<field id="8" sourceId="2" sourceFieldId="3" name="TPPMTX"/>
+		<file name="HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA"> 
+			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</path>
 		</file>
-		<file id="12" name="join123" path="hdfs://200master:9000/user/root/zxyh/11_3output" >   
-			<field id="1" sourceId="1" sourceFieldId="1" name="DSACNO"/>		<!-- 账号 -->
-			<field id="2" sourceId="1" sourceFieldId="2" name="DSNFFG"/>		<!-- 非金融标识 -->
-			<field id="3" sourceId="1" sourceFieldId="3" name="DSTRDT"/>		<!-- 交易日期 -->
-			<field id="4" sourceId="1" sourceFieldId="4" name="DSTRTM"/>		<!-- 交易时间 -->
-			<field id="5" sourceId="1" sourceFieldId="5" name="DSTRCD"/>		<!-- 交易码 -->
-			<field id="6" sourceId="1" sourceFieldId="6" name="DSTRNO"/>		<!-- 柜员交易号 -->
-			
-			<field id="7" sourceId="2" sourceFieldId="2" name="TPTACD"/>		<!-- 交易摘要码 -->
-			<field id="8" sourceId="2" sourceFieldId="3" name="TPPMTX"/>		<!-- 参数说明 -->
-			
-			<field id="9" sourceId="3" sourceFieldId="2" name="FLOW_ID"/>		<!-- 工作流任务号 -->
+		<file name="HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST"> 
+			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</path>
 		</file>
-		<table id="13" name="HDP_TX_O_F_DSDSA_T"  >
+		<table name="HDP_TX_O_F_DSDSA_T">	<!-- 储蓄活期明细表 -->
+			<field name="DSACNO"/>		<!-- 账号 -->
+			<field name="DSNFFG"/>		<!-- 非金融标识 -->
+			<field name="DSTRDT"/>		<!-- 交易日期 -->
+			<field name="DSTRTM"/>		<!-- 交易时间 -->
+			<field name="DSTRCD"/>		<!-- 交易码 -->
+			<field name="DSTRNO"/>		<!-- 柜员交易号 -->
+			
+			<field name="TPTACD"/>		<!-- 交易摘要码 -->
+			<field name="TPPMTX"/>		<!-- 参数说明 -->
+			
+			<field name="FLOW_ID"/>		<!-- 工作流任务号 -->   
 		</table>
 	</sources>
 	
-	<tasks  clear="true"> 		<!-- clear 是否清理中间文件 -->
-		<join leftsource="1" rightsource="2" leftfield="5" rightfield="1" output="11"  />
-		<join leftsource="11" rightsource="3" leftfield="6" rightfield="1" output="12"  />
-		<append leftsource="12" rightsource="13"></append>
+	<tasks clear="false"> 		
+		<join>
+			<leftSource>HDP_TX_O_F_DSDSA</leftSource>
+			<rightSource>HDP_CM_O_F_PMTPA</rightSource>
+			<leftField>DSTRCD</leftField>
+			<rightField>TPTRCD</rightField>
+			<reservedField>DSTRCD</reservedField>
+			<mapperExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.MapperExtension</mapperExtension>
+			<reducerExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.ReducerExtension</reducerExtension>
+			<jobExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.JobExtension</jobExtension>
+			<output>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA</output>
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_DSDSA</errorOutput>
+		</join>
+		<join>
+			<leftSource>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA</leftSource>
+			<rightSource>HDP_TX_O_F_TRANSLIST</rightSource>
+			<leftField>DSTRNO</leftField>
+			<rightField>DSACNO</rightField>
+			<reservedField>DSTRNO</reservedField>
+			<output>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST</output>
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST-HDP_TX_O_F_DSDSA</errorOutput>
+		</join>
+		<append>
+			<leftSource>HDP_TX_O_F_DSDSA-HDP_CM_O_F_PMTPA-HDP_TX_O_F_TRANSLIST</leftSource>
+			<rightSource>HDP_TX_O_F_DSDSA_T</rightSource>
+			<output>hdfs://200master:9000/user/root/zxyh/tmp/hfile</output>
+		</append>    
 	</tasks>
 </conf>
