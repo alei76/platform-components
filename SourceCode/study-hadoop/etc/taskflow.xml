@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conf>
+	<source>																				<!-- hdfs文件作为数据源 -->
+		<file name="HDP_TX_O_F_DSDSA" >														<!-- name必填 -->										
+			<path>hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt</path>			<!-- path必填 -->
+			<compression>gzip</compression>													<!-- 压缩格式选填 -->
+			<excludeField>																	<!-- 忽略字段选填 -->
+				<field name="A"/>
+				<field name="B"/>
+				<field name="C"/>
+			</excludeField>
+			<where>																			<!-- 过滤条件选填 -->
+				<or>
+					<and>
+						<field name="D" relational="le" value="1"></field>					<!-- 支持le, lt, eq, gt, ge, ne关系运算 -->
+						<field name="E" relational="eq" value="1"></field>
+					</and>
+					<field name="F" relational="gt" value="1"></field>
+				</or>
+			</where>
+		</file> 	
+																							<!-- hbase table作为数据源 -->
+		<table name="HDP_CM_O_F_PMTPA" >													<!-- name必填 -->
+			<excludeField>
+				<field name="A"/>
+			</excludeField>
+		</table>   
+		
+		<table name="HDP_TX_O_F_TRANSLIST" > 											
+		</table>
+		
+		<file name="HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA"> 
+			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</path>
+		</file>
+		
+		<file name="HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST"> 
+			<path>hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</path>
+		</file>
+		
+		<table name="HDP_TX_O_F_DSDSA_T">	
+			<field name="DSACNORename" sourceName="DSACNO"/>		
+		</table>
+	</source>
+	
+	<taskFlow clear="false"> 
+		<join>																					<!-- join task -->
+			<leftSource>HDP_TX_O_F_DSDSA</leftSource>											<!-- 左数据源必填 -->
+			<rightSource>HDP_CM_O_F_PMTPA</rightSource>											<!-- 右数据源必填 -->
+			<joinRule>																			<!-- join规则必填-->
+				<rule leftField="D" rightField="D_" output="D" />	<!--<D,E><D_,E_>-->			<!-- output为空代表不输出关联字段-->
+				<rule leftField="E" rightField="E_" output="E" />			
+			</joinRule>																			<!-- 扩展类选填 -->
+			<mapperExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.MapperExtension</mapperExtension>
+			<reducerExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.ReducerExtension</reducerExtension>
+			<jobExtension>com.citic.zxyjs.zwlscx.mapreduce.lib.extension.test.JobExtension</jobExtension>
+			<output>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</output>									<!-- 输出必填 -->
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA/HDP_TX_O_F_DSDSA</errorOutput> <!-- 错误输出必填 -->
+		</join>
+		
+		<join>
+			<leftSource>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA</leftSource>
+			<rightSource>HDP_TX_O_F_TRANSLIST</rightSource>
+			<joinRule>
+				<rule leftField="A" rightField="A" output="A" />
+				<rule leftField="B" rightField="B" output="B" />
+			</joinRule>
+			<output>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</output>
+			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST/HDP_TX_O_F_DSDSA</errorOutput>
+		</join>
+		
+		<append>																				<!-- append task -->
+			<from>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</from>					<!-- 来源文件必填 -->
+			<to>HDP_TX_O_F_DSDSA_T</to>															<!-- 写到什么hbase table必填 -->
+			<hfileOutput>hdfs://200master:9000/user/root/zxyh/tmp/hfile</hfileOutput>			<!-- 中间生成的hfile路径必填 -->
+		</append>    
+	</taskFlow>
+</conf>

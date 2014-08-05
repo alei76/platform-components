@@ -12,9 +12,11 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles;
 import org.apache.hadoop.mapreduce.Job;
 
+import com.citic.zxyjs.zwlscx.bean.AppendTask;
 import com.citic.zxyjs.zwlscx.bean.Conf;
+import com.citic.zxyjs.zwlscx.bean.File;
+import com.citic.zxyjs.zwlscx.bean.JoinTask;
 import com.citic.zxyjs.zwlscx.bean.Task;
-import com.citic.zxyjs.zwlscx.bean.TaskType;
 import com.citic.zxyjs.zwlscx.hdfs.HDFSUtil;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.ExtensionUtils;
 import com.citic.zxyjs.zwlscx.mapreduce.lib.extension.JobExtensionParmeters;
@@ -23,8 +25,13 @@ import com.citic.zxyjs.zwlscx.mapreduce.lib.jobcontrol.JobControl;
 import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
 
 /**
- * .sh脚本入口 1.pasre xml 2.get job list base on xml 3.run job list 4.callback
- * 5.clear
+ * 
+ * .sh脚本入口 
+ * 1.解析并校验xml
+ * 2.根据xml得到Job列表
+ * 3.顺序运行Job列表
+ * 4.调用回调函数
+ * 5.清理临时文件
  * 
  * @author JoyoungZhang@gmail.com
  */
@@ -33,10 +40,11 @@ public class ExecutorService {
     private static final Log LOG = LogFactory.getLog(ExecutorService.class);
 
     /**
+     *	
      * @param args
      */
     public static void main(String[] args) {
-	Conf conf = ParseXmlUtils.parseXml();
+	Conf conf = ParseXmlUtils.parseAndVerifyXml();
 	List<Task> tasks = conf.getTasks();
 	List<Job> jobs = null;
 	List<ControlledJob> controlledJobs = new ArrayList<ControlledJob>();
@@ -99,10 +107,10 @@ public class ExecutorService {
     }
 
     /**
-     * 根据配置文件获得job
+     * 根据配置文件获得Job列表
      * 
-     * @param conf
-     * @return
+     * @param conf 通过解析xml得到conf对象
+     * @return Job列表
      * @throws IOException
      */
     private static List<Job> getJobs(List<Task> tasks) throws IOException {
@@ -114,7 +122,7 @@ public class ExecutorService {
     }
 
     /**
-     * TODO callback执行mv hfile
+     * callback执行mv hfile
      * 
      * @param jobs
      * @throws Exception
@@ -125,18 +133,19 @@ public class ExecutorService {
 	for (int i = 0; i < tasks.size(); i++) {
 	    task = tasks.get(i);
 	    job = jobs.get(i);
-	    if (task.getTaskType() == TaskType.Append) {
+	    if (task instanceof AppendTask) {
+		AppendTask appendTask = (AppendTask) task;
 		LoadIncrementalHFiles loader = new LoadIncrementalHFiles(job.getConfiguration());
-		HTable htable = new HTable(job.getConfiguration(), task.getRightSource().getName());
-		loader.doBulkLoad(new Path(task.getRightSource().getPath()), htable);
-		LOG.info("Move hfile[" + task.getRightSource().getPath() + "] to hbase[" + task.getRightSource().getName()
+		HTable htable = new HTable(job.getConfiguration(), appendTask.getTo().getName());
+		loader.doBulkLoad(new Path(appendTask.getHfileOutput()), htable);
+		LOG.info("Move hfile[" + appendTask.getHfileOutput() + "] to hbase[" + appendTask.getTo().getName()
 			+ "] success.");
 	    }
 	}
     }
 
     /**
-     * TODO 清理
+     * 清理临时文件
      * 
      * @param jobs
      * @param tasks
@@ -150,13 +159,11 @@ public class ExecutorService {
 	    task = tasks.get(i);
 	    job = jobs.get(i);
 	    if (job.isComplete()) {
-		switch (task.getTaskType()) {
-		case Join:
-		    HDFSUtil.deleteByDir(job.getConfiguration(), new Path(task.getOutput().getPath()), true);
-		    break;
-		case Append:
-		    HDFSUtil.deleteByDir(job.getConfiguration(), new Path(task.getRightSource().getPath()), true);
-		    break;
+		if (task instanceof JoinTask) {
+		    HDFSUtil
+			    .deleteByDir(job.getConfiguration(), new Path(((File) ((JoinTask) task).getOutput()).getPath()), true);
+		} else if (task instanceof AppendTask) {
+		    HDFSUtil.deleteByDir(job.getConfiguration(), new Path(((AppendTask) task).getHfileOutput()), true);
 		}
 	    }
 

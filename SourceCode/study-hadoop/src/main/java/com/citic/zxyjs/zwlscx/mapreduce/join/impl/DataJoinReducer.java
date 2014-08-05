@@ -1,16 +1,18 @@
 package com.citic.zxyjs.zwlscx.mapreduce.join.impl;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.hadoop.io.DefaultStringifier;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
-import com.citic.zxyjs.zwlscx.bean.Field;
 import com.citic.zxyjs.zwlscx.bean.File;
+import com.citic.zxyjs.zwlscx.bean.JoinTask;
 import com.citic.zxyjs.zwlscx.bean.Table;
-import com.citic.zxyjs.zwlscx.bean.Task;
+import com.citic.zxyjs.zwlscx.bean.future.Field;
+import com.citic.zxyjs.zwlscx.bean.future.MetaDataHelper;
 import com.citic.zxyjs.zwlscx.mapreduce.JobGenerator;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.DataJoinReducerBase;
 import com.citic.zxyjs.zwlscx.mapreduce.join.api.TaggedMapOutput;
@@ -27,18 +29,20 @@ import com.citic.zxyjs.zwlscx.xml.Separator;
  */
 public class DataJoinReducer extends DataJoinReducerBase {
 
-    private Task task;
+    private JoinTask joinTask;
     private Extendable userExtendable;
     private Extendable systemExtension;
     private MultipleOutputs<Text, Text> mos;
+    private List<Field> outputFields;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
 	super.setup(context);
-	this.task = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, Task.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
-	this.userExtendable = ExtensionUtils.newInstance(task.getReducerExtension(), context.getConfiguration());
+	this.joinTask = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, JoinTask.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
+	this.userExtendable = ExtensionUtils.newInstance(joinTask.getReducerExtension(), context.getConfiguration());
 	this.systemExtension = ExtensionUtils.getSystenExtension(context.getConfiguration());
 	this.mos = new MultipleOutputs(context);
+	this.outputFields = MetaDataHelper.getFieldByName(joinTask.getOutput());
     }
 
     @Override
@@ -56,20 +60,20 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	if (tags.length == 1) {
 	    tag = tags[0];
 	    //只有从表记录，忽略
-	    if ((task.getRightSource() instanceof File && tag.toString().equals(task.getRightSource().getPath()))
-		    || (task.getRightSource() instanceof Table && tag.toString().equals(task.getRightSource().getName()))) {
+	    if ((joinTask.getRightSource() instanceof File && tag.toString().equals(((File) joinTask.getRightSource()).getPath()))
+		    || (joinTask.getRightSource() instanceof Table && tag.toString().equals(joinTask.getRightSource().getName()))) {
 		return;
 	    }
 	    MapWritable map = (MapWritable) partialList[0].getData();
 	    StringBuffer letfSourceInfo = new StringBuffer();
-	    for (Field field : task.getLeftSource().getFields()) {
+	    for (Field field : outputFields) {
 		letfSourceInfo.append(map.get(field)).append(Separator.SEP_COMMA);
 	    }
-	    if (task.getLeftSource().getFields().size() > 0) {
+	    if (outputFields.size() > 0) {
 		letfSourceInfo.deleteCharAt(letfSourceInfo.length() - 1);
 	    }
 	    //只有主表记录，先记录到指定error文件，再正常输出
-	    mos.write(key, new Text(letfSourceInfo.toString()), ((File) task.getOutput()).getErrorPath());
+	    mos.write(key, new Text(letfSourceInfo.toString()), joinTask.getErrorOutput());
 	}
 	//主表有记录，从表有记录，正常输出
 	Text combined = combine(tags, partialList);
@@ -78,7 +82,7 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	if (userExtendable == null) {
 	    write(context, key, combined);
 	} else {
-	    MapperReducerExtensionParmeters pars = new MapperReducerExtensionParmeters(task, key, combined);
+	    MapperReducerExtensionParmeters pars = new MapperReducerExtensionParmeters(joinTask, key, combined);
 	    userExtendable.doExtend(pars);
 	    write(context, (Text) pars.getKey(), (Text) pars.getValue());
 	}
@@ -91,10 +95,11 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	    map.putAll((MapWritable) taggedMapOutput.getData());
 	}
 	StringBuffer combined = new StringBuffer();
-	for (Field field : task.getOutput().getFields()) {
+	List<Field> fields = MetaDataHelper.getFieldByName(joinTask.getOutput());
+	for (Field field : fields) {
 	    combined.append(map.get(field)).append(Separator.SEP_COMMA);
 	}
-	if (task.getOutput().getFields().size() > 0) {
+	if (fields.size() > 0) {
 	    combined.deleteCharAt(combined.length() - 1);
 	}
 	return new Text(combined.toString());

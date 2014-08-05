@@ -19,7 +19,7 @@ public class JobExtension extends UserExtensionBase {
 	}
 	JobExtensionParmeters jobParms = (JobExtensionParmeters) parms;
 	Task task = jobParms.getTask();
-	LOG.info("job运行完后调用此扩展方法，job输出为：" + task.getOutput().getPath());
+	LOG.info("job运行完后调用此扩展方法，job输出为：" + task.getIdentify());
     }
 
 }

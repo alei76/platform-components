@@ -12,6 +12,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import com.citic.zxyjs.zwlscx.bean.AppendTask;
+import com.citic.zxyjs.zwlscx.bean.File;
+import com.citic.zxyjs.zwlscx.bean.JoinTask;
 import com.citic.zxyjs.zwlscx.bean.SourceType;
 import com.citic.zxyjs.zwlscx.bean.Table;
 import com.citic.zxyjs.zwlscx.bean.Task;
@@ -36,31 +39,33 @@ public class AppendJobGenerator extends JobGeneratorBase {
 
     @Override
     public Job generateJob() throws IOException {
-	if (!(task.getRightSource() instanceof Table)) {
+	AppendTask appendTask = (AppendTask) task;
+
+	if (!(appendTask.getTo() instanceof Table)) {
 	    throw new IOException("AppendJob mapreduce's output can only Table.");
 	}
 	Configuration conf = ConfigurationUtils.getHbaseConfiguration();
-	DefaultStringifier.store(conf, task, JobGenerator.APPEND_JOB_TASK);
+	DefaultStringifier.store(conf, appendTask, JobGenerator.APPEND_JOB_TASK);
 
-	Job job = new Job(conf, "AppendJob[" + task.getIdentify() + "]");
+	Job job = new Job(conf, "AppendJob[" + appendTask.getIdentify() + "]");
 	job.setJarByClass(AppendJobGenerator.class);
 
 	job.setJarByClass(AppendJobGenerator.class);
-	if (task.getSourceType() == SourceType.FT) {
+	if (appendTask.getSourceType() == SourceType.FT) {
 	    job.setMapperClass(DataAppendTextInputFormatMapper.class);
-	} else if (task.getSourceType() == SourceType.TT) {
+	} else if (appendTask.getSourceType() == SourceType.TT) {
 	    job.setMapperClass(DataAppendTableInputFormatMapper.class);
 	}
 	job.setMapOutputKeyClass(ImmutableBytesWritable.class);
 	job.setMapOutputValueClass(Put.class);
 
-	String hfilePath = task.getRightSource().getPath();
+	String hfilePath = appendTask.getHfileOutput();
 	Utils.deleteIfExists(conf, hfilePath);
 
-	FileInputFormat.addInputPath(job, new Path(task.getLeftSource().getPath()));
+	FileInputFormat.addInputPath(job, new Path(((File) ((JoinTask) task).getOutput()).getPath()));
 	FileOutputFormat.setOutputPath(job, new Path(hfilePath));
 
-	HTable htable = new HTable(conf, task.getRightSource().getName());
+	HTable htable = new HTable(conf, appendTask.getTo().getName());
 	HFileOutputFormatWithIgnore.configureIncrementalLoad(job, htable, HFileOutputFormatWithIgnore.class);
 	return job;
     }

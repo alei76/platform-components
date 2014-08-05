@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.WritableUtils;
 
 /**
  * 文件实体对象
@@ -16,41 +17,43 @@ public class File extends Source implements Writable {
 
     private static final long serialVersionUID = 1L;
 
-    private String errorPath;
+    private String path;
+    private CompressionType compression;
 
-    public File() {
-	super();
+    public String getPath() {
+	return path;
     }
 
-    public File(String errorPath) {
-	super();
-	this.errorPath = errorPath;
+    public void setPath(String path) {
+	this.path = path;
     }
 
-    public String getErrorPath() {
-	return errorPath;
+    public CompressionType getCompression() {
+	return compression;
     }
 
-    public void setErrorPath(String errorPath) {
-	this.errorPath = errorPath;
+    public void setCompression(CompressionType compression) {
+	this.compression = compression;
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
 	super.readFields(in);
-	boolean errorPathIsNotNull = in.readBoolean();
-	if (errorPathIsNotNull) {
-	    this.errorPath = Text.readString(in);
+	this.path = Text.readString(in);
+	boolean compressionIsNotNull = in.readBoolean();
+	if (compressionIsNotNull) {
+	    this.compression = WritableUtils.readEnum(in, CompressionType.class);
 	}
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
 	super.write(out);
-	boolean errorPathIsNotNull = (errorPath != null);
-	out.writeBoolean(errorPathIsNotNull);
-	if (errorPathIsNotNull) {
-	    Text.writeString(out, errorPath);
+	Text.writeString(out, path);
+	boolean compressionIsNotNull = (compression != null);
+	out.writeBoolean(compressionIsNotNull);
+	if (compressionIsNotNull) {
+	    WritableUtils.writeEnum(out, compression);
 	}
     }
 

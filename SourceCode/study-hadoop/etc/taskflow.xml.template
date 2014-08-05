@@ -3,7 +3,7 @@
 	<source>
 		<file name="HDP_TX_O_F_DSDSA" >																				
 			<path>hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt</path>
-			<compressed>gzip</compressed>
+			<compression>gzip</compression>
 			<excludeField>
 				<field name="A"/>
 				<field name="B"/>
@@ -49,7 +49,7 @@
 		</table>
 	</source>
 	
-	<task clear="false"> 		
+	<taskFlow clear="false"> 
 		<join>
 			<leftSource>HDP_TX_O_F_DSDSA</leftSource>
 			<rightSource>HDP_CM_O_F_PMTPA</rightSource>
@@ -74,9 +74,9 @@
 			<errorOutput>hdfs://200master:9000/user/root/zxyh/error/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST/HDP_TX_O_F_DSDSA</errorOutput>
 		</join>
 		<append>
-			<leftSource>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</leftSource>
-			<rightSource>HDP_TX_O_F_DSDSA_T</rightSource>
-			<output>hdfs://200master:9000/user/root/zxyh/tmp/hfile</output>
+			<from>HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA&HDP_TX_O_F_TRANSLIST</from>
+			<to>HDP_TX_O_F_DSDSA_T</to>
+			<hfileOutput>hdfs://200master:9000/user/root/zxyh/tmp/hfile</hfileOutput>
 		</append>    
-	</task>
+	</taskFlow>
 </conf>
