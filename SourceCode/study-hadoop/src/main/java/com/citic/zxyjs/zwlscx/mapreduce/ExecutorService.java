@@ -25,13 +25,7 @@ import com.citic.zxyjs.zwlscx.mapreduce.lib.jobcontrol.JobControl;
 import com.citic.zxyjs.zwlscx.xml.ParseXmlUtils;
 
 /**
- * 
- * .sh脚本入口 
- * 1.解析并校验xml
- * 2.根据xml得到Job列表
- * 3.顺序运行Job列表
- * 4.调用回调函数
- * 5.清理临时文件
+ * .sh脚本入口 1.解析并校验xml 2.根据xml得到Job列表 3.顺序运行Job列表 4.调用回调函数 5.清理临时文件
  * 
  * @author JoyoungZhang@gmail.com
  */
@@ -40,7 +34,6 @@ public class ExecutorService {
     private static final Log LOG = LogFactory.getLog(ExecutorService.class);
 
     /**
-     *	
      * @param args
      */
     public static void main(String[] args) {
@@ -109,7 +102,8 @@ public class ExecutorService {
     /**
      * 根据配置文件获得Job列表
      * 
-     * @param conf 通过解析xml得到conf对象
+     * @param conf
+     *            通过解析xml得到conf对象
      * @return Job列表
      * @throws IOException
      */

@@ -59,12 +59,15 @@ public class ValuesSortWithKeyValueTextInputFormat {
 
     public static void main(String[] args) throws Exception {
 	Configuration conf = ConfigurationUtils.getHadoopConfiguration();
-	String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-	if (otherArgs.length != 2) {
-	    System.err.println("Usage: wordcount <in> <out>");
-	    System.exit(2);
-	}
-	conf.set(KeyValueLineRecordReader.KEY_VALUE_SEPERATOR, " ");
+//	String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+//	if (otherArgs.length != 2) {
+//	    System.err.println("Usage: wordcount <in> <out>");
+//	    System.exit(2);
+//	}
+	args = new String[]{
+		"hdfs://200master:9000/user/root/ValuesSortWithKeyValueTextInputFormat/input/i.txt", 
+		"hdfs://200master:9000/user/root/ValuesSortWithKeyValueTextInputFormat/output"};
+//	conf.set(KeyValueLineRecordReader.KEY_VALUE_SEPERATOR, " ");
 	Job job = new Job(conf, "ValuesSort");
 	job.setJarByClass(ValuesSortWithKeyValueTextInputFormat.class);
 	job.setMapperClass(TokenizerMapper.class);
@@ -79,14 +82,14 @@ public class ValuesSortWithKeyValueTextInputFormat {
 
 	// 设置partition
 	job.setPartitionerClass(Example_Different_01_Partitioner.class);
-	// 在分区之后按照指定的条件分组
-	job.setGroupingComparatorClass(Example_Different_01_Comparator.class);
 	// key比较函数
 	job.setSortComparatorClass(Example_Different_01_KeyComparator.class);
+	// 在分区之后按照指定的条件分组
+	job.setGroupingComparatorClass(Example_Different_01_Comparator.class);
 
-	FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
-	Utils.deleteIfExists(conf, otherArgs[1]);
-	FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+	FileInputFormat.addInputPath(job, new Path(args[0]));
+	Utils.deleteIfExists(conf, args[1]);
+	FileOutputFormat.setOutputPath(job, new Path(args[1]));
 	System.exit(job.waitForCompletion(true) ? 0 : 1);
 
     }

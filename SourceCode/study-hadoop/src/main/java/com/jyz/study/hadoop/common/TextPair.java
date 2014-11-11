@@ -58,4 +58,10 @@ public class TextPair implements WritableComparable<TextPair> {
 	}
 	return second.compareTo(tp.second);
     }
+
+    @Override
+    public String toString() {
+	return "TextPair [first=" + first + ", second=" + second + "]";
+    }
+    
 }

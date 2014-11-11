@@ -54,14 +54,14 @@ public class Source implements Writable {
 	boolean excludeFieldIsNotNull = in.readBoolean();
 	if (excludeFieldIsNotNull) {
 	    int size = in.readInt();
-		excludeField = new ArrayList<Field>(size);
-		for (int i = 0; i < size; i++) {
-		    Field field = new Field();
-		    field.readFields(in);
-		    excludeField.add(field);
-		}
+	    excludeField = new ArrayList<Field>(size);
+	    for (int i = 0; i < size; i++) {
+		Field field = new Field();
+		field.readFields(in);
+		excludeField.add(field);
+	    }
 	}
-	
+
 	boolean parentSourceIsNotNull = in.readBoolean();
 	if (parentSourceIsNotNull) {
 	    int size = in.readInt();

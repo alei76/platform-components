@@ -13,6 +13,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -209,6 +210,7 @@ public class ParseJson2 {
 	/* [ */job.setNumReduceTasks(0);/* ] */
 	/* ... */
 	// ^^ ParseJson2
+	System.out.println(job.getConfiguration().get(CommonConfigurationKeys.IO_SERIALIZATIONS_KEY));
 
 	System.exit(job.waitForCompletion(true) ? 0 : 1);
     }

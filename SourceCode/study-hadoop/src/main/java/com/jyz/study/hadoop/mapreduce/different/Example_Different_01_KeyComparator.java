@@ -20,6 +20,7 @@ public class Example_Different_01_KeyComparator extends WritableComparator {
     public int compare(WritableComparable a, WritableComparable b) {
 	TextPair t1 = (TextPair) a;
 	TextPair t2 = (TextPair) b;
+	System.out.println(t1 + " " + t2);
 	Text l = t1.getFirst();
 	Text r = t2.getFirst();
 	int cmp = l.compareTo(r);

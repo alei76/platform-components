@@ -369,7 +369,7 @@ public class HFileOutputFormatBase extends FileOutputFormat<ImmutableBytesWritab
 	configureBloomType(table, conf);
 	configureBlockSize(table, conf);
 
-	// TableMapReduceUtil.addDependencyJars(job);
+	 TableMapReduceUtil.addDependencyJars(job);
 	TableMapReduceUtil.initCredentials(job);
 	LOG.info("Incremental table " + Bytes.toString(table.getTableName()) + " output configured.");
     }

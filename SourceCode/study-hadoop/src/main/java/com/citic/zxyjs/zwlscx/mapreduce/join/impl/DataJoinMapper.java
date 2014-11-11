@@ -56,7 +56,7 @@ public class DataJoinMapper {
 	    this.joinTask = DefaultStringifier.load(context.getConfiguration(), JobGenerator.JOIN_JOB_TASK, JoinTask.class);//ParseXmlUtilsBak.parseXml().getTasks().get(0);
 	    this.userExtension = ExtensionUtils.newInstance(joinTask.getMapperExtension(), context.getConfiguration());
 	    this.systemExtension = ExtensionUtils.getSystenExtension(context.getConfiguration());
-	    
+
 	    switch (joinTask.getSourceType()) {
 	    case FF:
 		File leftSource = (File) joinTask.getLeftSource();
@@ -258,17 +258,17 @@ public class DataJoinMapper {
 
     public static List<Field> getJoinFieldsByRule(Direction r, List<Rule> joinRules) {
 	List<Field> fields = new ArrayList<Field>();
-	if(joinRules == null || joinRules.size() == 0){
+	if (joinRules == null || joinRules.size() == 0) {
 	    return fields;
 	}
-	for(Rule rule : joinRules){
+	for (Rule rule : joinRules) {
 	    fields.add(r == Direction.L ? rule.getLeftField() : rule.getRightField());
 	}
 	return fields;
     }
-    
-    private enum Direction{
-	L,R
+
+    private enum Direction {
+	L, R
     }
 
 }

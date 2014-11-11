@@ -42,7 +42,7 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	this.userExtendable = ExtensionUtils.newInstance(joinTask.getReducerExtension(), context.getConfiguration());
 	this.systemExtension = ExtensionUtils.getSystenExtension(context.getConfiguration());
 	this.mos = new MultipleOutputs(context);
-	this.outputFields = MetaDataHelper.getFieldByName(joinTask.getOutput());
+	this.outputFields = MetaDataHelper.getFieldByName(joinTask);
     }
 
     @Override
@@ -66,10 +66,11 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	    }
 	    MapWritable map = (MapWritable) partialList[0].getData();
 	    StringBuffer letfSourceInfo = new StringBuffer();
-	    for (Field field : outputFields) {
+	    List<Field> leftFields = MetaDataHelper.getFieldByName(joinTask.getLeftSource());
+	    for (Field field : leftFields) {
 		letfSourceInfo.append(map.get(field)).append(Separator.SEP_COMMA);
 	    }
-	    if (outputFields.size() > 0) {
+	    if (leftFields.size() > 0) {
 		letfSourceInfo.deleteCharAt(letfSourceInfo.length() - 1);
 	    }
 	    //只有主表记录，先记录到指定error文件，再正常输出
@@ -95,11 +96,10 @@ public class DataJoinReducer extends DataJoinReducerBase {
 	    map.putAll((MapWritable) taggedMapOutput.getData());
 	}
 	StringBuffer combined = new StringBuffer();
-	List<Field> fields = MetaDataHelper.getFieldByName(joinTask.getOutput());
-	for (Field field : fields) {
+	for (Field field : outputFields) {
 	    combined.append(map.get(field)).append(Separator.SEP_COMMA);
 	}
-	if (fields.size() > 0) {
+	if (outputFields.size() > 0) {
 	    combined.deleteCharAt(combined.length() - 1);
 	}
 	return new Text(combined.toString());

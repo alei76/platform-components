@@ -16,8 +16,7 @@ import com.citic.zxyjs.zwlscx.bean.Task;
 import com.citic.zxyjs.zwlscx.bean.future.Field;
 
 /**
- * 解析并校验配置文件工具类
- * TODO 解析 校验
+ * 解析并校验配置文件工具类 TODO 解析 校验
  * 
  * @author JoyoungZhang@gmail.com
  */
@@ -30,10 +29,10 @@ public class ParseXmlUtils {
 	File file1 = new File();
 	file1.setName("HDP_TX_O_F_DSDSA");
 	file1.setPath("hdfs://200master:9000/user/root/zxyh/HDP_TX_O_F_DSDSA.txt");
-	
+
 	Table table1 = new Table();
 	table1.setName("HDP_CM_O_F_PMTPA");
-	
+
 	File file2 = new File();
 	file2.setName("HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA");
 	file2.setPath("hdfs://200master:9000/user/root/zxyh/tmp/HDP_TX_O_F_DSDSA&HDP_CM_O_F_PMTPA");
@@ -41,7 +40,7 @@ public class ParseXmlUtils {
 	parentSource.add(file1);
 	parentSource.add(table1);
 	file2.setParentSource(parentSource);
-	
+
 	JoinTask joinTask1 = new JoinTask();
 	joinTask1.setLeftSource(file1);
 	joinTask1.setRightSource(table1);
@@ -54,13 +53,13 @@ public class ParseXmlUtils {
 	rule.setOutput("DSTRCD");
 	rules.add(rule);
 	joinTask1.setJoinRule(rules);
-	
+
 	Conf conf = new Conf();
 	List<Task> tasks = new ArrayList<Task>();
 	tasks.add(joinTask1);
 	conf.setTasks(tasks);
 	conf.setClear(false);
-	
+
 	return conf;
     }
 

@@ -13,6 +13,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeys;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTable;
@@ -318,10 +319,12 @@ public class ImportFromFileWithBulkLoad {
 	// Configuration hbaseConf = ConfigurationUtils.getHbaseConfiguration();
 	HTable htable = new HTable(conf, table);
 	HFileOutputFormat.configureIncrementalLoad(job, htable);
+//	HFileOutputFormatBase.configureIncrementalLoad(job, htable, HFileOutputFormatWithIgnore.class);
+	System.out.println(job.getConfiguration().get(CommonConfigurationKeys.IO_SERIALIZATIONS_KEY));
 	boolean result = job.waitForCompletion(true);
 
-	LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf);
-	loader.doBulkLoad(new Path(tmpoutput), htable);
+//	LoadIncrementalHFiles loader = new LoadIncrementalHFiles(conf);
+//	loader.doBulkLoad(new Path(tmpoutput), htable);
 
 	System.exit(result ? 0 : 1);
     }

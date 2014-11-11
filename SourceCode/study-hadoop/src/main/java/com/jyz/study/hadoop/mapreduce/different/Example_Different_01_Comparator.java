@@ -19,6 +19,7 @@ public class Example_Different_01_Comparator extends WritableComparator {
     public int compare(WritableComparable a, WritableComparable b) {
 	TextPair t1 = (TextPair) a;
 	TextPair t2 = (TextPair) b;
+	System.out.println(t1 + " " + t2);
 	return t1.getFirst().compareTo(t2.getFirst());
     }
 }
